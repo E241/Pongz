@@ -13,7 +13,7 @@ public class HtmlLauncher extends GwtApplication {
         }
 
         @Override
-        public ApplicationListener createApplicationListener () {
+        public ApplicationListener getApplicationListener() {
                 return new PongzStart();
         }
 }
