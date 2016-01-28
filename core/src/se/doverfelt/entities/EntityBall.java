@@ -5,10 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.*;
 
 /**
  * @author Rickard Doverfelt
@@ -19,14 +16,34 @@ public class EntityBall implements Entity, Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
-    private float x = 3, y = 3, xv = 8, yv =2;
+    private float x = 3, y = 3, xv = 10000, yv =10000;
+    private Body body;
+    private Fixture fixture;
 
 
-    public EntityBall() {
+    public EntityBall(World world) {
         batch = new SpriteBatch();
+        BodyDef bdef = new BodyDef();
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        bdef.position.set(50, 50);
+        body = world.createBody(bdef);
         img = new Sprite(new Texture("ball.png"));
-        img.setPosition(x, y);
+        img.setPosition(x-4.5f, y-4.5f);
         img.setSize(18, 18);
+
+        CircleShape circle = new CircleShape();
+        circle.setRadius(9);
+
+        FixtureDef fdef = new FixtureDef();
+        fdef.shape = circle;
+        fdef.density = 0.01f;
+        fdef.friction = 0.4f;
+        fdef.restitution = 0.6f;
+
+        fixture = body.createFixture(fdef);
+
+        circle.dispose();
+
     }
 
     @Override
@@ -48,7 +65,7 @@ public class EntityBall implements Entity, Collidable {
         if (yv > 0) yv += 0.1;
         if (yv < 0) yv += - 0.1;*/
 
-        if (x < 0) {
+        /*if (x < 0) {
             xv = -xv;
         }
         if (x > Gdx.graphics.getWidth()-img.getWidth()) {
@@ -59,9 +76,10 @@ public class EntityBall implements Entity, Collidable {
         }
         if (y > Gdx.graphics.getHeight()-img.getHeight()) {
             yv = -yv;  //720
-        }
+        }*/
 
-        img.setPosition(x, y);
+        body.applyForceToCenter(xv, yv, false);
+        img.setPosition(body.getPosition().x-9, body.getPosition().y-9);
     }
 
     @Override

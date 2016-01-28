@@ -44,7 +44,7 @@ public class PongzStart extends ApplicationAdapter {
         batch = new SpriteBatch();
         font = new BitmapFont();
         addEntity(new EntityTest());
-        addEntity(new EntityBall());
+        addEntity(new EntityBall(world));
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
 
@@ -56,9 +56,6 @@ public class PongzStart extends ApplicationAdapter {
 	public void render () {
         int delta = (int) (System.currentTimeMillis() - timestamp);
         timestamp = System.currentTimeMillis();
-        world.step(Math.min(delta/1000f, 0.25f), 6, 2);
-
-        camera.update();
         batch.setProjectionMatrix(camera.combined);
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -71,6 +68,8 @@ public class PongzStart extends ApplicationAdapter {
         batch.begin();
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, camera.viewportHeight - 15);
         batch.end();
+        world.step(Math.min(delta/1000f, 0.25f), 6, 2);
+        camera.update();
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
     }
 }
