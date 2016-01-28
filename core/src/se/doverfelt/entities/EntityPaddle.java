@@ -6,22 +6,12 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import java.util.Random;
-
 /**
  * @author Rickard Doverfelt
- *         Datum: 2016-01-27
- *         Filnamn: EntityTest.java
+ *         Datum: 2016-01-28
+ *         Filnamn: EntityPaddle.java
  */
-public class EntityTest implements Entity, Collidable {
-
-    private Random r = new Random();
-    int timer = 0;
-
-    public EntityTest() {
-
-    }
-
+public class EntityPaddle implements Entity, Collidable {
     @Override
     public void render(OrthographicCamera camera) {
 
