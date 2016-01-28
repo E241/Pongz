@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se.doverfelt.entities.Entity;
 import se.doverfelt.entities.EntityTest;
@@ -17,10 +18,14 @@ import java.util.HashMap;
 public class PongzStart extends ApplicationAdapter {
 	long timestamp;
     ArrayList<Entity> entities = new ArrayList<Entity>();
+    SpriteBatch batch;
+    BitmapFont font;
 
 	@Override
 	public void create () {
         timestamp = System.currentTimeMillis();
+        batch = new SpriteBatch();
+        font = new BitmapFont();
         addEntity(new EntityTest());
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
@@ -39,6 +44,9 @@ public class PongzStart extends ApplicationAdapter {
             entity.update(delta);
             entity.render();
         }
+        batch.begin();
+        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
+        batch.end();
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
     }
 }

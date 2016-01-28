@@ -39,14 +39,22 @@ public class EntityTest implements Entity {
         y += yv;
         yv = (float) (yv - 0.2); //gravity for tha lulz
 
-        if (xv > 0) xv += 0.1;//accerelation
+        /*if (xv > 0) xv += 0.1;//accerelation
         if (xv < 0) xv += - 0.1;
         if (yv > 0) yv += 0.1;
-        if (yv < 0) yv += - 0.1;
+        if (yv < 0) yv += - 0.1;*/
 
-        if (x < 0) xv = -xv;
-        if (x > 1262) xv = -xv; //1280
-        if (y < 0) yv = -yv;
-        if (y > 702) yv = -yv;  //720
+        if (x < 0) {
+            xv = -xv;
+        }
+        if (x > 1262) {
+            xv = -xv; //1280
+        }
+        if (y < 0) {
+            yv = -yv;
+        }
+        if (y > 702) {
+            yv = -yv;  //720
+        }
     }
 }
