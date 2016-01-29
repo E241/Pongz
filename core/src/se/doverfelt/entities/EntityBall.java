@@ -65,6 +65,7 @@ public class EntityBall implements Entity, Collidable {
     @Override
     public void beginContact(Contact contact) {
 
+
     }
 
     @Override

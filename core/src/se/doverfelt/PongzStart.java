@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import se.doverfelt.entities.Entity;
 import se.doverfelt.entities.EntityBall;
 import se.doverfelt.entities.EntityBorder;
+import se.doverfelt.entities.EntityPaddle;
 import se.doverfelt.entities.EntityTest;
 
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityBall(world));
         addEntity(new EntityBorder(world, 1, 1, Gdx.graphics.getWidth(), 20));
         addEntity(new EntityBorder(world, 1, Gdx.graphics.getHeight()-20, Gdx.graphics.getWidth(), 20));
+        addEntity(new EntityPaddle(20,200,world, false));
+        addEntity(new EntityPaddle(1270,200,world, true));
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
 
