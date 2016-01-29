@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
  *         Filnamn: EntityPaddle.java
  */
 public class EntityPaddle implements Entity, Collidable {
+
     @Override
     public void render(OrthographicCamera camera) {
 

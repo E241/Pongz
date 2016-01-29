@@ -28,7 +28,7 @@ public class EntityBall implements Entity, Collidable {
         bdef.position.set(50, 50);
         body = world.createBody(bdef);
         img = new Sprite(new Texture("ball.png"));
-        img.setPosition(x-4.5f, y-4.5f);
+        img.setPosition(x-9, y-9);
         img.setSize(18, 18);
 
         CircleShape circle = new CircleShape();
@@ -38,11 +38,12 @@ public class EntityBall implements Entity, Collidable {
         fdef.shape = circle;
         fdef.density = 0.01f;
         fdef.friction = 0.4f;
-        fdef.restitution = 0.6f;
+        fdef.restitution = 1f;
 
         fixture = body.createFixture(fdef);
 
         circle.dispose();
+        body.applyForceToCenter(xv, yv, false);
 
     }
 
@@ -58,27 +59,6 @@ public class EntityBall implements Entity, Collidable {
     public void update(int delta) {
         x += xv;
         y += yv;
-        //yv = (float) (yv - 0.2); //gravity for tha lulz
-
-        /*if (xv > 0) xv += 0.1;//accerelation
-        if (xv < 0) xv += - 0.1;
-        if (yv > 0) yv += 0.1;
-        if (yv < 0) yv += - 0.1;*/
-
-        /*if (x < 0) {
-            xv = -xv;
-        }
-        if (x > Gdx.graphics.getWidth()-img.getWidth()) {
-            xv = -xv; //1280
-        }
-        if (y < 0) {
-            yv = -yv;
-        }
-        if (y > Gdx.graphics.getHeight()-img.getHeight()) {
-            yv = -yv;  //720
-        }*/
-
-        body.applyForceToCenter(xv, yv, false);
         img.setPosition(body.getPosition().x-9, body.getPosition().y-9);
     }
 
@@ -104,6 +84,6 @@ public class EntityBall implements Entity, Collidable {
 
     @Override
     public Body getBody() {
-        return null;
+        return body;
     }
 }
