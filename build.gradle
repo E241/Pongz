@@ -21,6 +21,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.7.0'
+        gdxUtilsVersion = '0.13.1'
     }
 
     repositories {
@@ -62,6 +63,9 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion:sources"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion:sources"
+        compile "net.dermetfan.libgdx-utils:libgdx-utils:$gdxUtilsVersion:sources"
+        compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:$gdxUtilsVersion:sources" // Box2D module (sources)
+        compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d-gwt:$gdxUtilsVersion:sources" // Box2D module GWT specific classes (sources)
     }
 }
 
@@ -75,6 +79,8 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        compile "net.dermetfan.libgdx-utils:libgdx-utils:$gdxUtilsVersion"
+        compile "net.dermetfan.libgdx-utils:libgdx-utils-box2d:$gdxUtilsVersion" // Box2D module
     }
 }
 

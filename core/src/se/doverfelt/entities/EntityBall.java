@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
+import net.dermetfan.gdx.graphics.g2d.Box2DSprite;
 
 /**
  * @author Rickard Doverfelt
@@ -15,35 +17,41 @@ import com.badlogic.gdx.physics.box2d.*;
 public class EntityBall implements Entity, Collidable {
 
     private SpriteBatch batch;
-    private Sprite img;
-    private float x = 3, y = 3, xv = 10000, yv =10000;
+    private Box2DSprite img;
+    private float x = 3, y = 3, xv = 1000, yv =1000;
     private Body body;
     private Fixture fixture;
+    private final float WIDTH = 5, HEIGHT = 5;
 
 
     public EntityBall(World world) {
         batch = new SpriteBatch();
         BodyDef bdef = new BodyDef();
         bdef.type = BodyDef.BodyType.DynamicBody;
-        bdef.position.set(50, 50);
+        bdef.position.set(5, 5);
         body = world.createBody(bdef);
-        img = new Sprite(new Texture("ball.png"));
-        img.setPosition(x-9, y-9);
-        img.setSize(18, 18);
+        img = new Box2DSprite(new Texture("ball.png"));
+        //img.setPosition(x-WIDTH/2, y-HEIGHT/2);
+        img.setSize(WIDTH, HEIGHT);
+
+        MassData massData = new MassData();
+        massData.mass = 1f;
+        body.setMassData(massData);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(9);
+        circle.setRadius(WIDTH/2);
 
         FixtureDef fdef = new FixtureDef();
         fdef.shape = circle;
-        fdef.density = 0.01f;
-        fdef.friction = 0.4f;
+        fdef.density = 1f;
+        fdef.friction = 0.001f;
         fdef.restitution = 1f;
 
         fixture = body.createFixture(fdef);
 
         circle.dispose();
-        body.applyForceToCenter(xv, yv, false);
+        //body.setLinearVelocity(xv, yv);
+        body.applyLinearImpulse(xv, yv, 0, 0, true);
 
     }
 
@@ -51,15 +59,16 @@ public class EntityBall implements Entity, Collidable {
     public void render(OrthographicCamera camera) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        img.draw(batch);
+        img.draw(batch, body);
         batch.end();
     }
 
     @Override
     public void update(int delta) {
-        x += xv;
-        y += yv;
-        img.setPosition(body.getPosition().x-9, body.getPosition().y-9);
+        //img.setPosition(body.getPosition().x-WIDTH/2, body.getPosition().y-HEIGHT/2);
+        //img.setRotation(MathUtils.radiansToDegrees * body.getAngle());
+        //body.setLinearDamping(0f);
+
     }
 
     @Override

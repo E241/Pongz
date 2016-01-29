@@ -1,9 +1,6 @@
 package se.doverfelt;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -31,6 +28,7 @@ public class PongzStart extends ApplicationAdapter {
     World world;
     Box2DDebugRenderer debugRenderer;
     private OrthographicCamera camera;
+    private float aspect;
 
 	@Override
 	public void create () {
@@ -38,8 +36,10 @@ public class PongzStart extends ApplicationAdapter {
         world = new World(new Vector2(0, 0), true);
         debugRenderer = new Box2DDebugRenderer();
 
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        aspect = 1f * (9f/16f);
+        camera = new OrthographicCamera(200f, 200f*aspect);
+        camera.position.set(camera.viewportWidth, camera.viewportHeight, 0);
+        camera.zoom = 2f;
         camera.update();
 
         timestamp = System.currentTimeMillis();
@@ -47,10 +47,10 @@ public class PongzStart extends ApplicationAdapter {
         font = new BitmapFont();
         addEntity(new EntityTest());
         addEntity(new EntityBall(world));
-        addEntity(new EntityBorder(world, 1, 1, Gdx.graphics.getWidth(), 20));
-        addEntity(new EntityBorder(world, 1, Gdx.graphics.getHeight()-20, Gdx.graphics.getWidth(), 20));
-        addEntity(new EntityPaddle(20,200,world, false));
-        addEntity(new EntityPaddle(1270,200,world, true));
+        addEntity(new EntityBorder(world, 0.1f, 0, camera.viewportWidth*2 - 0.2f, 2f));
+        addEntity(new EntityBorder(world, 0.1f, camera.viewportHeight - 2f, camera.viewportWidth*2 - 0.2f, 2f));
+        addEntity(new EntityPaddle(1, 1, world, false));
+        addEntity(new EntityPaddle(camera.viewportWidth - 2f, 1, world, true));
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
 
@@ -72,7 +72,7 @@ public class PongzStart extends ApplicationAdapter {
         }
         debugRenderer.render(world, camera.combined);
         batch.begin();
-        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, camera.viewportHeight - 15);
+        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, camera.viewportHeight - 1);
         batch.end();
         world.step(Math.min(delta/1000f, 0.25f), 6, 2);
         camera.update();

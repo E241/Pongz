@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
+import net.dermetfan.gdx.graphics.g2d.Box2DSprite;
 
 /**
  * @author Rickard Doverfelt
@@ -16,8 +17,8 @@ import com.badlogic.gdx.physics.box2d.*;
 public class EntityPaddle implements Entity, Collidable {
 
     private SpriteBatch batch;
-    private Sprite img;
-    private float x,y , width = 10, height = 22, yv = 5;
+    private Box2DSprite img;
+    private float x,y , width = 2f, height = 15, yv = 40;
     private Body body;
     private Fixture fixture;
     boolean isRight;
@@ -29,14 +30,14 @@ public class EntityPaddle implements Entity, Collidable {
         batch = new SpriteBatch();
         BodyDef bDef = new BodyDef();
         bDef.type = BodyDef.BodyType.KinematicBody;
-        bDef.position.set(50,50);
+        bDef.position.set(xIn,yIn);
         body = world.createBody(bDef);
-        img = new Sprite(new Texture("white.png"));
-        img.setPosition(x, y);
+        img = new Box2DSprite(new Texture("white.png"));
+        //img.setPosition(x-width/2f, y-height/2f);
         img.setSize(width, height);
 
         PolygonShape polygon = new PolygonShape();
-        polygon.set(new float[]{x, y, x + width, y + height});
+        polygon.set(new float[]{x, y, x, y+height, x + width, y, x+width, y + height});
 
         FixtureDef fdef = new FixtureDef();
         fdef.shape = polygon;
@@ -53,7 +54,7 @@ public class EntityPaddle implements Entity, Collidable {
     public void render(OrthographicCamera camera) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        img.draw(batch);
+        img.draw(batch, body);
         batch.end();
 
     }
@@ -61,20 +62,23 @@ public class EntityPaddle implements Entity, Collidable {
     @Override
     public void update(int delta) {
         if(isRight) {
-            if (Gdx.input.isButtonPressed(Input.Keys.UP)){
-                y += yv;
-            }
-            if (Gdx.input.isButtonPressed(Input.Keys.DOWN)){
-                y += -yv;
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                body.setLinearVelocity(0f, yv);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+                body.setLinearVelocity(0f, -yv);
+            } else {
+                body.setLinearVelocity(0f, 0f);
             }
         } else {
-            if (Gdx.input.isButtonPressed(Input.Keys.W)){
-                y += yv;
-            }
-            if (Gdx.input.isButtonPressed(Input.Keys.S)){
-                y += -yv;
+            if (Gdx.input.isKeyPressed(Input.Keys.W)){
+                body.setLinearVelocity(0f, yv);
+            } else if (Gdx.input.isKeyPressed(Input.Keys.S)){
+                body.setLinearVelocity(0f, -yv);
+            } else {
+                body.setLinearVelocity(0f, 0f);
             }
         }
+        //img.setPosition(body.getPosition().x+width/2f, body.getPosition().y+height/15f);
     }
 
     @Override

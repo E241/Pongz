@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import net.dermetfan.gdx.graphics.g2d.Box2DSprite;
 
 /**
  * Created by rickard on 2016-01-29.
@@ -14,7 +15,7 @@ public class EntityBorder implements Entity, Collidable {
 
     private final SpriteBatch batch;
     private final Body body;
-    private final Sprite img;
+    private final Box2DSprite img;
     private final Fixture fixture;
     private float x, y;
 
@@ -26,8 +27,8 @@ public class EntityBorder implements Entity, Collidable {
         bdef.type = BodyDef.BodyType.StaticBody;
         bdef.position.set(x, y);
         body = world.createBody(bdef);
-        img = new Sprite(new Texture("ball.png"));
-        img.setPosition(x, y);
+        img = new Box2DSprite(new Texture("white.png"));
+        //img.setPosition(x, y);
         img.setSize(width, height);
         PolygonShape rect = new PolygonShape();
         rect.set(new float[]{x, y, x+width, y, x, y+height, x+width, y+height});
