@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import se.doverfelt.PongzStart;
 
@@ -22,6 +23,7 @@ public class EntityBall implements Collidable {
     private float x = 3, y = 3, xv = 0.1f, yv =0.1f;
     private final float WIDTH = 5, HEIGHT = 5;
     private OrthographicCamera camera;
+    private Rectangle bounds;
 
 
     public EntityBall(OrthographicCamera camera) {
@@ -30,6 +32,7 @@ public class EntityBall implements Collidable {
         //img.setPosition(x-WIDTH/2, y-HEIGHT/2);
         img.setSize(WIDTH, HEIGHT);
         img.setPosition(x, y);
+        bounds = new Rectangle(x, y, WIDTH, HEIGHT);
         this.camera = camera;
     }
 
@@ -39,7 +42,6 @@ public class EntityBall implements Collidable {
         batch.begin();
         img.draw(batch);
         batch.end();
-        this.camera = camera;
     }
 
     @Override
@@ -65,6 +67,7 @@ public class EntityBall implements Collidable {
             yv = -yv;
             y = camera.viewportHeight-HEIGHT;
         }
+        bounds.setPosition(x, y);
         img.setPosition(x,y);
     }
 
@@ -72,6 +75,11 @@ public class EntityBall implements Collidable {
         img.setPosition(camera.viewportWidth/2f-WIDTH/2f, camera.viewportHeight/2f-HEIGHT/2f);
         x = img.getX();
         y = img.getY();
+    }
+
+    @Override
+    public Rectangle getRect() {
+        return bounds;
     }
 
     @Override

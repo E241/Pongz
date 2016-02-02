@@ -5,11 +5,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import se.doverfelt.entities.Entity;
-import se.doverfelt.entities.EntityBall;
-import se.doverfelt.entities.EntityBorder;
-import se.doverfelt.entities.EntityPaddle;
-import se.doverfelt.entities.EntityTest;
+import com.badlogic.gdx.math.Intersector;
+import se.doverfelt.entities.*;
 
 import java.util.ArrayList;
 
@@ -34,7 +31,6 @@ public class PongzStart extends ApplicationAdapter {
         timestamp = System.currentTimeMillis();
         batch = new SpriteBatch();
         font = new BitmapFont();
-        addEntity(new EntityTest());
         addEntity(new EntityBall(camera));
         addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f));
         addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f));
@@ -56,6 +52,15 @@ public class PongzStart extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         for (Entity entity : entities) {
+            if (entity instanceof Collidable) {
+                for (Entity c : entities) {
+                    if (c instanceof Collidable) {
+                        if (Intersector.overlaps(((Collidable)c).getRect(), ((Collidable)entity).getRect())) {
+                            ((Collidable) entity).collide(c);
+                        }
+                    }
+                }
+            }
             entity.update(delta);
             entity.render(camera);
         }

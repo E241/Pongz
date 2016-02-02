@@ -16,6 +16,7 @@ public class EntityBorder implements Collidable {
     private final SpriteBatch batch;
     private final Sprite img;
     private float x, y;
+    private Rectangle bounds;
 
     public EntityBorder(float x, float y, float width, float height) {
         this.x = x;
@@ -24,6 +25,7 @@ public class EntityBorder implements Collidable {
         img = new Sprite(new Texture("white.png"));
         img.setPosition(x, y);
         img.setSize(width, height);
+        bounds = new Rectangle(x, y, width, height);
     }
 
     @Override
@@ -37,6 +39,11 @@ public class EntityBorder implements Collidable {
     @Override
     public void update(int delta) {
 
+    }
+
+    @Override
+    public Rectangle getRect() {
+        return bounds;
     }
 
     @Override

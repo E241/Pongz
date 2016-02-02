@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 
 
@@ -20,6 +21,7 @@ public class EntityPaddle implements Collidable {
     private Sprite img;
     private float x,y , width = 2f, height = 15, yv = 0.2f;
     boolean isRight;
+    private Rectangle bounds;
 
     public EntityPaddle(float xIn,float yIn, boolean Right){
         x = xIn;
@@ -29,6 +31,7 @@ public class EntityPaddle implements Collidable {
         img = new Sprite(new Texture("white.png"));
         img.setPosition(x, y);
         img.setSize(width, height);
+        bounds = new Rectangle(x, y, width, height);
     }
     
     @Override
@@ -55,7 +58,13 @@ public class EntityPaddle implements Collidable {
                 y -= yv*delta;
             }
         }
+        bounds.setPosition(x, y);
         img.setPosition(x, y);
+    }
+
+    @Override
+    public Rectangle getRect() {
+        return bounds;
     }
 
     @Override
