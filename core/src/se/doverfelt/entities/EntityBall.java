@@ -55,17 +55,17 @@ public class EntityBall implements Entity, Collidable {
             x = 0;
             xv = -xv; //Vinst Höger
             PongzStart.PointsR++;
-        }else if (x > camera.viewportWidth){
-            x = camera.viewportWidth;
+        }else if (x > camera.viewportWidth-WIDTH){
+            x = camera.viewportWidth -WIDTH;
             xv = -xv; //Vinst Vänster
             PongzStart.PointsL++;
         }
         if (y < 0){
             yv = -yv;
             y = 0;
-        } else if (y > camera.viewportHeight){
+        } else if (y > camera.viewportHeight-HEIGHT){
             yv = -yv;
-            y = camera.viewportHeight;
+            y = camera.viewportHeight-HEIGHT;
         }
         img.setPosition(x,y);
     }

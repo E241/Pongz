@@ -1,16 +1,10 @@
 package se.doverfelt;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2D;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import se.doverfelt.entities.Entity;
 import se.doverfelt.entities.EntityBall;
 import se.doverfelt.entities.EntityBorder;
@@ -28,7 +22,7 @@ public class PongzStart extends ApplicationAdapter {
     private float aspect;
     public static int PointsR= 0, PointsL = 0;
 
-	@Override
+    @Override
 	public void create () {
 
         aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
@@ -66,9 +60,11 @@ public class PongzStart extends ApplicationAdapter {
             entity.render(camera);
         }
         batch.begin();
+        font.getData().setScale(1);
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
+        font.getData().setScale(5f);
         String points = PointsL + " | " + PointsR;
-        font.draw(batch, points, Gdx.graphics.getWidth()/2f - (font.getScaleX()*points.length())/2f, Gdx.graphics.getHeight()-font.getLineHeight());
+        font.draw(batch, points, Gdx.graphics.getWidth()/2f - (font.getScaleX()*5*points.length())/2f, Gdx.graphics.getHeight()-10);
         batch.end();
         camera.update();
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
