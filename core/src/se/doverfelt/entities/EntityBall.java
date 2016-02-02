@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import se.doverfelt.PongzStart;
 
+import java.util.Random;
+
 
 /**
  * @author Rickard Doverfelt
@@ -72,9 +74,16 @@ public class EntityBall implements Collidable {
     }
 
     private void reset() {
+        Random r = new Random();
         img.setPosition(camera.viewportWidth/2f-WIDTH/2f, camera.viewportHeight/2f-HEIGHT/2f);
         x = img.getX();
-        y = img.getY();
+        y = img.getY() + r.nextInt(20)-10;
+        if (r.nextBoolean()){
+            xv = -xv;
+        }
+        if (r.nextBoolean()){
+            yv = -yv;
+        }
     }
 
     @Override
