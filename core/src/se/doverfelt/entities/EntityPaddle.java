@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.*;
  *         Datum: 2016-01-28
  *         Filnamn: EntityPaddle.java
  */
-public class EntityPaddle implements Entity, Collidable {
+public class EntityPaddle implements Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
@@ -56,5 +56,10 @@ public class EntityPaddle implements Entity, Collidable {
             }
         }
         img.setPosition(x, y);
+    }
+
+    @Override
+    public void collide(Entity other) {
+
     }
 }

@@ -15,7 +15,7 @@ import se.doverfelt.PongzStart;
  *         Datum: 2016-01-28
  *         Filnamn: EntityBall.java
  */
-public class EntityBall implements Entity, Collidable {
+public class EntityBall implements Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
@@ -72,5 +72,14 @@ public class EntityBall implements Entity, Collidable {
         img.setPosition(camera.viewportWidth/2f-WIDTH/2f, camera.viewportHeight/2f-HEIGHT/2f);
         x = img.getX();
         y = img.getY();
+    }
+
+    @Override
+    public void collide(Entity other) {
+        if (other instanceof EntityBorder) {
+            yv = -yv;
+        } else if (other instanceof EntityPaddle) {
+            xv = -xv;
+        }
     }
 }

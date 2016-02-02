@@ -5,7 +5,7 @@ package se.doverfelt.entities;
  *         Datum: 2016-01-28
  *         Filnamn: Collidable.java
  */
-public interface Collidable {
+public interface Collidable extends Entity{
 
     void collide(Entity other);
 

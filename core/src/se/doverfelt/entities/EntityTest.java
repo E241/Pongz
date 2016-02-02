@@ -1,10 +1,6 @@
 package se.doverfelt.entities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 import java.util.Random;
 
@@ -13,7 +9,7 @@ import java.util.Random;
  *         Datum: 2016-01-27
  *         Filnamn: EntityTest.java
  */
-public class EntityTest implements Entity, Collidable {
+public class EntityTest implements Collidable {
 
     private Random r = new Random();
     int timer = 0;
@@ -29,6 +25,11 @@ public class EntityTest implements Entity, Collidable {
 
     @Override
     public void update(int delta) {
+
+    }
+
+    @Override
+    public void collide(Entity other) {
 
     }
 }

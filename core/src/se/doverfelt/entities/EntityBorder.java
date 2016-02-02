@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 /**
  * Created by rickard on 2016-01-29.
  */
-public class EntityBorder implements Entity, Collidable {
+public class EntityBorder implements Collidable {
 
     private final SpriteBatch batch;
     private final Sprite img;
@@ -28,11 +28,19 @@ public class EntityBorder implements Entity, Collidable {
 
     @Override
     public void render(OrthographicCamera camera) {
-
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        img.draw(batch);
+        batch.end();
     }
 
     @Override
     public void update(int delta) {
+
+    }
+
+    @Override
+    public void collide(Entity other) {
 
     }
 }

@@ -36,8 +36,8 @@ public class PongzStart extends ApplicationAdapter {
         font = new BitmapFont();
         addEntity(new EntityTest());
         addEntity(new EntityBall(camera));
-        addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth*2 - 0.2f, 2f));
-        addEntity(new EntityBorder(0.1f, camera.viewportHeight, camera.viewportWidth*2 - 0.2f, 2f));
+        addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f));
+        addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f));
         addEntity(new EntityPaddle(1, 1, false));
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true));
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
