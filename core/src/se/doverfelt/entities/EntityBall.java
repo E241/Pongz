@@ -96,7 +96,9 @@ public class EntityBall implements Collidable {
         if (other instanceof EntityBorder) {
             yv = -yv;
         } else if (other instanceof EntityPaddle) {
-            xv = -xv;
+            float temp =camera.viewportWidth/2;
+            if (x < temp) xv = Math.abs(xv);
+            if (x > temp) xv = -Math.abs(xv);
         }
     }
 }
