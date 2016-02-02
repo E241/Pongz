@@ -23,7 +23,6 @@ public class EntityPaddle implements Collidable {
     private float x,y , width = 2f, height = 15, yv = 0.2f;
     boolean isRight;
     private Rectangle bounds;
-    private Sound bounce;
 
     public EntityPaddle(float xIn,float yIn, boolean Right){
         x = xIn;
@@ -33,7 +32,6 @@ public class EntityPaddle implements Collidable {
         img = new Sprite(new Texture("white.png"));
         img.setPosition(x, y);
         img.setSize(width, height);
-        bounce = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
         bounds = new Rectangle(x, y, width, height);
     }
     
@@ -72,8 +70,6 @@ public class EntityPaddle implements Collidable {
 
     @Override
     public void collide(Entity other) {
-        if (other instanceof EntityBall) {
-            bounce.play();
-        }
+
     }
 }

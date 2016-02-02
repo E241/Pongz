@@ -3,6 +3,7 @@ package se.doverfelt;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
@@ -15,9 +16,11 @@ public class PongzStart extends ApplicationAdapter {
     ArrayList<Entity> entities = new ArrayList<Entity>();
     SpriteBatch batch;
     BitmapFont font;
+    BitmapFont pointFnt;
     private OrthographicCamera camera;
     private float aspect;
     public static int PointsR= 0, PointsL = 0;
+    private Texture white;
 
     @Override
 	public void create () {
@@ -28,8 +31,10 @@ public class PongzStart extends ApplicationAdapter {
         camera.zoom = 1f;
         camera.update();
 
+        white = new Texture("white.png");
         timestamp = System.currentTimeMillis();
         batch = new SpriteBatch();
+        pointFnt = new BitmapFont(Gdx.files.internal("big.fnt"));
         font = new BitmapFont();
         addEntity(new EntityBall(camera));
         addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f));
@@ -65,11 +70,11 @@ public class PongzStart extends ApplicationAdapter {
             entity.render(camera);
         }
         batch.begin();
-        font.getData().setScale(1);
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
-        font.getData().setScale(5f);
-        String points = PointsL + " | " + PointsR;
-        font.draw(batch, points, Gdx.graphics.getWidth()/2f - (font.getScaleX()*5*points.length())/2f, Gdx.graphics.getHeight()-10);
+        String pl = "" + PointsL, pr = "" + PointsR;
+        pointFnt.draw(batch, pl, Gdx.graphics.getWidth()/2f - 4 - (pl.length()*pointFnt.getSpaceWidth()), Gdx.graphics.getHeight()-25);
+        pointFnt.draw(batch, pr, Gdx.graphics.getWidth()/2f + 4, Gdx.graphics.getHeight()-25);
+        batch.draw(white, Gdx.graphics.getWidth()/2f-2, 0, 4f, Gdx.graphics.getHeight());
         batch.end();
         camera.update();
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();

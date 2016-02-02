@@ -1,6 +1,7 @@
 package se.doverfelt.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -26,6 +27,8 @@ public class EntityBall implements Collidable {
     private final float WIDTH = 5, HEIGHT = 5;
     private OrthographicCamera camera;
     private Rectangle bounds;
+    private Sound bounce;
+
 
 
     public EntityBall(OrthographicCamera camera) {
@@ -36,6 +39,7 @@ public class EntityBall implements Collidable {
         img.setPosition(x, y);
         bounds = new Rectangle(x, y, WIDTH, HEIGHT);
         this.camera = camera;
+        bounce = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
     }
 
     @Override
@@ -94,11 +98,15 @@ public class EntityBall implements Collidable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBorder) {
-            yv = -yv;
+            float temp =camera.viewportHeight/2;
+            if (y < temp) yv = Math.abs(yv);
+            if (y > temp) yv = -Math.abs(yv);
         } else if (other instanceof EntityPaddle) {
             float temp =camera.viewportWidth/2;
             if (x < temp) xv = Math.abs(xv);
             if (x > temp) xv = -Math.abs(xv);
+            long id = bounce.play();
+            bounce.setPan(id, ((EntityPaddle) other).isRight ? 1 : -1, 1);
         }
     }
 }
