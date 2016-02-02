@@ -26,6 +26,7 @@ public class PongzStart extends ApplicationAdapter {
     BitmapFont font;
     private OrthographicCamera camera;
     private float aspect;
+    public static int PointsR= 0, PointsL = 0;
 
 	@Override
 	public void create () {
@@ -40,7 +41,7 @@ public class PongzStart extends ApplicationAdapter {
         batch = new SpriteBatch();
         font = new BitmapFont();
         addEntity(new EntityTest());
-        addEntity(new EntityBall());
+        addEntity(new EntityBall(camera));
         addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth*2 - 0.2f, 2f));
         addEntity(new EntityBorder(0.1f, camera.viewportHeight, camera.viewportWidth*2 - 0.2f, 2f));
         addEntity(new EntityPaddle(1, 1, false));
@@ -66,6 +67,7 @@ public class PongzStart extends ApplicationAdapter {
         }
         batch.begin();
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, camera.viewportHeight - 1);
+        font.draw(batch, PointsL + " | " + PointsR, camera.viewportHeight, camera.viewportWidth/2);
         batch.end();
         camera.update();
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();

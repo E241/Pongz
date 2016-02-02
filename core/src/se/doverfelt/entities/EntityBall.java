@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
+import se.doverfelt.PongzStart;
 
 
 /**
@@ -18,16 +19,18 @@ public class EntityBall implements Entity, Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
-    private float x = 3, y = 3, xv = 1000, yv =1000;
+    private float x = 3, y = 3, xv = 1f, yv =1f;
     private final float WIDTH = 5, HEIGHT = 5;
+    private OrthographicCamera camera;
 
 
-    public EntityBall() {
+    public EntityBall(OrthographicCamera camera) {
         batch = new SpriteBatch();
         img = new Sprite(new Texture("ball.png"));
         //img.setPosition(x-WIDTH/2, y-HEIGHT/2);
         img.setSize(WIDTH, HEIGHT);
-        img.setPosition(x,y);
+        img.setPosition(x, y);
+        this.camera = camera;
     }
 
     @Override
@@ -36,6 +39,7 @@ public class EntityBall implements Entity, Collidable {
         batch.begin();
         img.draw(batch);
         batch.end();
+        this.camera = camera;
     }
 
     @Override
@@ -48,15 +52,23 @@ public class EntityBall implements Entity, Collidable {
         y += yv;
 
         if (x < 0){
-
-        }else if (x > 1275){
-
+            x = 0;
+            xv = -xv; //Vinst Höger
+            PongzStart.PointsR++;
+        }else if (x > camera.viewportWidth){
+            x = camera.viewportWidth;
+            xv = -xv; //Vinst Vänster
+            PongzStart.PointsL++;
         }
         if (y < 0){
-
-        } else if (y > 715){
-            
+            yv = -yv;
+            y = 0;
+        } else if (y > camera.viewportHeight){
+            yv = -yv;
+            y = camera.viewportHeight;
         }
-
+        img.setPosition(x,y);
+            //Höjd 20
+        // Bredd 20f*((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth())
     }
 }

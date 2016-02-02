@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
-import net.dermetfan.gdx.graphics.g2d.Box2DSprite;
+
 
 /**
  * Created by rickard on 2016-01-29.

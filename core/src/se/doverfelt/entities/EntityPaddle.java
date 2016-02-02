@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
-import net.dermetfan.gdx.graphics.g2d.Box2DSprite;
+
 
 /**
  * @author Rickard Doverfelt
