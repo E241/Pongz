@@ -18,7 +18,7 @@ public class EntityPaddle implements Entity, Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
-    private float x,y , width = 2f, height = 15, yv = 40;
+    private float x,y , width = 2f, height = 15, yv = 0.2f;
     boolean isRight;
 
     public EntityPaddle(float xIn,float yIn, boolean Right){
@@ -44,15 +44,15 @@ public class EntityPaddle implements Entity, Collidable {
     public void update(int delta) {
         if(isRight) {
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                y += yv;
+                y += yv*delta;
             } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-                y -= yv;
+                y -= yv*delta;
             }
         } else {
             if (Gdx.input.isKeyPressed(Input.Keys.W)){
-                y += yv;
+                y += yv*delta;
             } else if (Gdx.input.isKeyPressed(Input.Keys.S)){
-                y -= yv;
+                y -= yv*delta;
             }
         }
         img.setPosition(x, y);

@@ -30,7 +30,7 @@ public class PongzStart extends ApplicationAdapter {
 	@Override
 	public void create () {
 
-        aspect = 1f * (9f/16f);
+        aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
         camera = new OrthographicCamera(200f, 200f*aspect);
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
         camera.zoom = 1f;
