@@ -7,4 +7,6 @@ package se.doverfelt.entities;
  */
 public interface Collidable {
 
+    void collide(Entity other);
+
 }

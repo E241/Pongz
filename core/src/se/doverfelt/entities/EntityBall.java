@@ -19,7 +19,7 @@ public class EntityBall implements Entity, Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
-    private float x = 3, y = 3, xv = 1f, yv =1f;
+    private float x = 3, y = 3, xv = 0.1f, yv =0.1f;
     private final float WIDTH = 5, HEIGHT = 5;
     private OrthographicCamera camera;
 
@@ -44,21 +44,19 @@ public class EntityBall implements Entity, Collidable {
 
     @Override
     public void update(int delta) {
-        //img.setPosition(body.getPosition().x-WIDTH/2, body.getPosition().y-HEIGHT/2);
-        //img.setRotation(MathUtils.radiansToDegrees * body.getAngle());
-        //body.setLinearDamping(0f);
-
-        x += xv;
-        y += yv;
+        x += xv*delta;
+        y += yv*delta;
 
         if (x < 0){
             x = 0;
             xv = -xv; //Vinst Höger
             PongzStart.PointsR++;
+            reset();
         }else if (x > camera.viewportWidth-WIDTH){
             x = camera.viewportWidth -WIDTH;
             xv = -xv; //Vinst Vänster
             PongzStart.PointsL++;
+            reset();
         }
         if (y < 0){
             yv = -yv;
@@ -68,5 +66,11 @@ public class EntityBall implements Entity, Collidable {
             y = camera.viewportHeight-HEIGHT;
         }
         img.setPosition(x,y);
+    }
+
+    private void reset() {
+        img.setPosition(camera.viewportWidth/2f-WIDTH/2f, camera.viewportHeight/2f-HEIGHT/2f);
+        x = img.getX();
+        y = img.getY();
     }
 }
