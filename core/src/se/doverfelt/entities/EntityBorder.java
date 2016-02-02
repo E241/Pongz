@@ -17,7 +17,7 @@ public class EntityBorder implements Entity, Collidable {
     private final Sprite img;
     private float x, y;
 
-    public EntityBorder(World world, float x, float y, float width, float height) {
+    public EntityBorder(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         batch = new SpriteBatch();

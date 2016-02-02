@@ -18,39 +18,33 @@ import se.doverfelt.entities.EntityPaddle;
 import se.doverfelt.entities.EntityTest;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class PongzStart extends ApplicationAdapter {
 	long timestamp;
     ArrayList<Entity> entities = new ArrayList<Entity>();
     SpriteBatch batch;
     BitmapFont font;
-    World world;
-    Box2DDebugRenderer debugRenderer;
     private OrthographicCamera camera;
     private float aspect;
 
 	@Override
 	public void create () {
-        Box2D.init();
-        world = new World(new Vector2(0, 0), true);
-        debugRenderer = new Box2DDebugRenderer();
 
         aspect = 1f * (9f/16f);
         camera = new OrthographicCamera(200f, 200f*aspect);
-        camera.position.set(camera.viewportWidth, camera.viewportHeight, 0);
-        camera.zoom = 2f;
+        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+        camera.zoom = 1f;
         camera.update();
 
         timestamp = System.currentTimeMillis();
         batch = new SpriteBatch();
         font = new BitmapFont();
         addEntity(new EntityTest());
-        addEntity(new EntityBall(world));
-        addEntity(new EntityBorder(world, 0.1f, 0, camera.viewportWidth*2 - 0.2f, 2f));
-        addEntity(new EntityBorder(world, 0.1f, camera.viewportHeight - 2f, camera.viewportWidth*2 - 0.2f, 2f));
-        addEntity(new EntityPaddle(1, 1, world, false));
-        addEntity(new EntityPaddle(camera.viewportWidth - 2f, 1, world, true));
+        addEntity(new EntityBall());
+        addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth*2 - 0.2f, 2f));
+        addEntity(new EntityBorder(0.1f, camera.viewportHeight, camera.viewportWidth*2 - 0.2f, 2f));
+        addEntity(new EntityPaddle(1, 1, false));
+        addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true));
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
 
@@ -70,11 +64,9 @@ public class PongzStart extends ApplicationAdapter {
             entity.update(delta);
             entity.render(camera);
         }
-        debugRenderer.render(world, camera.combined);
         batch.begin();
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, camera.viewportHeight - 1);
         batch.end();
-        world.step(Math.min(delta/1000f, 0.25f), 6, 2);
         camera.update();
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
     }

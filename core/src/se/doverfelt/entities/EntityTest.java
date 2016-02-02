@@ -31,29 +31,4 @@ public class EntityTest implements Entity, Collidable {
     public void update(int delta) {
 
     }
-
-    @Override
-    public void beginContact(Contact contact) {
-
-    }
-
-    @Override
-    public void endContact(Contact contact) {
-
-    }
-
-    @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {
-
-    }
-
-    @Override
-    public void postSolve(Contact contact, ContactImpulse impulse) {
-
-    }
-
-    @Override
-    public Body getBody() {
-        return null;
-    }
 }
