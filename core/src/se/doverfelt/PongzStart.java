@@ -57,7 +57,7 @@ public class PongzStart extends ApplicationAdapter {
 	public void render () {
         int delta = (int) (System.currentTimeMillis() - timestamp);
         timestamp = System.currentTimeMillis();
-        batch.setProjectionMatrix(camera.combined);
+        //batch.setProjectionMatrix(camera.combined);
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -66,8 +66,9 @@ public class PongzStart extends ApplicationAdapter {
             entity.render(camera);
         }
         batch.begin();
-        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, camera.viewportHeight - 1);
-        font.draw(batch, PointsL + " | " + PointsR, camera.viewportHeight, camera.viewportWidth/2);
+        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
+        String points = PointsL + " | " + PointsR;
+        font.draw(batch, points, Gdx.graphics.getWidth()/2f - (font.getScaleX()*points.length())/2f, Gdx.graphics.getHeight()-font.getLineHeight());
         batch.end();
         camera.update();
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
