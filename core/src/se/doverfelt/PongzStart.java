@@ -1,12 +1,14 @@
 package se.doverfelt;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
+import se.doverfelt.effects.Effect;
 import se.doverfelt.entities.*;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.Random;
 public class PongzStart extends ApplicationAdapter {
 	long timestamp;
     HashMap<String, Entity> entities = new HashMap<String, Entity>();
+    private HashMap<String, Effect> effects = new HashMap<String, Effect>();
     SpriteBatch batch;
     BitmapFont font;
     BitmapFont pointFnt;
@@ -26,6 +29,8 @@ public class PongzStart extends ApplicationAdapter {
     private float r = 0, g = 0, b = 0;
     private ArrayList<String> toRemove = new ArrayList<String>();
     private Random rand = new Random();
+    private ArrayList<String> toRemoveEffects = new ArrayList<String>();
+    private long lastPowerup;
 
     @Override
 	public void create () {
@@ -38,6 +43,7 @@ public class PongzStart extends ApplicationAdapter {
 
         white = new Texture("white.png");
         timestamp = System.currentTimeMillis();
+        lastPowerup = System.currentTimeMillis();
         batch = new SpriteBatch();
         pointFnt = new BitmapFont(Gdx.files.internal("big.fnt"));
         font = new BitmapFont();
@@ -51,11 +57,23 @@ public class PongzStart extends ApplicationAdapter {
     }
 
     public void addEntity(Entity entity, String name) {
+        if (entity instanceof EntityPowerup) {
+            lastPowerup = System.currentTimeMillis();
+        }
         entities.put(name, entity);
     }
 
     public void removeEntity(String name) {
         toRemove.add(name);
+    }
+
+    public void addEffect(Effect effect, String name) {
+        effects.put(name, effect);
+        effect.create(this);
+    }
+
+    public void removeEffect(String name) {
+        toRemoveEffects.add(name);
     }
 
 	@Override
@@ -66,6 +84,8 @@ public class PongzStart extends ApplicationAdapter {
 		Gdx.gl.glClearColor(r, g, b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        genPowerups();
+        tickEffects(delta);
         tickEntities(delta);
 
         drawHUD();
@@ -75,6 +95,23 @@ public class PongzStart extends ApplicationAdapter {
             entities.remove(s);
         }
         toRemove.clear();
+        for (String toRemoveEffect : toRemoveEffects) {
+            effects.remove(toRemoveEffect);
+        }
+        toRemoveEffects.clear();
+    }
+
+    private void genPowerups() {
+        if (System.currentTimeMillis() - lastPowerup >= 5000 && rand.nextInt() < 25){
+            String n = "powerup"+System.currentTimeMillis();
+            addEntity(new EntityPowerup(this, rand.nextFloat()*100, rand.nextFloat()*100, n), n);
+        }
+    }
+
+    private void tickEffects(int delta) {
+        for (Effect effect : effects.values()) {
+            effect.update(this, delta);
+        }
     }
 
     private void drawHUD() {
