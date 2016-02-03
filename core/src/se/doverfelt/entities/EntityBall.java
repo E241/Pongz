@@ -87,15 +87,23 @@ public class EntityBall implements Collidable {
 
     private void reset() {
         Random r = new Random();
-        img.setPosition(camera.viewportWidth/2f-WIDTH/2f, camera.viewportHeight/2f-HEIGHT/2f);
-        x = img.getX();
-        y = img.getY() + r.nextInt(20)-10;
+
         if (r.nextBoolean()){
             xv = -xv;
         }
         if (r.nextBoolean()){
             yv = -yv;
         }
+        float xPos;
+        if (xv > 0 ){
+            xPos = (float) (camera.viewportWidth * 0.2);
+        }else {
+            xPos = (float) (camera.viewportWidth * 0.8);
+        }
+        img.setPosition(xPos, (((camera.viewportHeight / 2f) - (HEIGHT / 2f)) + r.nextInt(20)) - 10);
+        x = img.getX();
+        y = img.getY() ;
+
     }
 
     @Override
@@ -114,11 +122,20 @@ public class EntityBall implements Collidable {
             float temp =camera.viewportWidth/2;
             if (x < temp){
                 xv = Math.abs(xv);
-                if (EntityPaddle.isMovingL > 0){
-                    
+                if (EntityPaddle.isMovingL == 1){
+                    yv = (float) (yv + 0.02);
+                } else if (EntityPaddle.isMovingL == 2){
+                    yv = (float) (yv -0.02);
                 }
             }
-            if (x > temp){ xv = -Math.abs(xv);}
+            if (x > temp){
+                xv = -Math.abs(xv);
+                if (EntityPaddle.isMovingR == 1){
+                    yv = (float) (yv + 0.02);
+                } else if (EntityPaddle.isMovingR == 2){
+                    yv = (float) (yv -0.02);
+                }
+            }
             long id = bounce.play();
             bounce.setPan(id, ((EntityPaddle) other).isRight ? 1 : -1, 1);
         }
