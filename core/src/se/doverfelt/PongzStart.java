@@ -10,10 +10,12 @@ import com.badlogic.gdx.math.Intersector;
 import se.doverfelt.entities.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
 public class PongzStart extends ApplicationAdapter {
 	long timestamp;
-    ArrayList<Entity> entities = new ArrayList<Entity>();
+    HashMap<String, Entity> entities = new HashMap<String, Entity>();
     SpriteBatch batch;
     BitmapFont font;
     BitmapFont pointFnt;
@@ -21,6 +23,9 @@ public class PongzStart extends ApplicationAdapter {
     private float aspect;
     public static int PointsR= 0, PointsL = 0;
     private Texture white;
+    private float r = 0, g = 0, b = 0;
+    private ArrayList<String> toRemove = new ArrayList<String>();
+    private Random rand = new Random();
 
     @Override
 	public void create () {
@@ -36,29 +41,57 @@ public class PongzStart extends ApplicationAdapter {
         batch = new SpriteBatch();
         pointFnt = new BitmapFont(Gdx.files.internal("big.fnt"));
         font = new BitmapFont();
-        addEntity(new EntityBall(camera));
-        addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f));
-        addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f));
-        addEntity(new EntityPaddle(1, 1, false));
-        addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true));
+        addEntity(new EntityBall(camera), "ball");
+        addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f), "borderBottom");
+        addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f), "borderTop");
+        addEntity(new EntityPaddle(1, 1, false), "paddleLeft");
+        addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true), "paddleRight");
+        addEntity(new EntityPowerup(this, 100, 100, "pow"), "pow");
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
 
-    public void addEntity(Entity entity) {
-        entities.add(entity);
+    public void addEntity(Entity entity, String name) {
+        entities.put(name, entity);
+    }
+
+    public void removeEntity(String name) {
+        toRemove.add(name);
     }
 
 	@Override
 	public void render () {
         int delta = (int) (System.currentTimeMillis() - timestamp);
         timestamp = System.currentTimeMillis();
-        //batch.setProjectionMatrix(camera.combined);
 
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(r, g, b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        for (Entity entity : entities) {
+
+        tickEntities(delta);
+
+        drawHUD();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
+        for (String s : toRemove) {
+            entities.remove(s);
+        }
+        toRemove.clear();
+    }
+
+    private void drawHUD() {
+        batch.begin();
+        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
+        String pl = "" + PointsL, pr = "" + PointsR;
+        pointFnt.draw(batch, pl, Gdx.graphics.getWidth()/2f - 4 - (pl.length()*pointFnt.getSpaceWidth()), Gdx.graphics.getHeight()-25);
+        pointFnt.draw(batch, pr, Gdx.graphics.getWidth()/2f + 4, Gdx.graphics.getHeight()-25);
+        batch.draw(white, Gdx.graphics.getWidth()/2f-2, 0, 4f, Gdx.graphics.getHeight());
+        batch.end();
+        camera.update();
+    }
+
+    private void tickEntities(int delta) {
+        for (Entity entity : entities.values()) {
             if (entity instanceof Collidable) {
-                for (Entity c : entities) {
+                for (Entity c : entities.values()) {
                     if (c instanceof Collidable) {
                         if (Intersector.overlaps(((Collidable)c).getRect(), ((Collidable)entity).getRect())) {
                             ((Collidable) entity).collide(c);
@@ -69,14 +102,11 @@ public class PongzStart extends ApplicationAdapter {
             entity.update(delta);
             entity.render(camera);
         }
-        batch.begin();
-        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
-        String pl = "" + PointsL, pr = "" + PointsR;
-        pointFnt.draw(batch, pl, Gdx.graphics.getWidth()/2f - 4 - (pl.length()*pointFnt.getSpaceWidth()), Gdx.graphics.getHeight()-25);
-        pointFnt.draw(batch, pr, Gdx.graphics.getWidth()/2f + 4, Gdx.graphics.getHeight()-25);
-        batch.draw(white, Gdx.graphics.getWidth()/2f-2, 0, 4f, Gdx.graphics.getHeight());
-        batch.end();
-        camera.update();
-        if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
+    }
+
+    public void setColor(float r, float g, float b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
     }
 }
