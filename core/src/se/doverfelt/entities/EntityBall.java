@@ -27,7 +27,7 @@ public class EntityBall implements Collidable {
     private final float WIDTH = 5, HEIGHT = 5;
     private OrthographicCamera camera;
     private Rectangle bounds;
-    private Sound bounce;
+    private Sound bounce, bom;
 
 
 
@@ -39,7 +39,9 @@ public class EntityBall implements Collidable {
         img.setPosition(x, y);
         bounds = new Rectangle(x, y, WIDTH, HEIGHT);
         this.camera = camera;
+        bom = Gdx.audio.newSound(Gdx.files.internal("bom.wav"));
         bounce = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
+
     }
 
     @Override
@@ -56,22 +58,28 @@ public class EntityBall implements Collidable {
         y += yv*delta;
 
         if (x < 0){
-            x = 0;
-            xv = -xv; //Vinst Höger
+            //x = 0;
+           // xv = -xv; //Vinst Höger
             PongzStart.PointsR++;
             reset();
         }else if (x > camera.viewportWidth-WIDTH){
-            x = camera.viewportWidth -WIDTH;
-            xv = -xv; //Vinst Vänster
+            //x = camera.viewportWidth -WIDTH;
+            //xv = -xv; //Vinst Vänster
             PongzStart.PointsL++;
             reset();
         }
         if (y < 0){
+
             yv = -yv;
             y = 0;
+
+
+
         } else if (y > camera.viewportHeight-HEIGHT){
+            bom.play();
             yv = -yv;
             y = camera.viewportHeight-HEIGHT;
+
         }
         bounds.setPosition(x, y);
         img.setPosition(x,y);
@@ -99,6 +107,7 @@ public class EntityBall implements Collidable {
     public void collide(Entity other) {
         if (other instanceof EntityBorder) {
             float temp =camera.viewportHeight/2;
+            bom.play();
             if (y < temp) yv = Math.abs(yv);
             if (y > temp) yv = -Math.abs(yv);
         } else if (other instanceof EntityPaddle) {
