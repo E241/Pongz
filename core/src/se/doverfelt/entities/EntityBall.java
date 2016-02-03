@@ -68,7 +68,7 @@ public class EntityBall implements Collidable {
             PongzStart.PointsL++;
             reset();
         }
-        if (y < 0){
+        /*if (y < 0){
 
             yv = -yv;
             y = 0;
@@ -80,7 +80,7 @@ public class EntityBall implements Collidable {
             yv = -yv;
             y = camera.viewportHeight-HEIGHT;
 
-        }
+        }*/
         bounds.setPosition(x, y);
         img.setPosition(x,y);
     }
@@ -108,12 +108,17 @@ public class EntityBall implements Collidable {
         if (other instanceof EntityBorder) {
             float temp =camera.viewportHeight/2;
             bom.play();
-            if (y < temp) yv = Math.abs(yv);
-            if (y > temp) yv = -Math.abs(yv);
+            if (y < temp){ yv = Math.abs(yv);}
+            if (y > temp){ yv = -Math.abs(yv);}
         } else if (other instanceof EntityPaddle) {
             float temp =camera.viewportWidth/2;
-            if (x < temp) xv = Math.abs(xv);
-            if (x > temp) xv = -Math.abs(xv);
+            if (x < temp){
+                xv = Math.abs(xv);
+                if (EntityPaddle.isMovingL > 0){
+                    
+                }
+            }
+            if (x > temp){ xv = -Math.abs(xv);}
             long id = bounce.play();
             bounce.setPan(id, ((EntityPaddle) other).isRight ? 1 : -1, 1);
         }

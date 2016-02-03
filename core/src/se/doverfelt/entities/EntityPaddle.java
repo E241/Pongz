@@ -23,6 +23,7 @@ public class EntityPaddle implements Collidable {
     private float x,y , width = 2f, height = 15, yv = 0.2f;
     boolean isRight;
     private Rectangle bounds;
+    public static int isMovingR =0, isMovingL = 0;
 
     public EntityPaddle(float xIn,float yIn, boolean Right){
         x = xIn;
@@ -49,15 +50,19 @@ public class EntityPaddle implements Collidable {
         if(isRight) {
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 y += yv*delta;
+                isMovingR = 1;
             } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
                 y -= yv*delta;
-            }
+                isMovingR = 2;
+            }else {isMovingR = 0;}
         } else {
             if (Gdx.input.isKeyPressed(Input.Keys.W)){
                 y += yv*delta;
+                isMovingL = 1;
             } else if (Gdx.input.isKeyPressed(Input.Keys.S)){
                 y -= yv*delta;
-            }
+                isMovingL = 2;
+            }else {isMovingL = 0;}
         }
         bounds.setPosition(x, y);
         img.setPosition(x, y);
