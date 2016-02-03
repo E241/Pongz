@@ -131,9 +131,9 @@ public class EntityBall implements Collidable {
             if (x > temp){
                 xv = -Math.abs(xv);
                 if (EntityPaddle.isMovingR == 1){
-                    yv = (float) (yv + 0.02);
+                    yv = (float) (yv + 0.0251);
                 } else if (EntityPaddle.isMovingR == 2){
-                    yv = (float) (yv -0.02);
+                    yv = (float) (yv -0.0251);
                 }
             }
             long id = bounce.play();
