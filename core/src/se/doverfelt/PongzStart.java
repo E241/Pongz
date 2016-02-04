@@ -1,7 +1,6 @@
 package se.doverfelt;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,8 +21,8 @@ public class PongzStart extends ApplicationAdapter {
     SpriteBatch batch;
     BitmapFont font;
     BitmapFont pointFnt;
-    private OrthographicCamera camera;
-    private float aspect;
+    public OrthographicCamera camera;
+    public float aspect;
     public static int PointsR= 0, PointsL = 0;
     private Texture white;
     private float r = 0, g = 0, b = 0;
@@ -104,8 +103,9 @@ public class PongzStart extends ApplicationAdapter {
     private void genPowerups() {
         if (System.currentTimeMillis() - lastPowerup >= 5000 && rand.nextInt() < 25){
             String n = "powerup"+System.currentTimeMillis();
-            addEntity(new EntityPowerup(this, rand.nextFloat()*100, rand.nextFloat()*100, n), n);
+            addEntity(new EntityPowerup(this, rand.nextFloat()*200, rand.nextFloat()*200*aspect, n), n);
         }
+        if (System.currentTimeMillis()-lastPowerup >= 5000) lastPowerup = System.currentTimeMillis();
     }
 
     private void tickEffects(int delta) {
