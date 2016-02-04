@@ -30,7 +30,7 @@ public class EntityBall implements Collidable {
     private OrthographicCamera camera;
     private Rectangle bounds;
     private Sound bounce, bom;
-
+    private boolean b = false;
 
 
     public EntityBall(OrthographicCamera camera) {
@@ -90,10 +90,12 @@ public class EntityBall implements Collidable {
 
     private void reset() {
         Random r = new Random();
-        yv = 0.1f;
-        if (r.nextBoolean()){
+        yv = r.nextFloat()*0.1f;
+
+        if (b){
             xv = -xv;
-        }
+            b = false;
+        }else b = true;
         if (r.nextBoolean()){
             yv = -yv;
         }
