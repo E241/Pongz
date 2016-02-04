@@ -140,8 +140,7 @@ public class EntityBall implements Collidable {
                         yv = (float) (yv - 0.0251);
                     }
                 }
-                long id = bounce.play();
-                bounce.setPan(id, ((EntityPaddle) other).isRight ? 1 : -1, 1);
+
             } else if (PongzStart.Styrning == 2){
                 if (x < temp) {
                     xv = Math.abs(xv);
@@ -155,6 +154,8 @@ public class EntityBall implements Collidable {
                     yv += (temp2/100);
                 }
             }
+            long id = bounce.play();
+            bounce.setPan(id, ((EntityPaddle) other).isRight ? 1 : -1, 1);
         }
     }
 }
