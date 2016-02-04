@@ -1,6 +1,7 @@
 TO DO
-    Paddle styrning -Robin
-    Powerups basics -Rickard
+    Paddle styrning -Robin          [v]
+    Powerups basics -Rickard        []
+
 
 
 
@@ -11,3 +12,14 @@ Idéer
         Drunk
         Lcd?
         Sedvriden följabollen grej
+
+
+
+
+Mamma
+
+    Längre paus innan bollen spawnar
+    indikator för när Paddlen har kommit för långt(villket håll) / stoppa den
+    Ljud för poeng
+    Större paddle (Mamma anpassad paddle storlek)
+    Eventuellt långsammare

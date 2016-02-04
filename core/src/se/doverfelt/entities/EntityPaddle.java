@@ -24,6 +24,7 @@ public class EntityPaddle implements Collidable {
     boolean isRight;
     private Rectangle bounds;
     public static int isMovingR =0, isMovingL = 0;
+    public static float ry, ly,rHeight, lHeight;
 
     public EntityPaddle(float xIn,float yIn, boolean Right){
         x = xIn;
@@ -48,6 +49,8 @@ public class EntityPaddle implements Collidable {
     @Override
     public void update(int delta) {
         if(isRight) {
+            ry = y;
+            rHeight = height;
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 y += yv*delta;
                 isMovingR = 1;
@@ -56,6 +59,8 @@ public class EntityPaddle implements Collidable {
                 isMovingR = 2;
             }else {isMovingR = 0;}
         } else {
+            ly = y;
+            rHeight = height;
             if (Gdx.input.isKeyPressed(Input.Keys.W)){
                 y += yv*delta;
                 isMovingL = 1;

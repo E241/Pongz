@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import se.doverfelt.PongzStart;
 
+
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -32,6 +34,7 @@ public class EntityBall implements Collidable {
 
 
     public EntityBall(OrthographicCamera camera) {
+
         batch = new SpriteBatch();
         img = new Sprite(new Texture("ball.png"));
         //img.setPosition(x-WIDTH/2, y-HEIGHT/2);
@@ -87,15 +90,23 @@ public class EntityBall implements Collidable {
 
     private void reset() {
         Random r = new Random();
-        img.setPosition(camera.viewportWidth/2f-WIDTH/2f, camera.viewportHeight/2f-HEIGHT/2f);
-        x = img.getX();
-        y = img.getY() + r.nextInt(20)-10;
+        yv = 0.1f;
         if (r.nextBoolean()){
             xv = -xv;
         }
         if (r.nextBoolean()){
             yv = -yv;
         }
+        float xPos;
+        if (xv > 0 ){
+            xPos = (float) (camera.viewportWidth * 0.2);
+        }else {
+            xPos = (float) (camera.viewportWidth * 0.8);
+        }
+        img.setPosition(xPos, (((camera.viewportHeight / 2f) - (HEIGHT / 2f)) + r.nextInt(20)) - 10);
+        x = img.getX();
+        y = img.getY() ;
+
     }
 
     @Override
@@ -111,14 +122,38 @@ public class EntityBall implements Collidable {
             if (y < temp){ yv = Math.abs(yv);}
             if (y > temp){ yv = -Math.abs(yv);}
         } else if (other instanceof EntityPaddle) {
-            float temp =camera.viewportWidth/2;
-            if (x < temp){
-                xv = Math.abs(xv);
-                if (EntityPaddle.isMovingL > 0){
-                    
+            float temp = camera.viewportWidth / 2;
+            if(PongzStart.Styrning == 1) {
+                if (x < temp) {
+                    xv = Math.abs(xv);
+                    if (EntityPaddle.isMovingL == 1) {
+                        yv = (float) (yv + 0.02);
+                    } else if (EntityPaddle.isMovingL == 2) {
+                        yv = (float) (yv - 0.02);
+                    }
+                }
+                if (x > temp) {
+                    xv = -Math.abs(xv);
+                    if (EntityPaddle.isMovingR == 1) {
+                        yv = (float) (yv + 0.0251);
+                    } else if (EntityPaddle.isMovingR == 2) {
+                        yv = (float) (yv - 0.0251);
+                    }
+                }
+
+            } else if (PongzStart.Styrning == 2){
+                if (x < temp) {
+                    xv = Math.abs(xv);
+                    float temp2 = y - EntityPaddle.ly - (EntityPaddle.lHeight/2);
+                    yv += (temp2/100);
+
+                }
+                if (x > temp) {
+                    xv = -Math.abs(xv);
+                    float temp2 = y - EntityPaddle.ry - (EntityPaddle.rHeight/2);
+                    yv += (temp2/100);
                 }
             }
-            if (x > temp){ xv = -Math.abs(xv);}
             long id = bounce.play();
             bounce.setPan(id, ((EntityPaddle) other).isRight ? 1 : -1, 1);
         }
