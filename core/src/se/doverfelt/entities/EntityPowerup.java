@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import se.doverfelt.PongzStart;
 import se.doverfelt.effects.EffectRandomColor;
+import se.doverfelt.effects.EffectSizeUp;
 import se.doverfelt.effects.EffectSpin;
 
 import java.util.Random;
@@ -45,9 +46,13 @@ public class EntityPowerup implements Collidable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
-            if (r.nextInt(100) > 101) {
+            int seed = r.nextInt(100);
+            if (seed < 45) {
                 String n = "color" + System.currentTimeMillis();
                 world.addEffect(new EffectRandomColor(n), n);
+            } else if (seed < 90) {
+                String n = "sizeUp" + System.currentTimeMillis();
+                world.addEffect(new EffectSizeUp(n, ((EntityBall) other).getLastPaddle()), n);
             } else {
                 String n = "spin" + System.currentTimeMillis();
                 world.addEffect(new EffectSpin(n), n);

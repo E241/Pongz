@@ -30,7 +30,7 @@ public class EntityBall implements Collidable {
     private OrthographicCamera camera;
     private Rectangle bounds;
     private Sound bounce, bom;
-
+    private EntityPaddle lastPaddle = null;
 
 
     public EntityBall(OrthographicCamera camera) {
@@ -140,7 +140,6 @@ public class EntityBall implements Collidable {
                         yv = (float) (yv - 0.0251);
                     }
                 }
-
             } else if (PongzStart.Styrning == 2){
                 if (x < temp) {
                     xv = Math.abs(xv);
@@ -156,6 +155,12 @@ public class EntityBall implements Collidable {
             }
             long id = bounce.play();
             bounce.setPan(id, ((EntityPaddle) other).isRight ? 1 : -1, 1);
+            lastPaddle = (EntityPaddle) other;
         }
     }
+
+    public EntityPaddle getLastPaddle() {
+        return lastPaddle;
+    }
+
 }

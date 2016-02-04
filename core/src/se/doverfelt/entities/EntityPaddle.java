@@ -69,6 +69,8 @@ public class EntityPaddle implements Collidable {
                 isMovingL = 2;
             }else {isMovingL = 0;}
         }
+        bounds.setHeight(height);
+        img.setSize(width, height);
         bounds.setPosition(x, y);
         img.setPosition(x, y);
     }
@@ -81,5 +83,13 @@ public class EntityPaddle implements Collidable {
     @Override
     public void collide(Entity other) {
 
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }
