@@ -31,6 +31,7 @@ public class PongzStart extends ApplicationAdapter {
     private Random rand = new Random();
     private ArrayList<String> toRemoveEffects = new ArrayList<String>();
     private long lastPowerup;
+    public static int Styrning = 2;
 
     @Override
 	public void create () {
