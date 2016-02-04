@@ -20,7 +20,8 @@ public class EntityPaddle implements Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
-    private float x,y , width = 2f, height = 15, yv = 0.2f;
+    private float x,y , width = 2f, height = 15, yv = 0.15f;
+    private final float origHeight;
     boolean isRight;
     private Rectangle bounds;
     public static int isMovingR =0, isMovingL = 0;
@@ -35,6 +36,7 @@ public class EntityPaddle implements Collidable {
         img.setPosition(x, y);
         img.setSize(width, height);
         bounds = new Rectangle(x, y, width, height);
+        origHeight = height;
     }
     
     @Override
@@ -91,5 +93,9 @@ public class EntityPaddle implements Collidable {
 
     public float getHeight() {
         return height;
+    }
+
+    public float getOrigHeight() {
+        return origHeight;
     }
 }

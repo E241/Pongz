@@ -29,7 +29,7 @@ public class EffectSpin implements Effect {
         }
         world.camera.zoom = Math.min(zoom, 2f);
         world.camera.zoom = Math.max(world.camera.zoom, 1);
-        // Messed up stuff: world.camera.viewportHeight = ((world.camera.viewportWidth/2f) * (float)Math.tan((rotation * MathUtils.radiansToDegrees)));
+        // Messed up : world.camera.viewportHeight = ((world.camera.viewportWidth/2f) * (float)Math.tan((rotation * MathUtils.radiansToDegrees)));
         //float h = world.camera.viewportHeight + ((world.camera.viewportWidth/2f) * (float)Math.sin((rotation)));
         //float w = h / (Gdx.graphics.getWidth()/Gdx.graphics.getHeight());
         //world.camera.zoom = ((world.camera.viewportWidth/2f) * (float)Math.sin((Math.abs(rotation-180))) + world.camera.viewportHeight) / world.camera.viewportHeight;

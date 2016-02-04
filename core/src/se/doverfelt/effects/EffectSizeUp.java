@@ -40,8 +40,11 @@ public class EffectSizeUp implements Effect {
         if (paddle == null) {
             world.removeEffect(name);
             return;
+        } else if (paddle.getHeight() != paddle.getOrigHeight()) {
+            world.removeEffect(name);
+            return;
         }
         timestamp = System.currentTimeMillis();
-        origHeight = paddle.getHeight();
+        origHeight = paddle.getOrigHeight();
     }
 }
