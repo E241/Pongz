@@ -25,7 +25,8 @@ public class EntityBall implements Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
-    private float x = 3, y = 3, xv = 0.1f, yv =0.1f;
+    private float x = 3, y = 3;
+    public float xv = 0.1f, yv =0.1f;
     private final float WIDTH = 5, HEIGHT = 5;
     private OrthographicCamera camera;
     private Rectangle bounds;
@@ -164,6 +165,13 @@ public class EntityBall implements Collidable {
 
     public EntityPaddle getLastPaddle() {
         return lastPaddle;
+    }
+
+    public float getYv(){return yv;}
+
+    public float setYv(float yv){
+        this.yv = yv;
+        return this.yv;
     }
 
 }
