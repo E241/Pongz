@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class PongzStart extends ApplicationAdapter {
 	long timestamp;
-    HashMap<String, Entity> entities = new HashMap<String, Entity>();
+    public static HashMap<String, Entity> entities = new HashMap<String, Entity>();
     private HashMap<String, Effect> effects = new HashMap<String, Effect>();
     SpriteBatch batch;
     BitmapFont font;
@@ -36,7 +36,6 @@ public class PongzStart extends ApplicationAdapter {
 
     @Override
 	public void create () {
-
         aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
         camera = new OrthographicCamera(200f, 200f*aspect);
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);

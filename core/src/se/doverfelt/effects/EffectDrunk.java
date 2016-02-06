@@ -1,0 +1,56 @@
+package se.doverfelt.effects;
+
+import se.doverfelt.PongzStart;
+import se.doverfelt.entities.Entity;
+import se.doverfelt.entities.EntityBall;
+
+import java.util.Random;
+
+/**
+ * Created by Robin on 2016-02-06.
+ */
+public class EffectDrunk implements Effect {
+    private EntityBall ball;
+    private long timestamp,timestamp1 = 0,timestamp2 = 0, timestamp3 = 0;
+    private float mod , mod2, mod3;
+    private String name;
+
+    public EffectDrunk(String name,EntityBall ball){
+        this.ball = ball;
+        this.name = name;
+    }
+
+    @Override
+    public void update(PongzStart world, int delta) {
+        Random r = new Random();
+        //Mod 1
+        if (System.currentTimeMillis() - timestamp1 < 4000){
+            ball.yv += mod;
+        }else if (r.nextInt(100)<20){
+            timestamp1 = System.currentTimeMillis();
+            mod = (r.nextFloat()*0.004f) - 0.002f;
+        }
+        //Mod 2
+        if (System.currentTimeMillis() - timestamp1 < 1000){
+            ball.yv += mod2;
+        }else if (r.nextInt(100)<10){
+            timestamp2 = System.currentTimeMillis();
+            mod2 = (r.nextFloat()*0.006f) - 0.003f;
+        }
+      //  //Mod 3
+      //  if (System.currentTimeMillis() - timestamp < 6000){
+      //      ball.yv += mod3;
+      //  }else if (r.nextInt(100)<10){
+      //      timestamp3 = System.currentTimeMillis();
+      //      mod3 = (r.nextFloat()*0.004f) - 0.002f;
+      //  }
+        if (System.currentTimeMillis() - timestamp > 30000){
+            world.removeEffect(name);
+        }
+    }
+
+    @Override
+    public void create(PongzStart world) {
+        timestamp = System.currentTimeMillis();
+    }
+}
