@@ -25,11 +25,14 @@ public class EffectSizeUp implements Effect {
         if (current - timestamp < 1000) {
             heightAdd += 0.1f * delta;
             paddle.setHeight(Math.min(origHeight + heightAdd, origHeight + 15));
+            if (origHeight + heightAdd < origHeight + 15) paddle.moveY(-(0.1f*delta)/2f);
         }
 
         if (current - timestamp > 10000 && current - timestamp < 11000) {
+            if (heightAdd > 15) heightAdd = 15;
             heightAdd -= 0.1f * delta;
             paddle.setHeight(Math.max(origHeight, origHeight + heightAdd));
+            if (origHeight + heightAdd > origHeight) paddle.moveY((0.1f*delta)/2f);
         }
 
         if (current - timestamp > 11000) world.removeEffect(name);
