@@ -1,5 +1,7 @@
 package se.doverfelt.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,6 +26,7 @@ public class EntityPowerup implements Collidable {
     private float x, y;
     private Random r;
     private String name;
+    private Sound powerUp;
 
     public EntityPowerup(PongzStart world, float x, float y, String name) {
         this.world = world;
@@ -36,6 +39,7 @@ public class EntityPowerup implements Collidable {
         bounds = new Rectangle(x, y, 10, 10);
         batch = new SpriteBatch();
         r = new Random();
+        powerUp = Gdx.audio.newSound(Gdx.files.internal("PowerUp.wav"));
     }
 
     @Override
@@ -57,6 +61,7 @@ public class EntityPowerup implements Collidable {
                 String n = "spin" + System.currentTimeMillis();
                 world.addEffect(new EffectSpin(n), n);
             }
+            powerUp.play();
             world.removeEntity(name);
         }
     }
