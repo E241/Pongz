@@ -52,8 +52,8 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityBall(camera), "ball");
         addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f), "borderBottom");
         addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f), "borderTop");
-        addEntity(new EntityPaddle(1, 1, false), "paddleLeft");
-        addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true), "paddleRight");
+        addEntity(new EntityPaddle(1, 1, false, this), "paddleLeft");
+        addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
         addEntity(new EntityPowerup(this, 100, 100, "pow"), "pow");
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
@@ -103,8 +103,8 @@ public class PongzStart extends ApplicationAdapter {
            //String n = effectName.substring(effectName.indexOf(' ')+1, effectName.length());
            //effectName = effectName.substring(0, effectName.indexOf(' ')+2);
            batch.begin();
-           pF3.draw(batch, "Activated:", (Gdx.graphics.getWidth()/2f) - (pF3.getSpaceWidth()*("Activated:".length()/2) ), Gdx.graphics.getHeight()/2f + pF3.getCapHeight());
-           pF2.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pF2.getSpaceWidth()*(effectName.length()/2) ), Gdx.graphics.getHeight()/2f);
+           pF3.draw(batch, "Activated:", (Gdx.graphics.getWidth()/2f) - (pF3.getSpaceWidth()*("Activated:".length()/2) ), Gdx.graphics.getHeight()/2f + pF3.getLineHeight());
+           pF2.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pF2.getSpaceWidth()*(effectName.length()/2f) ), Gdx.graphics.getHeight()/2f );
            //pF3.draw(batch, n, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
            batch.end();
            if( 2000 < System.currentTimeMillis() - timestamp2){

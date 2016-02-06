@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import se.doverfelt.PongzStart;
 
 
 /**
@@ -26,8 +27,9 @@ public class EntityPaddle implements Collidable {
     private Rectangle bounds;
     public static int isMovingR =0, isMovingL = 0;
     public static float ry, ly,rHeight, lHeight;
+    private EntityPowerUpHUD powerUpHUD;
 
-    public EntityPaddle(float xIn,float yIn, boolean Right){
+    public EntityPaddle(float xIn, float yIn, boolean Right, PongzStart world){
         x = xIn;
         y = yIn;
         isRight = Right;
@@ -37,6 +39,8 @@ public class EntityPaddle implements Collidable {
         img.setSize(width, height);
         bounds = new Rectangle(x, y, width, height);
         origHeight = height;
+        powerUpHUD = new EntityPowerUpHUD(this);
+        world.addEntity(powerUpHUD, "HUD_" + (Right ? "right" : "left"));
     }
     
     @Override
@@ -50,6 +54,14 @@ public class EntityPaddle implements Collidable {
 
     @Override
     public void update(int delta) {
+
+        if (height != origHeight && !powerUpHUD.isVisible()) {
+            powerUpHUD.setVisible(true);
+        }
+        if (height == origHeight && powerUpHUD.isVisible()) {
+            powerUpHUD.setVisible(false);
+        }
+
         if(isRight) {
             ry = y;
             rHeight = height;
@@ -101,5 +113,17 @@ public class EntityPaddle implements Collidable {
 
     public void moveY(float mod) {
         y += mod;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
     }
 }

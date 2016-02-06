@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -28,7 +27,6 @@ public class EntityPowerup implements Collidable {
     private Random r;
     private String name;
     private Sound powerUp;
-    BitmapFont font;
 
     public EntityPowerup(PongzStart world, float x, float y, String name) {
         this.world = world;
@@ -53,7 +51,6 @@ public class EntityPowerup implements Collidable {
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
             int seed = r.nextInt(100);
-            font = new BitmapFont();
             String nm;
             if (seed < 45) {
                 String n = "color" + System.currentTimeMillis();

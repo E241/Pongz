@@ -3,6 +3,7 @@ package se.doverfelt.effects;
 import se.doverfelt.PongzStart;
 import se.doverfelt.entities.Entity;
 import se.doverfelt.entities.EntityPaddle;
+import se.doverfelt.entities.EntityPowerUpHUD;
 
 /**
  * Created by rickard on 2016-02-04.
@@ -35,7 +36,10 @@ public class EffectSizeUp implements Effect {
             if (origHeight + heightAdd > origHeight) paddle.moveY((0.1f*delta)/2f);
         }
 
-        if (current - timestamp > 11000) world.removeEffect(name);
+        if (current - timestamp > 11000) {
+            paddle.setHeight(paddle.getOrigHeight());
+            world.removeEffect(name);
+        }
     }
 
     @Override
