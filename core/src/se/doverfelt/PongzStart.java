@@ -29,8 +29,10 @@ public class PongzStart extends ApplicationAdapter {
     private ArrayList<String> toRemove = new ArrayList<String>();
     private Random rand = new Random();
     private ArrayList<String> toRemoveEffects = new ArrayList<String>();
-    private long lastPowerup;
+    private long lastPowerup, timestamp2 = 0;
     public static int Styrning = 2;
+    private static boolean effectTextOn;
+    private static String effectName;
 
     @Override
 	public void create () {
@@ -76,6 +78,11 @@ public class PongzStart extends ApplicationAdapter {
         toRemoveEffects.add(name);
     }
 
+    public static void eName(String name){
+        effectTextOn = true;
+        effectName = name;
+
+    }
 	@Override
 	public void render () {
         int delta = (int) (System.currentTimeMillis() - timestamp);
@@ -89,6 +96,22 @@ public class PongzStart extends ApplicationAdapter {
         tickEntities(delta);
 
         drawHUD();
+       if(effectTextOn){
+           if (timestamp2 == 0){ timestamp2 = System.currentTimeMillis();}
+           BitmapFont pF2 = pointFnt;
+           BitmapFont pF3 = pointFnt;
+           //String n = effectName.substring(effectName.indexOf(' ')+1, effectName.length());
+           //effectName = effectName.substring(0, effectName.indexOf(' ')+2);
+           batch.begin();
+           pF3.draw(batch, "Activated:", (Gdx.graphics.getWidth()/2f) - (pF3.getSpaceWidth()*("Activated:".length()/2) ), Gdx.graphics.getHeight()/2f + pF3.getCapHeight());
+           pF2.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pF2.getSpaceWidth()*(effectName.length()/2) ), Gdx.graphics.getHeight()/2f);
+           //pF3.draw(batch, n, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+           batch.end();
+           if( 2000 < System.currentTimeMillis() - timestamp2){
+               effectTextOn = false;
+               timestamp2 = 0;
+           }
+       }
 
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
         for (String s : toRemove) {
@@ -147,4 +170,5 @@ public class PongzStart extends ApplicationAdapter {
         this.g = g;
         this.b = b;
     }
+
 }
