@@ -1,7 +1,9 @@
 package se.doverfelt.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -24,6 +26,7 @@ public class EntityPowerup implements Collidable {
     private float x, y;
     private Random r;
     private String name;
+    BitmapFont font;
 
     public EntityPowerup(PongzStart world, float x, float y, String name) {
         this.world = world;
@@ -47,17 +50,23 @@ public class EntityPowerup implements Collidable {
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
             int seed = r.nextInt(100);
+            font = new BitmapFont();
+            String nm;
             if (seed < 45) {
                 String n = "color" + System.currentTimeMillis();
                 world.addEffect(new EffectRandomColor(n), n);
+                nm =  "New Color";
             } else if (seed < 90) {
                 String n = "sizeUp" + System.currentTimeMillis();
                 world.addEffect(new EffectSizeUp(n, ((EntityBall) other).getLastPaddle()), n);
+                nm = "Extra carbs!";
             } else {
                 String n = "spin" + System.currentTimeMillis();
                 world.addEffect(new EffectSpin(n), n);
+                nm = "Spin!";
             }
             world.removeEntity(name);
+            PongzStart.eName(nm);
         }
     }
 
