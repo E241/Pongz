@@ -1,6 +1,7 @@
 package se.doverfelt.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -27,6 +28,7 @@ public class EntityPowerup implements Collidable {
     private float x, y;
     private Random r;
     private String name;
+    private Sound powerUp;
     BitmapFont font;
 
     public EntityPowerup(PongzStart world, float x, float y, String name) {
@@ -40,6 +42,7 @@ public class EntityPowerup implements Collidable {
         bounds = new Rectangle(x, y, 10, 10);
         batch = new SpriteBatch();
         r = new Random();
+        powerUp = Gdx.audio.newSound(Gdx.files.internal("PowerUp.wav"));
     }
 
     @Override
@@ -71,6 +74,7 @@ public class EntityPowerup implements Collidable {
                 world.addEffect(new EffectDrunk(n, (EntityBall) PongzStart.entities.get("ball")),n);
                 nm = "Drunk!";
             }
+            powerUp.play();
             world.removeEntity(name);
             PongzStart.eName(nm);
         }
