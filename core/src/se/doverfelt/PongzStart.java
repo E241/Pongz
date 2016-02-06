@@ -103,7 +103,7 @@ public class PongzStart extends ApplicationAdapter {
            //String n = effectName.substring(effectName.indexOf(' ')+1, effectName.length());
            //effectName = effectName.substring(0, effectName.indexOf(' ')+2);
            batch.begin();
-           pF3.draw(batch, "Activated:", (Gdx.graphics.getWidth()/2f) - (pF3.getSpaceWidth()*("Activated:".length()/2) ), Gdx.graphics.getHeight()/2f + pF3.getCapHeight());0
+           pF3.draw(batch, "Activated:", (Gdx.graphics.getWidth()/2f) - (pF3.getSpaceWidth()*("Activated:".length()/2) ), Gdx.graphics.getHeight()/2f + pF3.getCapHeight());
            pF2.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pF2.getSpaceWidth()*(effectName.length()/2) ), Gdx.graphics.getHeight()/2f);
            //pF3.draw(batch, n, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
            batch.end();
