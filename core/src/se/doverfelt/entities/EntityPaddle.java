@@ -98,4 +98,8 @@ public class EntityPaddle implements Collidable {
     public float getOrigHeight() {
         return origHeight;
     }
+
+    public void moveY(float mod) {
+        y += mod;
+    }
 }
