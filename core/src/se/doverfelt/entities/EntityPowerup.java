@@ -1,10 +1,7 @@
 package se.doverfelt.entities;
 
 import com.badlogic.gdx.Gdx;
-<<<<<<< HEAD
 import com.badlogic.gdx.audio.Sound;
-=======
->>>>>>> 8625cedf4eba7bb1a9334e903e9146fa39ebdd96
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
