@@ -51,7 +51,7 @@ public class EntityPowerup implements Collidable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
-            int seed = r.nextInt(120);
+            int seed = r.nextInt(110);
             String nm;
             if (seed < 45) {
                 String n = "color" + System.currentTimeMillis();
