@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import se.doverfelt.effects.Effect;
@@ -58,6 +59,7 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
         //addEntity(new EntityPowerup(this, 100, 100, "pow"), "pow");
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.graphics.setContinuousRendering(true);
     }
 
     public void addEntity(Entity entity, String name) {
@@ -99,7 +101,7 @@ public class PongzStart extends ApplicationAdapter {
         tickEffects(delta);
         tickEntities(delta);
 
-        drawHUD();
+        drawHUD(delta);
        if(effectTextOn){
            if (timestamp2 == 0){ timestamp2 = System.currentTimeMillis();}
            BitmapFont pF2 = pointFnt;
@@ -144,7 +146,7 @@ public class PongzStart extends ApplicationAdapter {
         }
     }
 
-    private void drawHUD() {
+    private void drawHUD(int delta) {
 
         String entitiesOut = "";
         for (String s : entities.keySet()) {
@@ -158,10 +160,11 @@ public class PongzStart extends ApplicationAdapter {
 
         batch.begin();
         if (debug) {
-            font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
+            font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond() + "    Delta: " + delta, 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
             font.draw(batch, "Entites: " + entities.size() + "\n" + entitiesOut, 1, Gdx.graphics.getHeight() - font.getLineHeight() * 2 - 1);
             font.draw(batch, "Effects: " + effects.size() + "\n" + effectsOut, 1, font.getLineHeight() * (effects.size() + 2));
             font.draw(batch, "CollisionChecks: " + collisionsChecks + "\nCollisions: " + collisions, 1, font.getLineHeight() * (effects.size() + 4));
+            font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()/1024/1024) + "MB | Native Heap: " + (Gdx.app.getNativeHeap()/1024/1024) + "MB", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
         }
 
         String pl = "" + PointsL, pr = "" + PointsR;
