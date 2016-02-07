@@ -53,7 +53,7 @@ public class EntityPowerup implements Collidable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
-            int seed = r.nextInt(120);
+            int seed = r.nextInt(110);
             //int seed = 120;
             font = new BitmapFont();
             String nm;
