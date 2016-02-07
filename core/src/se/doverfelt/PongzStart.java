@@ -33,6 +33,9 @@ public class PongzStart extends ApplicationAdapter {
     public static int Styrning = 2;
     private static boolean effectTextOn;
     private static String effectName;
+    private boolean debug = false;
+    private int collisionsChecks = 0;
+    private int collisions = 0;
 
     @Override
 	public void create () {
@@ -53,7 +56,7 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f), "borderTop");
         addEntity(new EntityPaddle(1, 1, false, this), "paddleLeft");
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
-        addEntity(new EntityPowerup(this, 100, 100, "pow"), "pow");
+        //addEntity(new EntityPowerup(this, 100, 100, "pow"), "pow");
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
 
@@ -86,6 +89,8 @@ public class PongzStart extends ApplicationAdapter {
 	public void render () {
         int delta = (int) (System.currentTimeMillis() - timestamp);
         timestamp = System.currentTimeMillis();
+        collisionsChecks = 0;
+        collisions = 0;
 
 		Gdx.gl.glClearColor(r, g, b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -113,6 +118,8 @@ public class PongzStart extends ApplicationAdapter {
        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
+        if (Gdx.input.isKeyPressed(Input.Keys.F3)) debug = !debug;
+
         for (String s : toRemove) {
             entities.remove(s);
         }
@@ -126,7 +133,7 @@ public class PongzStart extends ApplicationAdapter {
     private void genPowerups() {
         if (System.currentTimeMillis() - lastPowerup >= 5000 && rand.nextInt() < 25){
             String n = "powerup"+System.currentTimeMillis();
-            addEntity(new EntityPowerup(this, rand.nextFloat()*200, rand.nextFloat()*200*aspect, n), n);
+            addEntity(new EntityPowerup(this, Math.max((rand.nextFloat()*200)-10-3, 3), Math.max((rand.nextFloat()*200*aspect)-10-2, 2), n), n);
         }
         if (System.currentTimeMillis()-lastPowerup >= 5000) lastPowerup = System.currentTimeMillis();
     }
@@ -138,8 +145,25 @@ public class PongzStart extends ApplicationAdapter {
     }
 
     private void drawHUD() {
+
+        String entitiesOut = "";
+        for (String s : entities.keySet()) {
+            entitiesOut += s + "\n";
+        }
+
+        String effectsOut = "";
+        for (String s : effects.keySet()) {
+            effectsOut += s + "\n";
+        }
+
         batch.begin();
-        font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
+        if (debug) {
+            font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), 1, Gdx.graphics.getHeight() - font.getLineHeight() - 1);
+            font.draw(batch, "Entites: " + entities.size() + "\n" + entitiesOut, 1, Gdx.graphics.getHeight() - font.getLineHeight() * 2 - 1);
+            font.draw(batch, "Effects: " + effects.size() + "\n" + effectsOut, 1, font.getLineHeight() * (effects.size() + 2));
+            font.draw(batch, "CollisionChecks: " + collisionsChecks + "\nCollisions: " + collisions, 1, font.getLineHeight() * (effects.size() + 4));
+        }
+
         String pl = "" + PointsL, pr = "" + PointsR;
         pointFnt.draw(batch, pl, Gdx.graphics.getWidth()/2f - 4 - (pl.length()*pointFnt.getSpaceWidth()), Gdx.graphics.getHeight()-25);
         pointFnt.draw(batch, pr, Gdx.graphics.getWidth()/2f + 4, Gdx.graphics.getHeight()-25);
@@ -151,9 +175,12 @@ public class PongzStart extends ApplicationAdapter {
     private void tickEntities(int delta) {
         for (Entity entity : entities.values()) {
             if (entity instanceof Collidable) {
+                collisionsChecks++;
                 for (Entity c : entities.values()) {
                     if (c instanceof Collidable) {
-                        if (Intersector.overlaps(((Collidable)c).getRect(), ((Collidable)entity).getRect())) {
+                        collisionsChecks++;
+                        if (Intersector.overlaps(((Collidable)c).getRect(), ((Collidable)entity).getRect()) && entity != c) {
+                            collisions++;
                             ((Collidable) entity).collide(c);
                         }
                     }
