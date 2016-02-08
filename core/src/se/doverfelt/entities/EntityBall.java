@@ -33,6 +33,8 @@ public class EntityBall implements Collidable {
     private Sound bounce, bom;
     private EntityPaddle lastPaddle = null;
     private boolean b = false;
+    private long resetTime;
+    private float maxVel = 2.5f;
 
 
     public EntityBall(OrthographicCamera camera) {
@@ -46,7 +48,7 @@ public class EntityBall implements Collidable {
         this.camera = camera;
         bom = Gdx.audio.newSound(Gdx.files.internal("bom.wav"));
         bounce = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
-
+        resetTime = System.currentTimeMillis();
     }
 
     @Override
@@ -59,20 +61,29 @@ public class EntityBall implements Collidable {
 
     @Override
     public void update(int delta) {
-        x += xv*delta;
-        y += yv*delta;
+        if (System.currentTimeMillis() - resetTime > 1000) {
+            if (xv >= 0) {
+                x += Math.min(xv * delta, maxVel);
+            } else {
+                x += Math.max(xv * delta, -maxVel);
+            }
+            if (yv >= 0) {
+                y += Math.min(yv * delta, maxVel);
+            } else {
+                y += Math.max(yv * delta, -maxVel);
+            }
 
-        if (x < 0){
-            //x = 0;
-           // xv = -xv; //Vinst Höger
-            PongzStart.PointsR++;
-            reset();
-        }else if (x > camera.viewportWidth-WIDTH){
-            //x = camera.viewportWidth -WIDTH;
-            //xv = -xv; //Vinst Vänster
-            PongzStart.PointsL++;
-            reset();
-        }
+            if (x < 0) {
+                //x = 0;
+                // xv = -xv; //Vinst Höger
+                PongzStart.PointsR++;
+                reset();
+            } else if (x > camera.viewportWidth - WIDTH) {
+                //x = camera.viewportWidth -WIDTH;
+                //xv = -xv; //Vinst Vänster
+                PongzStart.PointsL++;
+                reset();
+            }
         /*if (y < 0){
 
             yv = -yv;
@@ -86,6 +97,7 @@ public class EntityBall implements Collidable {
             y = camera.viewportHeight-HEIGHT;
 
         }*/
+        }
         bounds.setPosition(x, y);
         img.setPosition(x,y);
     }
@@ -109,8 +121,9 @@ public class EntityBall implements Collidable {
         }
         img.setPosition(xPos, (((camera.viewportHeight / 2f) - (HEIGHT / 2f)) + r.nextInt(20)) - 10);
         x = img.getX();
-        y = img.getY() ;
-
+        y = img.getY();
+        lastPaddle = null;
+        resetTime = System.currentTimeMillis();
     }
 
     @Override

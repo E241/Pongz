@@ -120,7 +120,7 @@ public class PongzStart extends ApplicationAdapter {
        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
-        if (Gdx.input.isKeyPressed(Input.Keys.F3)) debug = !debug;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) debug = !debug;
 
         for (String s : toRemove) {
             entities.remove(s);
