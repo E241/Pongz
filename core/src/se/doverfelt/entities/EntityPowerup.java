@@ -72,6 +72,9 @@ public class EntityPowerup implements Collidable {
             }
             powerUp.play();
             world.removeEntity(name);
+            if (seed >= 45 && seed < 90 && ((EntityBall) other).getLastPaddle() == null) {
+                return;
+            }
             PongzStart.eName(nm);
         }
     }

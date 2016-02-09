@@ -1,9 +1,7 @@
 package se.doverfelt.effects;
 
 import se.doverfelt.PongzStart;
-import se.doverfelt.entities.Entity;
 import se.doverfelt.entities.EntityPaddle;
-import se.doverfelt.entities.EntityPowerUpHUD;
 
 /**
  * Created by rickard on 2016-02-04.
