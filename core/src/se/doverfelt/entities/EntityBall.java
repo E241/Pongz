@@ -61,16 +61,16 @@ public class EntityBall implements Collidable {
 
     @Override
     public void update(int delta) {
-        if (System.currentTimeMillis() - resetTime > 1000) {
+        if (System.currentTimeMillis() - resetTime > 500) {
             if (xv >= 0) {
-                x += Math.min(xv * delta, maxVel);
+                x += Math.min(xv * delta, maxVel*delta);
             } else {
-                x += Math.max(xv * delta, -maxVel);
+                x += Math.max(xv * delta, -maxVel*delta);
             }
             if (yv >= 0) {
-                y += Math.min(yv * delta, maxVel);
+                y += Math.min(yv * delta, maxVel*delta);
             } else {
-                y += Math.max(yv * delta, -maxVel);
+                y += Math.max(yv * delta, -maxVel*delta);
             }
 
             if (x < 0) {
