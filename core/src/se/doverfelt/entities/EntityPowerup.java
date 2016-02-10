@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import se.doverfelt.PongzStart;
-import se.doverfelt.effects.EffectDrunk;
-import se.doverfelt.effects.EffectRandomColor;
-import se.doverfelt.effects.EffectSizeUp;
-import se.doverfelt.effects.EffectSpin;
+import se.doverfelt.effects.*;
 
 import java.util.Random;
 
@@ -51,21 +48,25 @@ public class EntityPowerup implements Collidable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
-            int seed = r.nextInt(110);
+            int seed = r.nextInt(130);
             String nm;
-            if (seed < 45) {
+            if (seed < 0) {
                 String n = "color" + System.currentTimeMillis();
                 world.addEffect(new EffectRandomColor(n), n);
                 nm =  "New Color";
-            } else if (seed < 90) {
+            } else if (seed < 0) {
                 String n = "sizeUp" + System.currentTimeMillis();
                 world.addEffect(new EffectSizeUp(n, ((EntityBall) other).getLastPaddle()), n);
                 nm = "Extra carbs!";
-            } else if (seed < 100) {
+            } else if (seed < 00) {
                 String n = "spin" + System.currentTimeMillis();
                 world.addEffect(new EffectSpin(n), n);
                 nm = "Spin!";
-            }else {
+            } else if (seed < 120) {
+                String n = "zoom" + System.currentTimeMillis();
+                world.addEffect(new EffectZoomOut(n), n);
+                nm = "Zoooom!";
+            } else {
                 String n = "drunk" + System.currentTimeMillis();
                 world.addEffect(new EffectDrunk(n, (EntityBall) PongzStart.entities.get("ball")),n);
                 nm = "Drunk!";
