@@ -7,6 +7,8 @@ import se.doverfelt.PongzStart;
 
 public class HtmlLauncher extends GwtApplication {
 
+        private ApplicationListener applicationListener;
+
         @Override
         public GwtApplicationConfiguration getConfig () {
                 return new GwtApplicationConfiguration(480, 320);
@@ -14,6 +16,12 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener getApplicationListener() {
-                return new PongzStart();
+                return applicationListener;
+        }
+
+        @Override
+        public ApplicationListener createApplicationListener() {
+            applicationListener = new PongzStart();
+            return applicationListener;
         }
 }
