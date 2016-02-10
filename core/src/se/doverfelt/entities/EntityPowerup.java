@@ -45,23 +45,23 @@ public class EntityPowerup implements Collidable, Ploppable {
         if (other instanceof EntityBall) {
             int seed = r.nextInt(135);
             String nm;
-            if (seed < 0) { // 45
+            if (seed < 45) { // 45
                 String n = "color" + System.currentTimeMillis();
                 world.addEffect(PongzStart.randomColorPool.obtain(), n);
                 nm =  "New Color";
-            } else if (seed < 0) { // 90
+            } else if (seed < 90) { // 90
                 String n = "sizeUp" + System.currentTimeMillis();
                 world.addEffect(PongzStart.sizeUpPool.obtain(), n);
                 nm = "Extra carbs!";
-            } else if (seed < 00) { // 100
+            } else if (seed < 100) { // 100
                 String n = "spin" + System.currentTimeMillis();
                 world.addEffect(PongzStart.spinPool.obtain(), n);
                 nm = "Spin!";
-            } else if (seed < 0) { // 120
+            } else if (seed < 120) { // 120
                 String n = "zoom" + System.currentTimeMillis();
                 world.addEffect(PongzStart.zoomOutPool.obtain(), n);
                 nm = "Zoooom!";
-            } else if (seed < 0) { // 130
+            } else if (seed < 130) { // 130
                 String n = "drunk" + System.currentTimeMillis();
                 world.addEffect(PongzStart.drunkPool.obtain(), n);
                 nm = "Drunk!";
