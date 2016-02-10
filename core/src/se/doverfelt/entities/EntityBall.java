@@ -45,10 +45,10 @@ public class EntityBall implements Collidable {
         img.setSize(WIDTH, HEIGHT);
         img.setPosition(x, y);
         bounds = new Rectangle(x, y, WIDTH, HEIGHT);
-        this.camera = camera;
         bom = Gdx.audio.newSound(Gdx.files.internal("bom.wav"));
         bounce = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
         resetTime = System.currentTimeMillis();
+        this.camera = camera;
     }
 
     @Override
@@ -100,6 +100,14 @@ public class EntityBall implements Collidable {
         }
         bounds.setPosition(x, y);
         img.setPosition(x,y);
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+        bom.dispose();
+        bounce.dispose();
+        img.getTexture().dispose();
     }
 
     private void reset() {
@@ -187,4 +195,7 @@ public class EntityBall implements Collidable {
         return this.yv;
     }
 
+    public float getY() {
+        return y;
+    }
 }

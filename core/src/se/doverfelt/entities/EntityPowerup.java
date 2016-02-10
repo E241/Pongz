@@ -15,9 +15,9 @@ import java.util.Random;
 /**
  * Created by rickard on 2016-02-03.
  */
-public class EntityPowerup implements Collidable {
+public class EntityPowerup implements Collidable, Ploppable {
 
-    private final PongzStart world;
+    private PongzStart world;
     private final Sprite img;
     private final SpriteBatch batch;
     private final Rectangle bounds;
@@ -26,15 +26,10 @@ public class EntityPowerup implements Collidable {
     private String name;
     private Sound powerUp;
 
-    public EntityPowerup(PongzStart world, float x, float y, String name) {
-        this.world = world;
-        this.x = x;
-        this.y = y;
-        this.name = name;
+    public EntityPowerup() {
         img = new Sprite(new Texture("powerup.png"));
         img.setSize(10, 10);
-        img.setPosition(x, y);
-        bounds = new Rectangle(x, y, 10, 10);
+        bounds = new Rectangle(1, 1, 10, 10);
         batch = new SpriteBatch();
         r = new Random();
         powerUp = Gdx.audio.newSound(Gdx.files.internal("PowerUp.wav"));
@@ -48,28 +43,32 @@ public class EntityPowerup implements Collidable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
-            int seed = r.nextInt(130);
+            int seed = r.nextInt(135);
             String nm;
-            if (seed < 0) {
+            if (seed < 0) { // 45
                 String n = "color" + System.currentTimeMillis();
-                world.addEffect(new EffectRandomColor(n), n);
+                world.addEffect(PongzStart.randomColorPool.obtain(), n);
                 nm =  "New Color";
-            } else if (seed < 0) {
+            } else if (seed < 0) { // 90
                 String n = "sizeUp" + System.currentTimeMillis();
-                world.addEffect(new EffectSizeUp(n, ((EntityBall) other).getLastPaddle()), n);
+                world.addEffect(PongzStart.sizeUpPool.obtain(), n);
                 nm = "Extra carbs!";
-            } else if (seed < 00) {
+            } else if (seed < 00) { // 100
                 String n = "spin" + System.currentTimeMillis();
-                world.addEffect(new EffectSpin(n), n);
+                world.addEffect(PongzStart.spinPool.obtain(), n);
                 nm = "Spin!";
-            } else if (seed < 120) {
+            } else if (seed < 0) { // 120
                 String n = "zoom" + System.currentTimeMillis();
-                world.addEffect(new EffectZoomOut(n), n);
+                world.addEffect(PongzStart.zoomOutPool.obtain(), n);
                 nm = "Zoooom!";
-            } else {
+            } else if (seed < 0) { // 130
                 String n = "drunk" + System.currentTimeMillis();
-                world.addEffect(new EffectDrunk(n, (EntityBall) PongzStart.entities.get("ball")),n);
+                world.addEffect(PongzStart.drunkPool.obtain(), n);
                 nm = "Drunk!";
+            } else {
+                String n = "ai" + System.currentTimeMillis();
+                world.addEffect(PongzStart.autoPilotPool.obtain(), n);
+                nm = "Auto Pilot!";
             }
             powerUp.play();
             world.removeEntity(name);
@@ -90,6 +89,22 @@ public class EntityPowerup implements Collidable {
 
     @Override
     public void update(int delta) {
+        img.setPosition(x, y);
+        bounds.setPosition(x, y);
+    }
 
+    @Override
+    public void dispose() {
+        powerUp.dispose();
+        img.getTexture().dispose();
+        batch.dispose();
+    }
+
+    @Override
+    public void create(String name, float x, float y, PongzStart world) {
+        this.name = name;
+        this.world = world;
+        this.x = x;
+        this.y = y;
     }
 }

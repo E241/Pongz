@@ -7,14 +7,10 @@ import se.doverfelt.PongzStart;
  */
 public class EffectZoomOut implements Effect {
 
-    private final String name;
+    private String name;
     private int counter;
     private float zoom = 1f;
     private boolean out = false;
-
-    public EffectZoomOut(String name) {
-        this.name = name;
-    }
 
     @Override
     public void update(PongzStart world, int delta) {
@@ -38,9 +34,18 @@ public class EffectZoomOut implements Effect {
     }
 
     @Override
-    public void create(PongzStart world) {
+    public void create(PongzStart world, String name) {
         if (world.camera.zoom != 1f) {
             world.removeEffect(name);
         }
+        counter = 0;
+        zoom = 0;
+        out = false;
+        this.name = name;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

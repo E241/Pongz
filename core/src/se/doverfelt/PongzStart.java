@@ -5,10 +5,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Gdx2DPixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
-import se.doverfelt.effects.Effect;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pools;
+import se.doverfelt.effects.*;
 import se.doverfelt.entities.*;
 
 import java.util.ArrayList;
@@ -37,6 +38,13 @@ public class PongzStart extends ApplicationAdapter {
     private boolean debug = false;
     private int collisionsChecks = 0;
     private int collisions = 0;
+    public static Pool<EffectDrunk> drunkPool = Pools.get(EffectDrunk.class);
+    public static Pool<EffectRandomColor> randomColorPool = Pools.get(EffectRandomColor.class);
+    public static Pool<EffectSizeUp> sizeUpPool = Pools.get(EffectSizeUp.class);
+    public static Pool<EffectSpin> spinPool = Pools.get(EffectSpin.class);
+    public static Pool<EffectZoomOut> zoomOutPool = Pools.get(EffectZoomOut.class);
+    public static Pool<EffectAutoPilot> autoPilotPool = Pools.get(EffectAutoPilot.class);
+    public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
 
     @Override
 	public void create () {
@@ -57,15 +65,19 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f), "borderTop");
         addEntity(new EntityPaddle(1, 1, false, this), "paddleLeft");
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
-        //addEntity(new EntityPowerup(this, 100, 100, "pow"), "pow");
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.graphics.setContinuousRendering(true);
     }
 
     public void addEntity(Entity entity, String name) {
+        entities.put(name, entity);
+    }
+
+    public void addPloppable(Ploppable entity, String name, float x, float y) {
         if (entity instanceof EntityPowerup) {
             lastPowerup = System.currentTimeMillis();
         }
+        entity.create(name, x, y, this);
         entities.put(name, entity);
     }
 
@@ -75,7 +87,7 @@ public class PongzStart extends ApplicationAdapter {
 
     public void addEffect(Effect effect, String name) {
         effects.put(name, effect);
-        effect.create(this);
+        effect.create(this, name);
     }
 
     public void removeEffect(String name) {
@@ -123,10 +135,28 @@ public class PongzStart extends ApplicationAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) debug = !debug;
 
         for (String s : toRemove) {
+            if (entities.get(s) instanceof EntityPowerup) {
+                powerupPool.free((EntityPowerup)entities.get(s));
+            } else {
+                entities.get(s).dispose();
+            }
             entities.remove(s);
         }
         toRemove.clear();
         for (String toRemoveEffect : toRemoveEffects) {
+            if (effects.get(toRemoveEffect) instanceof EffectDrunk) {
+                drunkPool.free((EffectDrunk) effects.get(toRemoveEffect));
+            } else if (effects.get(toRemoveEffect) instanceof EffectRandomColor) {
+                randomColorPool.free((EffectRandomColor) effects.get(toRemoveEffect));
+            } else if (effects.get(toRemoveEffect) instanceof EffectSizeUp) {
+                sizeUpPool.free((EffectSizeUp) effects.get(toRemoveEffect));
+            } else if (effects.get(toRemoveEffect) instanceof EffectSpin) {
+                spinPool.free((EffectSpin) effects.get(toRemoveEffect));
+            } else if (effects.get(toRemoveEffect) instanceof EffectZoomOut) {
+                zoomOutPool.free((EffectZoomOut) effects.get(toRemoveEffect));
+            } else if (effects.get(toRemoveEffect) instanceof EffectAutoPilot) {
+                autoPilotPool.free((EffectAutoPilot) effects.get(toRemoveEffect));
+            }
             effects.remove(toRemoveEffect);
         }
         toRemoveEffects.clear();
@@ -135,7 +165,7 @@ public class PongzStart extends ApplicationAdapter {
     private void genPowerups() {
         if (System.currentTimeMillis() - lastPowerup >= 5000 && rand.nextInt() < 25){
             String n = "powerup"+System.currentTimeMillis();
-            addEntity(new EntityPowerup(this, Math.max((rand.nextFloat()*200)-10-3, 3), Math.max((rand.nextFloat()*200*aspect)-10-2, 2), n), n);
+            addPloppable(powerupPool.obtain(), n, Math.max((rand.nextFloat()*200)-10-3, 3), Math.max((rand.nextFloat()*200*aspect)-10-2, 2));
         }
         if (System.currentTimeMillis()-lastPowerup >= 5000) lastPowerup = System.currentTimeMillis();
     }
@@ -164,7 +194,7 @@ public class PongzStart extends ApplicationAdapter {
             font.draw(batch, "Entites: " + entities.size() + "\n" + entitiesOut, 1, Gdx.graphics.getHeight() - font.getLineHeight() * 2 - 1);
             font.draw(batch, "Effects: " + effects.size() + "\n" + effectsOut, 1, font.getLineHeight() * (effects.size() + 2));
             font.draw(batch, "CollisionChecks: " + collisionsChecks + "\nCollisions: " + collisions, 1, font.getLineHeight() * (effects.size() + 4));
-            font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()/1024/1024) + "MB | Native Heap: " + (Gdx.app.getNativeHeap()/1024/1024) + "MB", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
+            font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()) + "B | Native Heap: " + (Gdx.app.getNativeHeap()) + "B", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
         }
 
         String pl = "" + PointsL, pr = "" + PointsR;

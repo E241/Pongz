@@ -2,6 +2,7 @@ package se.doverfelt.entities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
+import se.doverfelt.PongzStart;
 
 import java.util.Random;
 
@@ -26,6 +27,11 @@ public class EntityTest implements Collidable {
 
     @Override
     public void update(int delta) {
+
+    }
+
+    @Override
+    public void dispose() {
 
     }
 

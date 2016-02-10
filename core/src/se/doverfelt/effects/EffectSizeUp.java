@@ -1,6 +1,7 @@
 package se.doverfelt.effects;
 
 import se.doverfelt.PongzStart;
+import se.doverfelt.entities.EntityBall;
 import se.doverfelt.entities.EntityPaddle;
 
 /**
@@ -12,11 +13,6 @@ public class EffectSizeUp implements Effect {
     private String name;
     private long timestamp;
     private float heightAdd = 0, origHeight;
-
-    public EffectSizeUp(String name, EntityPaddle paddle) {
-        this.name = name;
-        this.paddle = paddle;
-    }
 
     @Override
     public void update(PongzStart world, int delta) {
@@ -41,7 +37,9 @@ public class EffectSizeUp implements Effect {
     }
 
     @Override
-    public void create(PongzStart world) {
+    public void create(PongzStart world, String name) {
+        this.paddle = ((EntityBall)PongzStart.entities.get("ball")).getLastPaddle();
+
         if (paddle == null) {
             world.removeEffect(name);
             return;
@@ -49,7 +47,13 @@ public class EffectSizeUp implements Effect {
             world.removeEffect(name);
             return;
         }
+        this.name = name;
         timestamp = System.currentTimeMillis();
         origHeight = paddle.getOrigHeight();
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

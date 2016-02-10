@@ -15,11 +15,6 @@ public class EffectDrunk implements Effect {
     private float mod , mod2, mod3;
     private String name;
 
-    public EffectDrunk(String name,EntityBall ball){
-        this.ball = ball;
-        this.name = name;
-    }
-
     @Override
     public void update(PongzStart world, int delta) {
         Random r = new Random();
@@ -50,7 +45,14 @@ public class EffectDrunk implements Effect {
     }
 
     @Override
-    public void create(PongzStart world) {
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void create(PongzStart world, String name) {
+        this.ball = (EntityBall) PongzStart.entities.get("ball");
         timestamp = System.currentTimeMillis();
+        this.name = name;
     }
 }

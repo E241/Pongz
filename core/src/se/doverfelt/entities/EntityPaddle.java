@@ -90,6 +90,12 @@ public class EntityPaddle implements Collidable {
     }
 
     @Override
+    public void dispose() {
+        batch.dispose();
+        img.getTexture().dispose();
+    }
+
+    @Override
     public Rectangle getRect() {
         return bounds;
     }
@@ -125,5 +131,9 @@ public class EntityPaddle implements Collidable {
 
     public float getY() {
         return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }

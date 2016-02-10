@@ -7,6 +7,7 @@ import se.doverfelt.PongzStart;
  */
 public interface Effect {
     void update(PongzStart world, int delta);
-    void create(PongzStart world);
+    void create(PongzStart world, String name);
+    String getName();
 }
 

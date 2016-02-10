@@ -41,6 +41,12 @@ public class EntityPowerUpHUD implements Entity {
         img.setPosition(parent.getX(), parent.getY() + parent.getHeight());
     }
 
+    @Override
+    public void dispose() {
+        batch.dispose();
+        img.getTexture().dispose();
+    }
+
     public boolean isVisible() {
         return visible;
     }

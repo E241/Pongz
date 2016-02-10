@@ -13,10 +13,6 @@ public class EffectSpin implements Effect {
     private float zoom = 1;
     private String name;
 
-    public EffectSpin(String name) {
-        this.name = name;
-    }
-
     @Override
     public void update(PongzStart world, int delta) {
         world.camera.rotate(1f);
@@ -44,7 +40,14 @@ public class EffectSpin implements Effect {
     }
 
     @Override
-    public void create(PongzStart world) {
+    public void create(PongzStart world, String name) {
+        this.name = name;
+        rotation = 0;
+        zoom = 1;
+    }
 
+    @Override
+    public String getName() {
+        return name;
     }
 }
