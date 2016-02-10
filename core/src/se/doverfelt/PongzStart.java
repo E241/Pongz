@@ -45,7 +45,7 @@ public class PongzStart extends ApplicationAdapter {
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
         camera.zoom = 1f;
         camera.update();
-
+        Gdx.input.setCursorCatched(true);
         white = new Texture("white.png");
         timestamp = System.currentTimeMillis();
         lastPowerup = System.currentTimeMillis();
