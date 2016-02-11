@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -35,6 +36,7 @@ public class EntityBall implements Collidable {
     private boolean b = false;
     private long resetTime;
     private float maxVel = 2.5f;
+    private long ts1= 0, ts2 = 0;
 
 
     public EntityBall(OrthographicCamera camera) {
@@ -62,6 +64,7 @@ public class EntityBall implements Collidable {
     @Override
     public void update(int delta) {
         if (System.currentTimeMillis() - resetTime > 500) {
+
             if (xv >= 0) {
                 x += Math.min(xv * delta, maxVel*delta);
             } else {
@@ -144,8 +147,20 @@ public class EntityBall implements Collidable {
         if (other instanceof EntityBorder) {
             float temp =camera.viewportHeight/2;
             bom.play();
-            if (y < temp){ yv = Math.abs(yv);}
-            if (y > temp){ yv = -Math.abs(yv);}
+            if (y < temp){
+                yv = Math.abs(yv);
+                if(System.currentTimeMillis()-ts1 >200) {
+                    ts1 = System.currentTimeMillis();
+                    PongzStart.startParticle("Particles/Spark.p", x, y, false);
+                }
+            }
+            if (y > temp){
+                yv = -Math.abs(yv);
+                if(System.currentTimeMillis()-ts2 > 200) {
+                    ts2 = System.currentTimeMillis();
+                    PongzStart.startParticle("Particles/Spark.p", x, y + HEIGHT, true);
+                }
+            }
         } else if (other instanceof EntityPaddle) {
             float temp = camera.viewportWidth / 2;
             if(PongzStart.Styrning == 1) {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.utils.Pool;
@@ -15,6 +16,7 @@ import se.doverfelt.entities.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 public class PongzStart extends ApplicationAdapter {
 	long timestamp;
@@ -45,6 +47,8 @@ public class PongzStart extends ApplicationAdapter {
     public static Pool<EffectZoomOut> zoomOutPool = Pools.get(EffectZoomOut.class);
     public static Pool<EffectAutoPilot> autoPilotPool = Pools.get(EffectAutoPilot.class);
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
+    private static ArrayList<ParticleEffect> pEffect = new ArrayList<ParticleEffect>(), pEffectIn = new ArrayList<ParticleEffect>();
+    private static final Semaphore pE = new Semaphore(1, true);
 
     @Override
 	public void create () {
@@ -67,6 +71,7 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.graphics.setContinuousRendering(true);
+
     }
 
     public void addEntity(Entity entity, String name) {
@@ -114,6 +119,17 @@ public class PongzStart extends ApplicationAdapter {
         tickEntities(delta);
 
         drawHUD(delta);
+       if (pE.tryAcquire()) {
+           if (!(pEffect.isEmpty())) {
+               for (ParticleEffect p : pEffect) {
+                   if (p.isComplete()) {
+                       pEffect.remove(pEffect.indexOf(p));
+                   }
+                   p.draw(batch, delta);
+               }
+           }
+           pE.release();
+       }
        if(effectTextOn){
            if (timestamp2 == 0){ timestamp2 = System.currentTimeMillis();}
            BitmapFont pF2 = pointFnt;
@@ -124,6 +140,8 @@ public class PongzStart extends ApplicationAdapter {
            pF3.draw(batch, "Activated:", (Gdx.graphics.getWidth()/2f) - (pF3.getSpaceWidth()*("Activated:".length()/2) ), Gdx.graphics.getHeight()/2f + pF3.getLineHeight());
            pF2.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pF2.getSpaceWidth()*(effectName.length()/2f) ), Gdx.graphics.getHeight()/2f );
            //pF3.draw(batch, n, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+
+
            batch.end();
            if( 2000 < System.currentTimeMillis() - timestamp2){
                effectTextOn = false;
@@ -229,5 +247,20 @@ public class PongzStart extends ApplicationAdapter {
         this.g = g;
         this.b = b;
     }
-
+     public static void startParticle(String name, float x, float y, boolean top) {
+         while (true) {
+             if (pE.tryAcquire()) {
+                 ParticleEffect p = new ParticleEffect();
+                 p.load(Gdx.files.internal(name), Gdx.files.internal("Particles"));
+                 p.setPosition(x, y);
+                 if (top) {
+                     p.flipY();
+                 }
+                 pEffect.add(p);
+                 pEffect.get(pEffect.indexOf(p)).start();
+                 pE.release();
+                 break;
+             }
+         }
+     }
 }
