@@ -47,7 +47,8 @@ public class PongzStart extends ApplicationAdapter {
     public static Pool<EffectZoomOut> zoomOutPool = Pools.get(EffectZoomOut.class);
     public static Pool<EffectAutoPilot> autoPilotPool = Pools.get(EffectAutoPilot.class);
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
-    private static ArrayList<ParticleEffect> pEffect = new ArrayList<ParticleEffect>(), pEffectIn = new ArrayList<ParticleEffect>();
+    private static ArrayList<ParticleEffect> pEffect = new ArrayList<ParticleEffect>();
+    private ArrayList<ParticleEffect> pEffectRemove = new ArrayList<ParticleEffect>();
     private static final Semaphore pE = new Semaphore(1, true);
 
     @Override
@@ -123,8 +124,9 @@ public class PongzStart extends ApplicationAdapter {
            if (!(pEffect.isEmpty())) {
                for (ParticleEffect p : pEffect) {
                    if (p.isComplete()) {
-                       pEffect.remove(pEffect.indexOf(p));
+                       pEffectRemove.add(p);
                    }
+                   p.update(delta);
                    p.draw(batch, delta);
                }
            }
@@ -178,6 +180,11 @@ public class PongzStart extends ApplicationAdapter {
             effects.remove(toRemoveEffect);
         }
         toRemoveEffects.clear();
+
+        for (ParticleEffect p : pEffectRemove) {
+            pEffect.remove(p);
+        }
+        pEffectRemove.clear();
     }
 
     private void genPowerups() {
