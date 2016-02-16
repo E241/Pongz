@@ -33,6 +33,7 @@ public class PongzStart extends ApplicationAdapter {
     private ArrayList<String> toRemove = new ArrayList<String>();
     private Random rand = new Random();
     private ArrayList<String> toRemoveEffects = new ArrayList<String>();
+    private Texture bg;
     private long lastPowerup, timestamp2 = 0;
     public static int Styrning = 2;
     private static boolean effectTextOn;
@@ -59,6 +60,8 @@ public class PongzStart extends ApplicationAdapter {
         camera.zoom = 1f;
         camera.update();
         Gdx.input.setCursorCatched(true);
+        bg = new Texture("bg.png");
+        bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         white = new Texture("white.png");
         timestamp = System.currentTimeMillis();
         lastPowerup = System.currentTimeMillis();
