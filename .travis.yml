@@ -7,3 +7,4 @@ deploy:
   file: desktop/build/libs/desktop-1.0.jar
   on:
     repo: E241/Pongz
+    tags: true
