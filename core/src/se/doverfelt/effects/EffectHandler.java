@@ -11,12 +11,6 @@ import java.util.Random;
  * Created by rickard on 2016-02-17.
  */
 public class EffectHandler {
-    public static Pool<EffectDrunk> drunkPool = Pools.get(EffectDrunk.class);
-    public static Pool<EffectRandomColor> randomColorPool = Pools.get(EffectRandomColor.class);
-    public static Pool<EffectSizeUp> sizeUpPool = Pools.get(EffectSizeUp.class);
-    public static Pool<EffectSpin> spinPool = Pools.get(EffectSpin.class);
-    public static Pool<EffectZoomOut> zoomOutPool = Pools.get(EffectZoomOut.class);
-    public static Pool<EffectAutoPilot> autoPilotPool = Pools.get(EffectAutoPilot.class);
 
     private HashMap<Class, Pool> pools = new HashMap<Class, Pool>();
 

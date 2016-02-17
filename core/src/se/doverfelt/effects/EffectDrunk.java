@@ -50,6 +50,11 @@ public class EffectDrunk implements Effect {
     }
 
     @Override
+    public String getEffectType() {
+        return "drunk";
+    }
+
+    @Override
     public int getWeight() {
         return 10;
     }

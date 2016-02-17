@@ -52,6 +52,11 @@ public class EffectSpin implements Effect {
     }
 
     @Override
+    public String getEffectType() {
+        return "spin";
+    }
+
+    @Override
     public int getWeight() {
         return 10;
     }

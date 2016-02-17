@@ -43,11 +43,8 @@ public class EntityPowerup implements Collidable, Ploppable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
-
-            world.addEffect(PongzStart.effectHandler.getRandomEffect(), "" + System.currentTimeMillis());
-
-            int seed = r.nextInt(135);
-            String nm;
+            Effect effect = PongzStart.effectHandler.getRandomEffect();
+            world.addEffect(effect, effect.getEffectType() + System.currentTimeMillis());
             /*if (seed < 45) { // 45
                 String n = "color" + System.currentTimeMillis();
                 world.addEffect(PongzStart.randomColorPool.obtain(), n);
@@ -78,7 +75,7 @@ public class EntityPowerup implements Collidable, Ploppable {
             //if (seed >= 45 && seed < 90 && ((EntityBall) other).getLastPaddle() == null) {
                 //return;
             //}
-            //PongzStart.eName(nm);
+            PongzStart.eName(effect.getEffectType());
         }
     }
 

@@ -19,6 +19,11 @@ public class EffectRandomColor implements Effect{
     }
 
     @Override
+    public String getEffectType() {
+        return "randomColor";
+    }
+
+    @Override
     public int getWeight() {
         return 45;
     }

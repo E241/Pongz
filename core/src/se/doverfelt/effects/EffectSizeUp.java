@@ -58,7 +58,12 @@ public class EffectSizeUp implements Effect {
     }
 
     @Override
+    public String getEffectType() {
+        return "sizeUp";
+    }
+
+    @Override
     public int getWeight() {
-        return 25;
+        return 45;
     }
 }

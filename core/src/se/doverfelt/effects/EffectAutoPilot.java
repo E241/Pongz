@@ -41,6 +41,11 @@ public class EffectAutoPilot implements Effect {
     }
 
     @Override
+    public String getEffectType() {
+        return "autoPilot";
+    }
+
+    @Override
     public int getWeight() {
         return 5;
     }

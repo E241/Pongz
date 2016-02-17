@@ -50,6 +50,11 @@ public class EffectZoomOut implements Effect {
     }
 
     @Override
+    public String getEffectType() {
+        return "zoom";
+    }
+
+    @Override
     public int getWeight() {
         return 10;
     }
