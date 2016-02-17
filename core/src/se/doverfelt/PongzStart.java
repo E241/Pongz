@@ -1,10 +1,9 @@
 package se.doverfelt;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -15,6 +14,7 @@ import se.doverfelt.entities.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
@@ -48,6 +48,8 @@ public class PongzStart extends ApplicationAdapter {
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
     private static I18NBundle local;
     public static boolean isFlashbanged = false;
+    private boolean running = false;
+    private float dim = 0;
 
     @Override
 	public void create () {
@@ -79,7 +81,7 @@ public class PongzStart extends ApplicationAdapter {
         effectHandler.registerEffect(EffectFlashbang.class);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.graphics.setContinuousRendering(true);
-        local = I18NBundle.createBundle(Gdx.files.internal("lang"));
+        local = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
 
     }
 
@@ -128,11 +130,25 @@ public class PongzStart extends ApplicationAdapter {
         TextureRegionDrawable drawable = new TextureRegionDrawable(region);
         drawable.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();*/
-        genPowerups();
-        tickEffects(delta);
-        tickEntities(delta);
+        if (running) {
+            genPowerups();
+            tickEffects(delta);
+            tickEntities(delta);
+            drawEntities();
+            drawHUD(delta);
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                running = false;
+            }
+        } else {
+            drawEntities();
+            drawHUD(delta);
+            drawPause(delta);
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                running = true;
+                dim = 0;
+            }
+        }
 
-        drawHUD(delta);
        if (pE.tryAcquire()) {
            if (!(pEffect.isEmpty())) {
                for (ParticleEffect p : pEffect) {
@@ -187,6 +203,31 @@ public class PongzStart extends ApplicationAdapter {
         pEffectRemove.clear();
     }
 
+    private void drawEntities() {
+        for (Entity entity : entities.values()) {
+            entity.render(camera);
+        }
+    }
+
+    private void drawPause(int delta) {
+        dim = Math.min(dim+0.005f*delta, 0.75f);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        Gdx.gl.glEnable(Gdx.gl.GL_BLEND);
+        Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(new Color(0, 0, 0, dim));
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+        Gdx.gl.glDisable(Gdx.gl.GL_BLEND);
+
+        if (dim == 0.75f) {
+            batch.begin();
+            pointFnt.draw(batch, local.get("pause"), Gdx.graphics.getWidth() / 2f - (local.get("pause").length() * pointFnt.getSpaceWidth()) / 2f, Gdx.graphics.getHeight() / 2f - pointFnt.getLineHeight() / 2f);
+            batch.end();
+        }
+    }
+
     private void genPowerups() {
         if (System.currentTimeMillis() - lastPowerup >= 5000 && rand.nextInt() < 25){
             String n = "powerup"+System.currentTimeMillis();
@@ -237,7 +278,7 @@ public class PongzStart extends ApplicationAdapter {
                 for (Entity c : entities.values()) {
                     if (c instanceof Collidable) {
                         collisionsChecks++;
-                        if (Intersector.overlaps(((Collidable)c).getRect(), ((Collidable)entity).getRect()) && entity != c) {
+                        if (Intersector.overlaps(((Collidable) c).getRect(), ((Collidable) entity).getRect()) && entity != c) {
                             collisions++;
                             ((Collidable) entity).collide(c);
                         }
@@ -245,7 +286,6 @@ public class PongzStart extends ApplicationAdapter {
                 }
             }
             entity.update(delta);
-            entity.render(camera);
         }
     }
 
