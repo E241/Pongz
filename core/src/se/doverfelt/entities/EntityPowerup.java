@@ -43,9 +43,12 @@ public class EntityPowerup implements Collidable, Ploppable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
+
+            world.addEffect(PongzStart.effectHandler.getRandomEffect(), "" + System.currentTimeMillis());
+
             int seed = r.nextInt(135);
             String nm;
-            if (seed < 45) { // 45
+            /*if (seed < 45) { // 45
                 String n = "color" + System.currentTimeMillis();
                 world.addEffect(PongzStart.randomColorPool.obtain(), n);
                 nm =  "New Color";
@@ -59,7 +62,7 @@ public class EntityPowerup implements Collidable, Ploppable {
                 nm = "Spin!";
             } else if (seed < 120) { // 120
                 String n = "zoom" + System.currentTimeMillis();
-                world.addEffect(PongzStart.zoomOutPool.obtain(), n);
+                world.addEffect(EffectHandler.getPool(), n);
                 nm = "Zoooom!";
             } else if (seed < 130) { // 130
                 String n = "drunk" + System.currentTimeMillis();
@@ -69,13 +72,13 @@ public class EntityPowerup implements Collidable, Ploppable {
                 String n = "ai" + System.currentTimeMillis();
                 world.addEffect(PongzStart.autoPilotPool.obtain(), n);
                 nm = "Auto Pilot!";
-            }
+            }*/
             powerUp.play();
             world.removeEntity(name);
-            if (seed >= 45 && seed < 90 && ((EntityBall) other).getLastPaddle() == null) {
-                return;
-            }
-            PongzStart.eName(nm);
+            //if (seed >= 45 && seed < 90 && ((EntityBall) other).getLastPaddle() == null) {
+                //return;
+            //}
+            //PongzStart.eName(nm);
         }
     }
 

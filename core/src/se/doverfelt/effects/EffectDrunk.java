@@ -50,6 +50,11 @@ public class EffectDrunk implements Effect {
     }
 
     @Override
+    public int getWeight() {
+        return 10;
+    }
+
+    @Override
     public void create(PongzStart world, String name) {
         this.ball = (EntityBall) PongzStart.entities.get("ball");
         timestamp = System.currentTimeMillis();

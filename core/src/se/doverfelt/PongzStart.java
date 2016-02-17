@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import se.doverfelt.effects.*;
@@ -19,7 +21,7 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class PongzStart extends ApplicationAdapter {
-	long timestamp;
+    long timestamp;
     public static HashMap<String, Entity> entities = new HashMap<String, Entity>();
     private HashMap<String, Effect> effects = new HashMap<String, Effect>();
     SpriteBatch batch;
@@ -41,16 +43,11 @@ public class PongzStart extends ApplicationAdapter {
     private boolean debug = false;
     private int collisionsChecks = 0;
     private int collisions = 0;
-    public static Pool<EffectDrunk> drunkPool = Pools.get(EffectDrunk.class);
-    public static Pool<EffectRandomColor> randomColorPool = Pools.get(EffectRandomColor.class);
-    public static Pool<EffectSizeUp> sizeUpPool = Pools.get(EffectSizeUp.class);
-    public static Pool<EffectSpin> spinPool = Pools.get(EffectSpin.class);
-    public static Pool<EffectZoomOut> zoomOutPool = Pools.get(EffectZoomOut.class);
-    public static Pool<EffectAutoPilot> autoPilotPool = Pools.get(EffectAutoPilot.class);
-    public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
     private static ArrayList<ParticleEffect> pEffect = new ArrayList<ParticleEffect>();
     private ArrayList<ParticleEffect> pEffectRemove = new ArrayList<ParticleEffect>();
     private static final Semaphore pE = new Semaphore(1, true);
+    public static EffectHandler effectHandler = new EffectHandler();
+    public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
 
     @Override
 	public void create () {
@@ -73,6 +70,12 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f), "borderTop");
         addEntity(new EntityPaddle(1, 1, false, this), "paddleLeft");
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
+        effectHandler.registerEffect(EffectAutoPilot.class);
+        effectHandler.registerEffect(EffectDrunk.class);
+        effectHandler.registerEffect(EffectRandomColor.class);
+        effectHandler.registerEffect(EffectSizeUp.class);
+        effectHandler.registerEffect(EffectSpin.class);
+        effectHandler.registerEffect(EffectZoomOut.class);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.graphics.setContinuousRendering(true);
 
@@ -118,6 +121,11 @@ public class PongzStart extends ApplicationAdapter {
 		Gdx.gl.glClearColor(r, g, b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        /*batch.begin();
+        TextureRegion region = new TextureRegion(bg, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        TextureRegionDrawable drawable = new TextureRegionDrawable(region);
+        drawable.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();*/
         genPowerups();
         tickEffects(delta);
         tickEntities(delta);
@@ -167,7 +175,8 @@ public class PongzStart extends ApplicationAdapter {
         }
         toRemove.clear();
         for (String toRemoveEffect : toRemoveEffects) {
-            if (effects.get(toRemoveEffect) instanceof EffectDrunk) {
+            effectHandler.free(effects.get(toRemoveEffect).getClass(), effects.get(toRemoveEffect));
+            /*if (effects.get(toRemoveEffect) instanceof EffectDrunk) {
                 drunkPool.free((EffectDrunk) effects.get(toRemoveEffect));
             } else if (effects.get(toRemoveEffect) instanceof EffectRandomColor) {
                 randomColorPool.free((EffectRandomColor) effects.get(toRemoveEffect));
@@ -179,7 +188,7 @@ public class PongzStart extends ApplicationAdapter {
                 zoomOutPool.free((EffectZoomOut) effects.get(toRemoveEffect));
             } else if (effects.get(toRemoveEffect) instanceof EffectAutoPilot) {
                 autoPilotPool.free((EffectAutoPilot) effects.get(toRemoveEffect));
-            }
+            }*/
             effects.remove(toRemoveEffect);
         }
         toRemoveEffects.clear();

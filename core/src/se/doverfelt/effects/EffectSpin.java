@@ -50,4 +50,9 @@ public class EffectSpin implements Effect {
     public String getName() {
         return name;
     }
+
+    @Override
+    public int getWeight() {
+        return 10;
+    }
 }

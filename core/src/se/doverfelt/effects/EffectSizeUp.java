@@ -56,4 +56,9 @@ public class EffectSizeUp implements Effect {
     public String getName() {
         return name;
     }
+
+    @Override
+    public int getWeight() {
+        return 25;
+    }
 }

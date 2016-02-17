@@ -9,5 +9,6 @@ public interface Effect {
     void update(PongzStart world, int delta);
     void create(PongzStart world, String name);
     String getName();
+    int getWeight();
 }
 
