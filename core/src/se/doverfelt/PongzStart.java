@@ -47,6 +47,7 @@ public class PongzStart extends ApplicationAdapter {
     public static EffectHandler effectHandler = new EffectHandler();
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
     private static I18NBundle local;
+    public static boolean isFlashbanged = false;
 
     @Override
 	public void create () {
@@ -69,12 +70,13 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f), "borderTop");
         addEntity(new EntityPaddle(1, 1, false, this), "paddleLeft");
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
-        effectHandler.registerEffect(EffectAutoPilot.class);
+        /*effectHandler.registerEffect(EffectAutoPilot.class);
         effectHandler.registerEffect(EffectDrunk.class);
         effectHandler.registerEffect(EffectRandomColor.class);
         effectHandler.registerEffect(EffectSizeUp.class);
         effectHandler.registerEffect(EffectSpin.class);
-        effectHandler.registerEffect(EffectZoomOut.class);
+        effectHandler.registerEffect(EffectZoomOut.class);*/
+        effectHandler.registerEffect(EffectFlashbang.class);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.graphics.setContinuousRendering(true);
         local = I18NBundle.createBundle(Gdx.files.internal("lang"));
@@ -252,6 +254,10 @@ public class PongzStart extends ApplicationAdapter {
         this.g = g;
         this.b = b;
     }
+    public float getR(){return this.r;}
+    public float getG(){return this.g;}
+    public float getB(){return this.b;}
+
      public static void startParticle(String name, float x, float y, boolean top) {
          while (true) {
              if (pE.tryAcquire()) {
@@ -268,4 +274,8 @@ public class PongzStart extends ApplicationAdapter {
              }
          }
      }
+
+    public HashMap<String, Effect> getEffects() {
+        return effects;
+    }
 }

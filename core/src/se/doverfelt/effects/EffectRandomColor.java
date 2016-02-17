@@ -30,8 +30,14 @@ public class EffectRandomColor implements Effect{
 
     @Override
     public void create(PongzStart world, String name) {
-        Random r = new Random();
-        world.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
-        world.removeEffect(name);
+        if(PongzStart.isFlashbanged){
+            Random r = new Random();
+
+            world.removeEffect(name);
+        }else {
+            Random r = new Random();
+            world.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
+            world.removeEffect(name);
+        }
     }
 }
