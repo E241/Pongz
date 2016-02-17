@@ -4,12 +4,10 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import se.doverfelt.effects.*;
@@ -48,6 +46,7 @@ public class PongzStart extends ApplicationAdapter {
     private static final Semaphore pE = new Semaphore(1, true);
     public static EffectHandler effectHandler = new EffectHandler();
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
+    private static I18NBundle local;
 
     @Override
 	public void create () {
@@ -78,6 +77,7 @@ public class PongzStart extends ApplicationAdapter {
         effectHandler.registerEffect(EffectZoomOut.class);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.graphics.setContinuousRendering(true);
+        local = I18NBundle.createBundle(Gdx.files.internal("lang"));
 
     }
 
@@ -108,7 +108,7 @@ public class PongzStart extends ApplicationAdapter {
 
     public static void eName(String name){
         effectTextOn = true;
-        effectName = name;
+        effectName = local.get(name);
 
     }
 	@Override
@@ -145,13 +145,12 @@ public class PongzStart extends ApplicationAdapter {
        }
        if(effectTextOn){
            if (timestamp2 == 0){ timestamp2 = System.currentTimeMillis();}
-           BitmapFont pF2 = pointFnt;
-           BitmapFont pF3 = pointFnt;
            //String n = effectName.substring(effectName.indexOf(' ')+1, effectName.length());
            //effectName = effectName.substring(0, effectName.indexOf(' ')+2);
            batch.begin();
-           pF3.draw(batch, "Activated:", (Gdx.graphics.getWidth()/2f) - (pF3.getSpaceWidth()*("Activated:".length()/2) ), Gdx.graphics.getHeight()/2f + pF3.getLineHeight());
-           pF2.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pF2.getSpaceWidth()*(effectName.length()/2f) ), Gdx.graphics.getHeight()/2f );
+           pointFnt.draw(batch, local.get("powerupMessage"), (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(local.get("powerupMessage").length()/2) ), Gdx.graphics.getHeight()/2f + pointFnt.getLineHeight());
+           pointFnt.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(effectName.length()/2f) ), Gdx.graphics.getHeight()/2f );
+           //pointFnt.draw(batch, local.format("powerupMessage", effectName), (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(local.get("powerupMessage").length()/2)), Gdx.graphics.getHeight()/2f + pointFnt.getLineHeight());
            //pF3.draw(batch, n, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 
 
@@ -176,19 +175,6 @@ public class PongzStart extends ApplicationAdapter {
         toRemove.clear();
         for (String toRemoveEffect : toRemoveEffects) {
             effectHandler.free(effects.get(toRemoveEffect).getClass(), effects.get(toRemoveEffect));
-            /*if (effects.get(toRemoveEffect) instanceof EffectDrunk) {
-                drunkPool.free((EffectDrunk) effects.get(toRemoveEffect));
-            } else if (effects.get(toRemoveEffect) instanceof EffectRandomColor) {
-                randomColorPool.free((EffectRandomColor) effects.get(toRemoveEffect));
-            } else if (effects.get(toRemoveEffect) instanceof EffectSizeUp) {
-                sizeUpPool.free((EffectSizeUp) effects.get(toRemoveEffect));
-            } else if (effects.get(toRemoveEffect) instanceof EffectSpin) {
-                spinPool.free((EffectSpin) effects.get(toRemoveEffect));
-            } else if (effects.get(toRemoveEffect) instanceof EffectZoomOut) {
-                zoomOutPool.free((EffectZoomOut) effects.get(toRemoveEffect));
-            } else if (effects.get(toRemoveEffect) instanceof EffectAutoPilot) {
-                autoPilotPool.free((EffectAutoPilot) effects.get(toRemoveEffect));
-            }*/
             effects.remove(toRemoveEffect);
         }
         toRemoveEffects.clear();

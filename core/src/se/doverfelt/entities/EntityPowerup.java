@@ -45,36 +45,8 @@ public class EntityPowerup implements Collidable, Ploppable {
         if (other instanceof EntityBall) {
             Effect effect = PongzStart.effectHandler.getRandomEffect();
             world.addEffect(effect, effect.getEffectType() + System.currentTimeMillis());
-            /*if (seed < 45) { // 45
-                String n = "color" + System.currentTimeMillis();
-                world.addEffect(PongzStart.randomColorPool.obtain(), n);
-                nm =  "New Color";
-            } else if (seed < 90) { // 90
-                String n = "sizeUp" + System.currentTimeMillis();
-                world.addEffect(PongzStart.sizeUpPool.obtain(), n);
-                nm = "Extra carbs!";
-            } else if (seed < 100) { // 100
-                String n = "spin" + System.currentTimeMillis();
-                world.addEffect(PongzStart.spinPool.obtain(), n);
-                nm = "Spin!";
-            } else if (seed < 120) { // 120
-                String n = "zoom" + System.currentTimeMillis();
-                world.addEffect(EffectHandler.getPool(), n);
-                nm = "Zoooom!";
-            } else if (seed < 130) { // 130
-                String n = "drunk" + System.currentTimeMillis();
-                world.addEffect(PongzStart.drunkPool.obtain(), n);
-                nm = "Drunk!";
-            } else {
-                String n = "ai" + System.currentTimeMillis();
-                world.addEffect(PongzStart.autoPilotPool.obtain(), n);
-                nm = "Auto Pilot!";
-            }*/
             powerUp.play();
             world.removeEntity(name);
-            //if (seed >= 45 && seed < 90 && ((EntityBall) other).getLastPaddle() == null) {
-                //return;
-            //}
             PongzStart.eName(effect.getEffectType());
         }
     }
