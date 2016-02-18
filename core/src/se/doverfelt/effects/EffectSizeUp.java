@@ -50,6 +50,7 @@ public class EffectSizeUp implements Effect {
         this.name = name;
         timestamp = System.currentTimeMillis();
         origHeight = paddle.getOrigHeight();
+        heightAdd = 0;
     }
 
     @Override

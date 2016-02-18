@@ -7,17 +7,27 @@ import se.doverfelt.PongzStart;
  */
 public class EffectFlashbang implements Effect {
     private String name;
-    private float r, g, b, timestamp;
+    private float r, g, b, time = 0;
+    private boolean isRemoved = false;
 
     @Override
     public void update(PongzStart world, int delta) {
-        float time = System.currentTimeMillis()- timestamp;
-        float tempR, tempG, tempB;
-        if (time < 10000f){
-            tempR = 1-((1-r)*(time/10000));
-            tempG = 1-((1-g)*(time/10000));
-            tempB = 1-((1-b)*(time/10000));
-            world.setColor(tempR, tempG, tempB);
+        if (!isRemoved) {
+            time += (float) delta;
+            float tempR = 0, tempG = 0, tempB = 0;
+            if (time < 10000f) {
+                tempR = 1 - ((1 - r) * (time / 10000f));
+                tempG = 1 - ((1 - g) * (time / 10000f));
+                tempB = 1 - ((1 - b) * (time / 10000f));
+                world.setColor(tempR, tempG, tempB);
+            }
+            if (tempB <= r + 0.01 && tempG <= g + 0.01 && tempR <= r + 0.01) {
+                world.setColor(r, g, b);
+                PongzStart.isFlashbanged = false;
+                    world.removeEffect(name);
+            }
+        } else {
+            isRemoved = false;
         }
     }
 
@@ -26,12 +36,13 @@ public class EffectFlashbang implements Effect {
         this.name = name;
         if (PongzStart.isFlashbanged){
             for (String s : world.getEffects().keySet()) {
-                if (s.contains(getEffectType())) {
+                if (s.contains(getEffectType()) && !s.equals(name)) {
                     EffectFlashbang e = (EffectFlashbang)world.getEffects().get(s);
                     r = e.getR();
                     g = e.getG();
                     b = e.getB();
                     world.removeEffect(s);
+                    isRemoved = true;
                 }
             }
         }else {
@@ -40,7 +51,7 @@ public class EffectFlashbang implements Effect {
             g = world.getG();
             b = world.getB();
         }
-        timestamp = System.currentTimeMillis();
+        time = 0;
         world.setColor(1,1,1);
     }
 
