@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
@@ -82,6 +81,7 @@ public class PongzStart extends ApplicationAdapter {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.graphics.setContinuousRendering(true);
         local = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
+        //local = I18NBundle.createBundle(Gdx.files.internal("lang"), new Locale("es", "ES"));
 
     }
 
@@ -260,7 +260,7 @@ public class PongzStart extends ApplicationAdapter {
             font.draw(batch, "Entites: " + entities.size() + "\n" + entitiesOut, 1, Gdx.graphics.getHeight() - font.getLineHeight() * 2 - 1);
             font.draw(batch, "Effects: " + effects.size() + "\n" + effectsOut, 1, font.getLineHeight() * (effects.size() + 2));
             font.draw(batch, "CollisionChecks: " + collisionsChecks + "\nCollisions: " + collisions, 1, font.getLineHeight() * (effects.size() + 4));
-            font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()) + "B | Native Heap: " + (Gdx.app.getNativeHeap()) + "B", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
+            font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()/1024/1024) + "MB | Native Heap: " + (Gdx.app.getNativeHeap()/1024/1024) + "B", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
         }
 
         String pl = "" + PointsL, pr = "" + PointsR;

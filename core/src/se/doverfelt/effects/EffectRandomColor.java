@@ -32,7 +32,11 @@ public class EffectRandomColor implements Effect{
     public void create(PongzStart world, String name) {
         if(PongzStart.isFlashbanged){
             Random r = new Random();
-
+            for (String s : world.getEffects().keySet()) {
+                if (s.contains(PongzStart.effectHandler.getEffectType(EffectFlashbang.class))) {
+                    ((EffectFlashbang)world.getEffects().get(s)).setColors(r.nextFloat(), r.nextFloat(), r.nextFloat());
+                }
+            }
             world.removeEffect(name);
         }else {
             Random r = new Random();

@@ -67,9 +67,15 @@ public class EffectFlashbang implements Effect {
 
     @Override
     public int getWeight() {
-        return 25;
+        return 15;
     }
     public float getR(){return this.r;}
     public float getG(){return this.g;}
     public float getB(){return this.b;}
+
+    public void setColors(float r, float g, float b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+    }
 }

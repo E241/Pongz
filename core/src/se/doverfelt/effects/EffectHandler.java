@@ -15,10 +15,18 @@ public class EffectHandler {
     private HashMap<Class, Pool> pools = new HashMap<Class, Pool>();
 
     private ArrayList<Class<? extends Effect>> effectRegistry = new ArrayList<Class<? extends Effect>>();
+    private HashMap<Class<? extends Effect>, String> types = new HashMap<Class<? extends Effect>, String>();
 
     public void registerEffect(Class<? extends Effect> effect) {
         effectRegistry.add(effect);
         pools.put(effect, Pools.get(effect));
+        Effect temp = (Effect)pools.get(effect).obtain();
+        types.put(effect, temp.getEffectType());
+        pools.get(effect).free(temp);
+    }
+
+    public String getEffectType(Class<? extends Effect> effect) {
+        return types.get(effect);
     }
 
     public Effect getRandomEffect() {
