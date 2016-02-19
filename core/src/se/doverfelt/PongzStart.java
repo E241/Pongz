@@ -18,6 +18,7 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 public class PongzStart extends ApplicationAdapter {
+    private static Pool<ParticleEffect> particlePool = Pools.get(ParticleEffect.class);
     long timestamp;
     public static HashMap<String, Entity> entities = new HashMap<String, Entity>();
     private HashMap<String, Effect> effects = new HashMap<String, Effect>();
@@ -200,7 +201,7 @@ public class PongzStart extends ApplicationAdapter {
         toRemoveEffects.clear();
 
         for (ParticleEffect p : pEffectRemove) {
-            p.dispose();
+            particlePool.free(p);
             pEffect.remove(p);
         }
         pEffectRemove.clear();
@@ -308,7 +309,7 @@ public class PongzStart extends ApplicationAdapter {
     public float getB(){return this.b;}
 
      public static void startParticle(String name, float x, float y, boolean top) {
-         ParticleEffect p = new ParticleEffect();
+         ParticleEffect p = particlePool.obtain();
          p.load(Gdx.files.internal(name), Gdx.files.internal("Particles"));
          p.setPosition(x, y);
          if (top) {
@@ -316,7 +317,6 @@ public class PongzStart extends ApplicationAdapter {
          }
          pEffect.add(p);
          p.start();
-         //pEffect.get(pEffect.indexOf(p)).start();
      }
 
     public HashMap<String, Effect> getEffects() {
