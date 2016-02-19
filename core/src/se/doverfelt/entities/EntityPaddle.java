@@ -2,13 +2,11 @@ package se.doverfelt.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.*;
 import se.doverfelt.PongzStart;
 
 
@@ -21,7 +19,7 @@ public class EntityPaddle implements Collidable {
 
     private SpriteBatch batch;
     private Sprite img;
-    private float x,y , width = 2f, height = 15, yv = 0.15f;
+    private float x,y , width = 2f, height = 15, yv = 150f;
     private final float origHeight;
     boolean isRight;
     private Rectangle bounds;
@@ -53,7 +51,7 @@ public class EntityPaddle implements Collidable {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(float delta) {
 
         if (height != origHeight && !powerUpHUD.isVisible()) {
             powerUpHUD.setVisible(true);

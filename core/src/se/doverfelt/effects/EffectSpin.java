@@ -1,7 +1,5 @@
 package se.doverfelt.effects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 import se.doverfelt.PongzStart;
 
 /**
@@ -14,7 +12,7 @@ public class EffectSpin implements Effect {
     private String name;
 
     @Override
-    public void update(PongzStart world, int delta) {
+    public void update(PongzStart world, float delta) {
         world.camera.rotate(1f);
         //world.camera.zoom = 10f;
         rotation += 1f;

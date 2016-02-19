@@ -37,7 +37,7 @@ public class EntityPowerUpHUD implements Entity {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(float delta) {
         img.setPosition(parent.getX(), parent.getY() + parent.getHeight());
     }
 

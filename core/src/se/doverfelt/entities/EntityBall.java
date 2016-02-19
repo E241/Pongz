@@ -4,16 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.*;
 import se.doverfelt.PongzStart;
 
 
-import java.util.HashMap;
 import java.util.Random;
 
 
@@ -27,7 +23,7 @@ public class EntityBall implements Collidable {
     private SpriteBatch batch;
     private Sprite img;
     private float x = 3, y = 3;
-    public float xv = 0.1f, yv =0.1f;
+    public float xv = 100f, yv =100f;
     private final float WIDTH = 5, HEIGHT = 5;
     private OrthographicCamera camera;
     private Rectangle bounds;
@@ -35,7 +31,7 @@ public class EntityBall implements Collidable {
     private EntityPaddle lastPaddle = null;
     private boolean b = false;
     private long resetTime;
-    private float maxVel = 2.5f;
+    private float maxVel = 2500f;
     private long ts1= 0, ts2 = 0;
 
 
@@ -62,7 +58,7 @@ public class EntityBall implements Collidable {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(float delta) {
         if (System.currentTimeMillis() - resetTime > 500) {
 
             if (xv >= 0) {
@@ -115,7 +111,7 @@ public class EntityBall implements Collidable {
 
     private void reset() {
         Random r = new Random();
-        yv = r.nextFloat()*0.1f;
+        yv = r.nextFloat()*10;
 
         if (b){
             xv = -xv;
@@ -167,30 +163,30 @@ public class EntityBall implements Collidable {
                 if (x < temp) {
                     xv = Math.abs(xv);
                     if (EntityPaddle.isMovingL == 1) {
-                        yv = (float) (yv + 0.02);
+                        yv = (yv + 20);
                     } else if (EntityPaddle.isMovingL == 2) {
-                        yv = (float) (yv - 0.02);
+                        yv = (yv - 20);
                     }
                 }
                 if (x > temp) {
                     xv = -Math.abs(xv);
                     if (EntityPaddle.isMovingR == 1) {
-                        yv = (float) (yv + 0.0251);
+                        yv = (yv + 25.1f);
                     } else if (EntityPaddle.isMovingR == 2) {
-                        yv = (float) (yv - 0.0251);
+                        yv = (yv - 25.1f);
                     }
                 }
             } else if (PongzStart.Styrning == 2){
                 if (x < temp) {
                     xv = Math.abs(xv);
                     float temp2 = y - EntityPaddle.ly - (EntityPaddle.lHeight/2);
-                    yv += (temp2/100);
+                    yv += (temp2*10);
 
                 }
                 if (x > temp) {
                     xv = -Math.abs(xv);
                     float temp2 = y - EntityPaddle.ry - (EntityPaddle.rHeight/2);
-                    yv += (temp2/100);
+                    yv += (temp2*10);
                 }
             }
             long id = bounce.play();

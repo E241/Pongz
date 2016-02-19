@@ -13,18 +13,18 @@ public class EffectZoomOut implements Effect {
     private boolean out = false;
 
     @Override
-    public void update(PongzStart world, int delta) {
+    public void update(PongzStart world, float delta) {
         counter += delta;
 
-        if (counter < 11000 && zoom < 6f && !out) zoom += 0.01f*delta;
+        if (counter < 11 && zoom < 6f && !out) zoom += 10f*delta;
 
         if (zoom > 6 && !out) out = true;
 
-        if (counter < 11000 && counter > 9000 && zoom > 1f && out) {
-            zoom -= 0.01f*delta;
+        if (counter < 11 && counter > 9 && zoom > 1f && out) {
+            zoom -= 10f*delta;
         }
 
-        if (counter >= 11000) {
+        if (counter >= 11) {
             world.camera.zoom = 1f;
             world.removeEffect(name);
             return;

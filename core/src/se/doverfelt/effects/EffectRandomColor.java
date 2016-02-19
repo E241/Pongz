@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class EffectRandomColor implements Effect{
     @Override
-    public void update(PongzStart world, int delta) {
+    public void update(PongzStart world, float delta) {
 
     }
 

@@ -42,13 +42,13 @@ public class PongzStart extends ApplicationAdapter {
     private int collisions = 0;
     private static ArrayList<ParticleEffect> pEffect = new ArrayList<ParticleEffect>();
     private ArrayList<ParticleEffect> pEffectRemove = new ArrayList<ParticleEffect>();
-    private static final Semaphore pE = new Semaphore(1, true);
     public static EffectHandler effectHandler = new EffectHandler();
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
     private static I18NBundle local;
     public static boolean isFlashbanged = false;
     private boolean running = false;
     private float dim = 0;
+    SpriteBatch particleBatch;
 
     @Override
 	public void create () {
@@ -64,6 +64,7 @@ public class PongzStart extends ApplicationAdapter {
         timestamp = System.currentTimeMillis();
         lastPowerup = System.currentTimeMillis();
         batch = new SpriteBatch();
+        particleBatch = new SpriteBatch();
         pointFnt = new BitmapFont(Gdx.files.internal("big.fnt"));
         font = new BitmapFont();
         addEntity(new EntityBall(camera), "ball");
@@ -117,7 +118,7 @@ public class PongzStart extends ApplicationAdapter {
     }
 	@Override
 	public void render () {
-        int delta = (int) (System.currentTimeMillis() - timestamp);
+        float delta = (System.currentTimeMillis() - timestamp)/1000f;
         timestamp = System.currentTimeMillis();
         collisionsChecks = 0;
         collisions = 0;
@@ -149,18 +150,19 @@ public class PongzStart extends ApplicationAdapter {
             }
         }
 
-       if (pE.tryAcquire()) {
-           if (!(pEffect.isEmpty())) {
-               for (ParticleEffect p : pEffect) {
-                   if (p.isComplete()) {
-                       pEffectRemove.add(p);
-                   }
-                   p.update(delta);
-                   p.draw(batch, delta);
-               }
-           }
-           pE.release();
-       }
+        if (!(pEffect.isEmpty())) {
+            for (ParticleEffect p : pEffect) {
+                if (p.isComplete()) {
+                    pEffectRemove.add(p);
+                }
+                p.scaleEffect(camera.viewportHeight/Gdx.graphics.getHeight());
+                p.update(delta);
+                particleBatch.setProjectionMatrix(camera.combined);
+                particleBatch.begin();
+                p.draw(particleBatch, delta);
+                particleBatch.end();
+            }
+        }
        if(effectTextOn){
            if (timestamp2 == 0){ timestamp2 = System.currentTimeMillis();}
            //String n = effectName.substring(effectName.indexOf(' ')+1, effectName.length());
@@ -198,6 +200,7 @@ public class PongzStart extends ApplicationAdapter {
         toRemoveEffects.clear();
 
         for (ParticleEffect p : pEffectRemove) {
+            p.dispose();
             pEffect.remove(p);
         }
         pEffectRemove.clear();
@@ -209,17 +212,23 @@ public class PongzStart extends ApplicationAdapter {
         }
     }
 
-    private void drawPause(int delta) {
-        dim = Math.min(dim+0.005f*delta, 0.75f);
+    @Override
+    public void pause() {
+        running = false;
+        Gdx.input.vibrate(500);
+    }
+
+    private void drawPause(float delta) {
+        dim = Math.min(dim+2*delta, 0.75f);
         ShapeRenderer shapeRenderer = new ShapeRenderer();
-        Gdx.gl.glEnable(Gdx.gl.GL_BLEND);
-        Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(0, 0, 0, dim));
         shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         shapeRenderer.end();
-        Gdx.gl.glDisable(Gdx.gl.GL_BLEND);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
 
         if (dim == 0.75f) {
             batch.begin();
@@ -236,13 +245,13 @@ public class PongzStart extends ApplicationAdapter {
         if (System.currentTimeMillis()-lastPowerup >= 5000) lastPowerup = System.currentTimeMillis();
     }
 
-    private void tickEffects(int delta) {
+    private void tickEffects(float delta) {
         for (Effect effect : effects.values()) {
             effect.update(this, delta);
         }
     }
 
-    private void drawHUD(int delta) {
+    private void drawHUD(float delta) {
 
         String entitiesOut = "";
         for (String s : entities.keySet()) {
@@ -271,7 +280,7 @@ public class PongzStart extends ApplicationAdapter {
         camera.update();
     }
 
-    private void tickEntities(int delta) {
+    private void tickEntities(float delta) {
         for (Entity entity : entities.values()) {
             if (entity instanceof Collidable) {
                 collisionsChecks++;
@@ -299,20 +308,15 @@ public class PongzStart extends ApplicationAdapter {
     public float getB(){return this.b;}
 
      public static void startParticle(String name, float x, float y, boolean top) {
-         while (true) {
-             if (pE.tryAcquire()) {
-                 ParticleEffect p = new ParticleEffect();
-                 p.load(Gdx.files.internal(name), Gdx.files.internal("Particles"));
-                 p.setPosition(x, y);
-                 if (top) {
-                     p.flipY();
-                 }
-                 pEffect.add(p);
-                 pEffect.get(pEffect.indexOf(p)).start();
-                 pE.release();
-                 break;
-             }
+         ParticleEffect p = new ParticleEffect();
+         p.load(Gdx.files.internal(name), Gdx.files.internal("Particles"));
+         p.setPosition(x, y);
+         if (top) {
+             p.flipY();
          }
+         pEffect.add(p);
+         p.start();
+         //pEffect.get(pEffect.indexOf(p)).start();
      }
 
     public HashMap<String, Effect> getEffects() {

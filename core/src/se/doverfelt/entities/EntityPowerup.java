@@ -43,6 +43,7 @@ public class EntityPowerup implements Collidable, Ploppable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
+            PongzStart.startParticle("Particles/Boom", x, y, false);
             Effect effect = PongzStart.effectHandler.getRandomEffect();
             world.addEffect(effect, effect.getEffectType() + System.currentTimeMillis());
             powerUp.play();
@@ -60,7 +61,7 @@ public class EntityPowerup implements Collidable, Ploppable {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(float delta) {
         img.setPosition(x, y);
         bounds.setPosition(x, y);
     }

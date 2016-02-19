@@ -16,7 +16,7 @@ public class EffectAutoPilot implements Effect {
     private long timeStamp;
 
     @Override
-    public void update(PongzStart world, int delta) {
+    public void update(PongzStart world, float delta) {
         paddle.setY((ball.getY()-paddle.getHeight()/2f));
         if (System.currentTimeMillis() - timeStamp > 10000) {
             world.removeEffect(name);
