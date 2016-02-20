@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
-import java.util.concurrent.Semaphore;
 
 public class PongzStart extends ApplicationAdapter {
     private static Pool<ParticleEffect> particlePool = Pools.get(ParticleEffect.class);
@@ -81,7 +80,6 @@ public class PongzStart extends ApplicationAdapter {
         effectHandler.registerEffect(EffectZoomOut.class);
         effectHandler.registerEffect(EffectFlashbang.class);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        Gdx.graphics.setContinuousRendering(true);
         local = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
         //local = I18NBundle.createBundle(Gdx.files.internal("lang"), new Locale("es", "ES"));
 
@@ -125,7 +123,7 @@ public class PongzStart extends ApplicationAdapter {
         collisions = 0;
 
 		Gdx.gl.glClearColor(r, g, b, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         /*batch.begin();
         TextureRegion region = new TextureRegion(bg, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
@@ -270,7 +268,7 @@ public class PongzStart extends ApplicationAdapter {
             font.draw(batch, "Entites: " + entities.size() + "\n" + entitiesOut, 1, Gdx.graphics.getHeight() - font.getLineHeight() * 2 - 1);
             font.draw(batch, "Effects: " + effects.size() + "\n" + effectsOut, 1, font.getLineHeight() * (effects.size() + 2));
             font.draw(batch, "CollisionChecks: " + collisionsChecks + "\nCollisions: " + collisions, 1, font.getLineHeight() * (effects.size() + 4));
-            font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()/1024/1024) + "MB | Native Heap: " + (Gdx.app.getNativeHeap()/1024/1024) + "B", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
+            font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()/1024/1024) + "MB | Native Heap: " + (Gdx.app.getNativeHeap()/1024/1024) + "MB", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
         }
 
         String pl = "" + PointsL, pr = "" + PointsR;
