@@ -78,11 +78,11 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
         effectHandler.registerEffect(EffectAutoPilot.class);
         effectHandler.registerEffect(EffectDrunk.class);
-        //effectHandler.registerEffect(EffectRandomColor.class);
-        //effectHandler.registerEffect(EffectSizeUp.class);
+        effectHandler.registerEffect(EffectRandomColor.class);
+        effectHandler.registerEffect(EffectSizeUp.class);
         effectHandler.registerEffect(EffectSpin.class);
         effectHandler.registerEffect(EffectZoomOut.class);
-        //effectHandler.registerEffect(EffectFlashbang.class);
+        effectHandler.registerEffect(EffectFlashbang.class);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         local = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
         //local = I18NBundle.createBundle(Gdx.files.internal("lang"), new Locale("es", "ES"));
