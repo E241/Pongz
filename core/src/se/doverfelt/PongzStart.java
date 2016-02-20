@@ -6,11 +6,13 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import se.doverfelt.effects.*;
 import se.doverfelt.entities.*;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -22,7 +24,7 @@ public class PongzStart extends ApplicationAdapter {
     public static HashMap<String, Entity> entities = new HashMap<String, Entity>();
     private HashMap<String, Effect> effects = new HashMap<String, Effect>();
     SpriteBatch batch;
-    BitmapFont font;
+    public BitmapFont font;
     BitmapFont pointFnt;
     public OrthographicCamera camera;
     public float aspect;
@@ -49,6 +51,8 @@ public class PongzStart extends ApplicationAdapter {
     private boolean running = false;
     private float dim = 0;
     SpriteBatch particleBatch;
+    private PerformanceCounter tickCounter;
+    private PerformanceCounter renderCounter;
 
     @Override
 	public void create () {
@@ -74,15 +78,16 @@ public class PongzStart extends ApplicationAdapter {
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
         effectHandler.registerEffect(EffectAutoPilot.class);
         effectHandler.registerEffect(EffectDrunk.class);
-        effectHandler.registerEffect(EffectRandomColor.class);
-        effectHandler.registerEffect(EffectSizeUp.class);
+        //effectHandler.registerEffect(EffectRandomColor.class);
+        //effectHandler.registerEffect(EffectSizeUp.class);
         effectHandler.registerEffect(EffectSpin.class);
         effectHandler.registerEffect(EffectZoomOut.class);
-        effectHandler.registerEffect(EffectFlashbang.class);
+        //effectHandler.registerEffect(EffectFlashbang.class);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         local = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
         //local = I18NBundle.createBundle(Gdx.files.internal("lang"), new Locale("es", "ES"));
-
+        tickCounter = new PerformanceCounter("Tick");
+        renderCounter = new PerformanceCounter("Render");
     }
 
     public void addEntity(Entity entity, String name) {
@@ -117,14 +122,17 @@ public class PongzStart extends ApplicationAdapter {
     }
 	@Override
 	public void render () {
+        tickCounter.start();
         float delta = (System.currentTimeMillis() - timestamp)/1000f;
         timestamp = System.currentTimeMillis();
         collisionsChecks = 0;
         collisions = 0;
+        tickCounter.stop();
 
+        renderCounter.start();
 		Gdx.gl.glClearColor(r, g, b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
+        renderCounter.stop();
         /*batch.begin();
         TextureRegion region = new TextureRegion(bg, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
         TextureRegionDrawable drawable = new TextureRegionDrawable(region);
@@ -151,21 +159,26 @@ public class PongzStart extends ApplicationAdapter {
 
         if (!(pEffect.isEmpty())) {
             for (ParticleEffect p : pEffect) {
+                tickCounter.start();
                 if (p.isComplete()) {
                     pEffectRemove.add(p);
                 }
                 p.scaleEffect(camera.viewportHeight/Gdx.graphics.getHeight());
                 p.update(delta);
+                tickCounter.stop();
+                renderCounter.start();
                 particleBatch.setProjectionMatrix(camera.combined);
                 particleBatch.begin();
                 p.draw(particleBatch, delta);
                 particleBatch.end();
+                renderCounter.stop();
             }
         }
        if(effectTextOn){
            if (timestamp2 == 0){ timestamp2 = System.currentTimeMillis();}
            //String n = effectName.substring(effectName.indexOf(' ')+1, effectName.length());
            //effectName = effectName.substring(0, effectName.indexOf(' ')+2);
+           renderCounter.start();
            batch.begin();
            pointFnt.draw(batch, local.get("powerupMessage"), (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(local.get("powerupMessage").length()/2) ), Gdx.graphics.getHeight()/2f + pointFnt.getLineHeight());
            pointFnt.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(effectName.length()/2f) ), Gdx.graphics.getHeight()/2f );
@@ -174,15 +187,18 @@ public class PongzStart extends ApplicationAdapter {
 
 
            batch.end();
+           renderCounter.stop();
+           tickCounter.start();
            if( 2000 < System.currentTimeMillis() - timestamp2){
                effectTextOn = false;
                timestamp2 = 0;
            }
+           tickCounter.stop();
        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) debug = !debug;
-
+        tickCounter.start();
         for (String s : toRemove) {
             if (entities.get(s) instanceof EntityPowerup) {
                 powerupPool.free((EntityPowerup)entities.get(s));
@@ -203,12 +219,17 @@ public class PongzStart extends ApplicationAdapter {
             pEffect.remove(p);
         }
         pEffectRemove.clear();
+        tickCounter.stop();
+        tickCounter.tick(delta);
+        renderCounter.tick(delta);
     }
 
     private void drawEntities() {
+        renderCounter.start();
         for (Entity entity : entities.values()) {
             entity.render(camera);
         }
+        renderCounter.stop();
     }
 
     @Override
@@ -218,6 +239,7 @@ public class PongzStart extends ApplicationAdapter {
     }
 
     private void drawPause(float delta) {
+        renderCounter.start();
         dim = Math.min(dim+2*delta, 0.75f);
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -234,24 +256,29 @@ public class PongzStart extends ApplicationAdapter {
             pointFnt.draw(batch, local.get("pause"), Gdx.graphics.getWidth() / 2f - (local.get("pause").length() * pointFnt.getSpaceWidth()) / 2f, Gdx.graphics.getHeight() / 2f - pointFnt.getLineHeight() / 2f);
             batch.end();
         }
+        renderCounter.stop();
     }
 
     private void genPowerups() {
+        tickCounter.start();
         if (System.currentTimeMillis() - lastPowerup >= 5000 && rand.nextInt() < 25){
             String n = "powerup"+System.currentTimeMillis();
             addPloppable(powerupPool.obtain(), n, Math.max((rand.nextFloat()*200)-10-3, 3), Math.max((rand.nextFloat()*200*aspect)-10-2, 2));
         }
         if (System.currentTimeMillis()-lastPowerup >= 5000) lastPowerup = System.currentTimeMillis();
+        tickCounter.stop();
     }
 
     private void tickEffects(float delta) {
+        tickCounter.start();
         for (Effect effect : effects.values()) {
             effect.update(this, delta);
         }
+        tickCounter.stop();
     }
 
     private void drawHUD(float delta) {
-
+        renderCounter.start();
         String entitiesOut = "";
         for (String s : entities.keySet()) {
             entitiesOut += s + "\n";
@@ -269,6 +296,10 @@ public class PongzStart extends ApplicationAdapter {
             font.draw(batch, "Effects: " + effects.size() + "\n" + effectsOut, 1, font.getLineHeight() * (effects.size() + 2));
             font.draw(batch, "CollisionChecks: " + collisionsChecks + "\nCollisions: " + collisions, 1, font.getLineHeight() * (effects.size() + 4));
             font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()/1024/1024) + "MB | Native Heap: " + (Gdx.app.getNativeHeap()/1024/1024) + "MB", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
+            //MessageFormat.format("{0,number,#.##%}", tickCounter.current)
+            //font.draw(batch, "Tick: " + MessageFormat.format("{0,number,#.####%}", tickCounter.current), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 4)));
+            //font.draw(batch, "Render: " + MessageFormat.format("{0,number,#.####%}", renderCounter.current), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 5)));
+            //font.draw(batch, "Sum: " + (renderCounter.load.latest + tickCounter.load.latest), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 6)));
         }
 
         String pl = "" + PointsL, pr = "" + PointsR;
@@ -277,9 +308,11 @@ public class PongzStart extends ApplicationAdapter {
         batch.draw(white, Gdx.graphics.getWidth()/2f-2, 0, 4f, Gdx.graphics.getHeight());
         batch.end();
         camera.update();
+        renderCounter.stop();
     }
 
     private void tickEntities(float delta) {
+        tickCounter.start();
         for (Entity entity : entities.values()) {
             if (entity instanceof Collidable) {
                 collisionsChecks++;
@@ -295,6 +328,7 @@ public class PongzStart extends ApplicationAdapter {
             }
             entity.update(delta);
         }
+        tickCounter.stop();
     }
 
     public void setColor(float r, float g, float b) {

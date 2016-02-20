@@ -8,7 +8,7 @@ import se.doverfelt.PongzStart;
 public class EffectZoomOut implements Effect {
 
     private String name;
-    private int counter;
+    private float counter;
     private float zoom = 1f;
     private boolean out = false;
 
@@ -18,7 +18,7 @@ public class EffectZoomOut implements Effect {
 
         if (counter < 11 && zoom < 6f && !out) zoom += 10f*delta;
 
-        if (zoom > 6 && !out) out = true;
+        if (zoom >= 6 && !out) out = true;
 
         if (counter < 11 && counter > 9 && zoom > 1f && out) {
             zoom -= 10f*delta;
@@ -30,7 +30,7 @@ public class EffectZoomOut implements Effect {
             return;
         }
 
-        world.camera.zoom = Math.min(zoom, 6f);
+        world.camera.zoom = Math.max(Math.min(zoom, 6f), 1f);
     }
 
     @Override
