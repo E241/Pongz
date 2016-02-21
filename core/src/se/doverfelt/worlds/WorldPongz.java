@@ -1,4 +1,4 @@
-package se.doverfelt;
+package se.doverfelt.worlds;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import se.doverfelt.Start;
 import se.doverfelt.effects.*;
 import se.doverfelt.entities.*;
 
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
 
-public class PongzStart extends ApplicationAdapter {
+public class WorldPongz implements World {
     private static Pool<ParticleEffect> particlePool = Pools.get(ParticleEffect.class);
     long timestamp;
     public static HashMap<String, Entity> entities = new HashMap<String, Entity>();
@@ -53,9 +54,11 @@ public class PongzStart extends ApplicationAdapter {
     SpriteBatch particleBatch;
     private PerformanceCounter tickCounter;
     private PerformanceCounter renderCounter;
+    private Start start;
 
     @Override
-	public void create () {
+	public void create (Start start) {
+        this.start = start;
         aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
         camera = new OrthographicCamera(200f, 200f*aspect);
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
@@ -236,6 +239,11 @@ public class PongzStart extends ApplicationAdapter {
     public void pause() {
         running = false;
         Gdx.input.vibrate(500);
+    }
+
+    @Override
+    public void resume() {
+
     }
 
     private void drawPause(float delta) {

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.effects.*;
 
 import java.util.Random;
@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public class EntityPowerup implements Collidable, Ploppable {
 
-    private PongzStart world;
+    private WorldPongz world;
     private final Sprite img;
     private final SpriteBatch batch;
     private final Rectangle bounds;
@@ -43,12 +43,12 @@ public class EntityPowerup implements Collidable, Ploppable {
     @Override
     public void collide(Entity other) {
         if (other instanceof EntityBall) {
-            PongzStart.startParticle("Particles/Boom", x, y, false);
-            Effect effect = PongzStart.effectHandler.getRandomEffect();
+            WorldPongz.startParticle("Particles/Boom", x, y, false);
+            Effect effect = WorldPongz.effectHandler.getRandomEffect();
             world.addEffect(effect, effect.getEffectType() + System.currentTimeMillis());
             powerUp.play();
             world.removeEntity(name);
-            PongzStart.eName(effect.getEffectType());
+            WorldPongz.eName(effect.getEffectType());
         }
     }
 
@@ -74,7 +74,7 @@ public class EntityPowerup implements Collidable, Ploppable {
     }
 
     @Override
-    public void create(String name, float x, float y, PongzStart world) {
+    public void create(String name, float x, float y, WorldPongz world) {
         this.name = name;
         this.world = world;
         this.x = x;

@@ -1,6 +1,6 @@
 package se.doverfelt.effects;
 
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 
 /**
  * Created by rickard on 2016-02-10.
@@ -13,7 +13,7 @@ public class EffectZoomOut implements Effect {
     private boolean out = false;
 
     @Override
-    public void update(PongzStart world, float delta) {
+    public void update(WorldPongz world, float delta) {
         counter += delta;
 
         if (counter < 11 && zoom < 6f && !out) zoom += 10f*delta;
@@ -34,7 +34,7 @@ public class EffectZoomOut implements Effect {
     }
 
     @Override
-    public void create(PongzStart world, String name) {
+    public void create(WorldPongz world, String name) {
         if (world.camera.zoom != 1f) {
             world.removeEffect(name);
         }

@@ -1,6 +1,6 @@
 package se.doverfelt.effects;
 
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 
 import java.util.Random;
 
@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class EffectRandomColor implements Effect{
     @Override
-    public void update(PongzStart world, float delta) {
+    public void update(WorldPongz world, float delta) {
 
     }
 
@@ -29,11 +29,11 @@ public class EffectRandomColor implements Effect{
     }
 
     @Override
-    public void create(PongzStart world, String name) {
-        if(PongzStart.isFlashbanged){
+    public void create(WorldPongz world, String name) {
+        if(WorldPongz.isFlashbanged){
             Random r = new Random();
             for (String s : world.getEffects().keySet()) {
-                if (s.contains(PongzStart.effectHandler.getEffectType(EffectFlashbang.class))) {
+                if (s.contains(WorldPongz.effectHandler.getEffectType(EffectFlashbang.class))) {
                     ((EffectFlashbang)world.getEffects().get(s)).setColors(r.nextFloat(), r.nextFloat(), r.nextFloat());
                 }
             }

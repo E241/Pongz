@@ -1,11 +1,9 @@
 package se.doverfelt.desktop;
 
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import se.doverfelt.PongzStart;
+import se.doverfelt.Start;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -25,7 +23,7 @@ public class DesktopLauncher {
 		config.setFromDisplayMode(temp);
 		System.out.println(("DisplayMode: " + temp));
 		//System.out.println("Config: " +  config.toString());
-		new LwjglApplication(new PongzStart(), config);*/
+		new LwjglApplication(new WorldPongz(), config);*/
 
 		Lwjgl3ApplicationConfiguration config3 = new Lwjgl3ApplicationConfiguration();
 		config3.setTitle("Pongz");
@@ -38,7 +36,7 @@ public class DesktopLauncher {
 		}
 		System.out.println(("DisplayMode: " + temp));
 		config3.setFullscreenMode(temp);
-		new Lwjgl3Application(new PongzStart(), config3);
+		new Lwjgl3Application(new Start(), config3);
 
 	}
 }

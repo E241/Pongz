@@ -1,6 +1,6 @@
 package se.doverfelt.effects;
 
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.entities.EntityBall;
 
 import java.util.Random;
@@ -15,7 +15,7 @@ public class EffectDrunk implements Effect {
     private String name;
 
     @Override
-    public void update(PongzStart world, float delta) {
+    public void update(WorldPongz world, float delta) {
         Random r = new Random();
         //Mod 1
         if (System.currentTimeMillis() - timestamp1 < 4000){
@@ -59,8 +59,8 @@ public class EffectDrunk implements Effect {
     }
 
     @Override
-    public void create(PongzStart world, String name) {
-        this.ball = (EntityBall) PongzStart.entities.get("ball");
+    public void create(WorldPongz world, String name) {
+        this.ball = (EntityBall) WorldPongz.entities.get("ball");
         timestamp = System.currentTimeMillis();
         this.name = name;
     }

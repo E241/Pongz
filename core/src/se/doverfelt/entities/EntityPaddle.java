@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 
 
 /**
@@ -27,7 +27,7 @@ public class EntityPaddle implements Collidable {
     public static float ry, ly,rHeight, lHeight;
     private EntityPowerUpHUD powerUpHUD;
 
-    public EntityPaddle(float xIn, float yIn, boolean Right, PongzStart world){
+    public EntityPaddle(float xIn, float yIn, boolean Right, WorldPongz world){
         x = xIn;
         y = yIn;
         isRight = Right;

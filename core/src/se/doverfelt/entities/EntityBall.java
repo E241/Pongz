@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 
 
 import java.util.Random;
@@ -75,12 +75,12 @@ public class EntityBall implements Collidable {
             if (x < 0) {
                 //x = 0;
                 // xv = -xv; //Vinst Höger
-                PongzStart.PointsR++;
+                WorldPongz.PointsR++;
                 reset();
             } else if (x > camera.viewportWidth - WIDTH) {
                 //x = camera.viewportWidth -WIDTH;
                 //xv = -xv; //Vinst Vänster
-                PongzStart.PointsL++;
+                WorldPongz.PointsL++;
                 reset();
             }
         /*if (y < 0){
@@ -147,19 +147,19 @@ public class EntityBall implements Collidable {
                 yv = Math.abs(yv);
                 if(System.currentTimeMillis()-ts1 >200) {
                     ts1 = System.currentTimeMillis();
-                    PongzStart.startParticle("Particles/Spark.p", x, y, false);
+                    WorldPongz.startParticle("Particles/Spark.p", x, y, false);
                 }
             }
             if (y > temp){
                 yv = -Math.abs(yv);
                 if(System.currentTimeMillis()-ts2 > 200) {
                     ts2 = System.currentTimeMillis();
-                    PongzStart.startParticle("Particles/Spark.p", x, y + HEIGHT, true);
+                    WorldPongz.startParticle("Particles/Spark.p", x, y + HEIGHT, true);
                 }
             }
         } else if (other instanceof EntityPaddle) {
             float temp = camera.viewportWidth / 2;
-            if(PongzStart.Styrning == 1) {
+            if(WorldPongz.Styrning == 1) {
                 if (x < temp) {
                     xv = Math.abs(xv);
                     if (EntityPaddle.isMovingL == 1) {
@@ -176,7 +176,7 @@ public class EntityBall implements Collidable {
                         yv = (yv - 25.1f);
                     }
                 }
-            } else if (PongzStart.Styrning == 2){
+            } else if (WorldPongz.Styrning == 2){
                 if (x < temp) {
                     xv = Math.abs(xv);
                     float temp2 = y - EntityPaddle.ly - (EntityPaddle.lHeight/2);
