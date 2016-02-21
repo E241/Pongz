@@ -1,6 +1,6 @@
 package se.doverfelt.entities;
 
-import se.doverfelt.worlds.WorldPongz;
+import se.doverfelt.worlds.World;
 
 /**
  * @author Rickard Doverfelt
@@ -8,5 +8,5 @@ import se.doverfelt.worlds.WorldPongz;
  *         Filnamn: Ploppable.java
  */
 public interface Ploppable extends Entity{
-    void create(String name, float x, float y, WorldPongz world);
+    void create(String name, float x, float y, World world);
 }

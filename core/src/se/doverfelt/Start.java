@@ -1,6 +1,7 @@
 package se.doverfelt;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import se.doverfelt.worlds.WorldMenu;
 import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.worlds.World;
 
@@ -19,7 +20,8 @@ public class Start extends ApplicationAdapter {
     @Override
     public void create() {
         worlds.put("game", new WorldPongz());
-        setWorld("game");
+        worlds.put("menu", new WorldMenu());
+        setWorld("menu");
     }
 
     @Override

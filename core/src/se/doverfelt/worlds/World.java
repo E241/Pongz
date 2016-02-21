@@ -14,4 +14,5 @@ public interface World {
     void pause();
     void resume();
 
+    Start getStart();
 }

@@ -246,6 +246,11 @@ public class WorldPongz implements World {
 
     }
 
+    @Override
+    public Start getStart() {
+        return start;
+    }
+
     private void drawPause(float delta) {
         renderCounter.start();
         dim = Math.min(dim+2*delta, 0.75f);
