@@ -4,12 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import se.doverfelt.Start;
 import se.doverfelt.entities.ui.Button;
 import se.doverfelt.entities.ui.ButtonAction;
+import se.doverfelt.entities.ui.Logo;
 import se.doverfelt.entities.ui.UIElement;
 
 import java.util.ArrayList;
@@ -28,16 +31,23 @@ public class WorldMenu implements World {
     private float aspect;
     private Pool<Button> buttonPool = Pools.get(Button.class);
     private Start start;
+
     @Override
     public void create(Start start) {
+
         aspect = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 
         camera = new OrthographicCamera(600, 600*aspect);
+        camera.viewportWidth = Gdx.graphics.getWidth();
+        camera.viewportHeight = Gdx.graphics.getWidth();
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+        //camera.position.set(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0);
         camera.zoom = 1f;
         camera.update();
         Button temp = buttonPool.obtain();
-        addElement(temp, "testBtn", camera.viewportWidth/2f-50, camera.viewportHeight/2f-12.5f);
+        addElement(temp, "testBtn", camera.viewportWidth/2f/*-50*/, camera.viewportHeight/2f/*-12.5f*/);
+        Logo logo = new Logo();
+        addElement(logo,"logo",camera.viewportWidth/2f, camera.viewportHeight/2f);
         temp.setDimensions(100, 25);
         temp.setAction(new ButtonAction() {
             @Override
@@ -65,6 +75,7 @@ public class WorldMenu implements World {
         tickElements();
         renderElements();
         camera.update();
+
     }
 
     private void tickElements() {

@@ -30,7 +30,7 @@ public class DesktopLauncher {
 		Graphics.DisplayMode temp = Lwjgl3ApplicationConfiguration.getDisplayMode();
 		for (Graphics.DisplayMode d : Lwjgl3ApplicationConfiguration.getDisplayModes()) {
 			System.out.println(d.toString());
-			if ((d.refreshRate > temp.refreshRate && d.height >= temp.height) || d.height > temp.height) {
+			if ((d.refreshRate > temp.refreshRate && d.height >= temp.height && d.width >= temp.width) || d.height > temp.height && d.width > temp.width) {
 				temp = d;
 			}
 		}
