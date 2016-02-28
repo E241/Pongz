@@ -1,8 +1,6 @@
 package se.doverfelt.entities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import se.doverfelt.PongzStart;
 
 /**
  * @author Rickard Doverfelt
@@ -11,6 +9,6 @@ import se.doverfelt.PongzStart;
  */
 public interface Entity {
     void render(OrthographicCamera camera);
-    void update(int delta);
+    void update(float delta);
     void dispose();
 }

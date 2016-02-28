@@ -1,6 +1,6 @@
 package se.doverfelt.effects;
 
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.entities.EntityBall;
 import se.doverfelt.entities.EntityPaddle;
 
@@ -15,19 +15,19 @@ public class EffectSizeUp implements Effect {
     private float heightAdd = 0, origHeight;
 
     @Override
-    public void update(PongzStart world, int delta) {
+    public void update(WorldPongz world, float delta) {
         long current = System.currentTimeMillis();
         if (current - timestamp < 1000) {
-            heightAdd += 0.1f * delta;
+            heightAdd += 100f * delta;
             paddle.setHeight(Math.min(origHeight + heightAdd, origHeight + 15));
-            if (origHeight + heightAdd < origHeight + 15) paddle.moveY(-(0.1f*delta)/2f);
+            if (origHeight + heightAdd < origHeight + 15) paddle.moveY(-(100f*delta)/2f);
         }
 
         if (current - timestamp > 10000 && current - timestamp < 11000) {
             if (heightAdd > 15) heightAdd = 15;
-            heightAdd -= 0.1f * delta;
+            heightAdd -= 100f * delta;
             paddle.setHeight(Math.max(origHeight, origHeight + heightAdd));
-            if (origHeight + heightAdd > origHeight) paddle.moveY((0.1f*delta)/2f);
+            if (origHeight + heightAdd > origHeight) paddle.moveY((100f*delta)/2f);
         }
 
         if (current - timestamp > 11000) {
@@ -37,8 +37,8 @@ public class EffectSizeUp implements Effect {
     }
 
     @Override
-    public void create(PongzStart world, String name) {
-        this.paddle = ((EntityBall)PongzStart.entities.get("ball")).getLastPaddle();
+    public void create(WorldPongz world, String name) {
+        this.paddle = ((EntityBall) WorldPongz.entities.get("ball")).getLastPaddle();
 
         if (paddle == null) {
             world.removeEffect(name);

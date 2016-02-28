@@ -1,6 +1,6 @@
 package se.doverfelt.effects;
 
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.entities.EntityBall;
 import se.doverfelt.entities.EntityPaddle;
 
@@ -16,7 +16,7 @@ public class EffectAutoPilot implements Effect {
     private long timeStamp;
 
     @Override
-    public void update(PongzStart world, int delta) {
+    public void update(WorldPongz world, float delta) {
         paddle.setY((ball.getY()-paddle.getHeight()/2f));
         if (System.currentTimeMillis() - timeStamp > 5000) {
             world.removeEffect(name);
@@ -24,9 +24,9 @@ public class EffectAutoPilot implements Effect {
     }
 
     @Override
-    public void create(PongzStart world, String name) {
+    public void create(WorldPongz world, String name) {
         this.name = name;
-        ball = (EntityBall) PongzStart.entities.get("ball");
+        ball = (EntityBall) WorldPongz.entities.get("ball");
         paddle = ball.getLastPaddle();
         if (paddle == null) {
             world.removeEffect(name);

@@ -1,6 +1,6 @@
 package se.doverfelt.effects;
 
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.WorldPongz;
 
 /**
  * Created by robin.boregrim on 2016-02-17.
@@ -11,19 +11,19 @@ public class EffectFlashbang implements Effect {
     private boolean isRemoved = false;
 
     @Override
-    public void update(PongzStart world, int delta) {
+    public void update(WorldPongz world, float delta) {
         if (!isRemoved) {
-            time += (float) delta;
+            time += delta;
             float tempR = 0, tempG = 0, tempB = 0;
-            if (time < 10000f) {
-                tempR = 1 - ((1 - r) * (time / 10000f));
-                tempG = 1 - ((1 - g) * (time / 10000f));
-                tempB = 1 - ((1 - b) * (time / 10000f));
+            if (time < 10f) {
+                tempR = 1 - ((1 - r) * (time / 10f));
+                tempG = 1 - ((1 - g) * (time / 10f));
+                tempB = 1 - ((1 - b) * (time / 10f));
                 world.setColor(tempR, tempG, tempB);
             }
             if (tempB <= r + 0.01 && tempG <= g + 0.01 && tempR <= r + 0.01) {
                 world.setColor(r, g, b);
-                PongzStart.isFlashbanged = false;
+                WorldPongz.isFlashbanged = false;
                     world.removeEffect(name);
             }
         } else {
@@ -32,9 +32,9 @@ public class EffectFlashbang implements Effect {
     }
 
     @Override
-    public void create(PongzStart world, String name) {
+    public void create(WorldPongz world, String name) {
         this.name = name;
-        if (PongzStart.isFlashbanged){
+        if (WorldPongz.isFlashbanged){
             for (String s : world.getEffects().keySet()) {
                 if (s.contains(getEffectType()) && !s.equals(name)) {
                     EffectFlashbang e = (EffectFlashbang)world.getEffects().get(s);
@@ -46,7 +46,7 @@ public class EffectFlashbang implements Effect {
                 }
             }
         }else {
-            PongzStart.isFlashbanged = true;
+            WorldPongz.isFlashbanged = true;
             r = world.getR();
             g = world.getG();
             b = world.getB();

@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import se.doverfelt.PongzStart;
+import se.doverfelt.worlds.World;
+import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.effects.*;
 
 import java.util.Random;
@@ -17,7 +18,7 @@ import java.util.Random;
  */
 public class EntityPowerup implements Collidable, Ploppable {
 
-    private PongzStart world;
+    private World world;
     private final Sprite img;
     private final SpriteBatch batch;
     private final Rectangle bounds;
@@ -42,12 +43,13 @@ public class EntityPowerup implements Collidable, Ploppable {
 
     @Override
     public void collide(Entity other) {
-        if (other instanceof EntityBall) {
-            Effect effect = PongzStart.effectHandler.getRandomEffect();
-            world.addEffect(effect, effect.getEffectType() + System.currentTimeMillis());
+        if (other instanceof EntityBall && world instanceof WorldPongz) {
+            WorldPongz.startParticle("Particles/Boom", x, y, false);
+            Effect effect = WorldPongz.effectHandler.getRandomEffect();
+            ((WorldPongz)world).addEffect(effect, effect.getEffectType() + System.currentTimeMillis());
             powerUp.play();
-            world.removeEntity(name);
-            PongzStart.eName(effect.getEffectType());
+            ((WorldPongz)world).removeEntity(name);
+            WorldPongz.eName(effect.getEffectType());
         }
     }
 
@@ -60,7 +62,7 @@ public class EntityPowerup implements Collidable, Ploppable {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(float delta) {
         img.setPosition(x, y);
         bounds.setPosition(x, y);
     }
@@ -73,10 +75,11 @@ public class EntityPowerup implements Collidable, Ploppable {
     }
 
     @Override
-    public void create(String name, float x, float y, PongzStart world) {
+    public void create(String name, float x, float y, World world) {
         this.name = name;
-        this.world = world;
         this.x = x;
         this.y = y;
+        if (!(world instanceof WorldPongz)) return;
+        this.world = world;
     }
 }

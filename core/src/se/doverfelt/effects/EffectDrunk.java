@@ -1,7 +1,6 @@
 package se.doverfelt.effects;
 
-import se.doverfelt.PongzStart;
-import se.doverfelt.entities.Entity;
+import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.entities.EntityBall;
 
 import java.util.Random;
@@ -16,21 +15,21 @@ public class EffectDrunk implements Effect {
     private String name;
 
     @Override
-    public void update(PongzStart world, int delta) {
+    public void update(WorldPongz world, float delta) {
         Random r = new Random();
         //Mod 1
         if (System.currentTimeMillis() - timestamp1 < 4000){
             ball.yv += mod;
         }else if (r.nextInt(100)<20){
             timestamp1 = System.currentTimeMillis();
-            mod = (r.nextFloat()*0.004f) - 0.002f;
+            mod = (r.nextFloat()*4f) - 2f;
         }
         //Mod 2
         if (System.currentTimeMillis() - timestamp1 < 1000){
             ball.yv += mod2;
         }else if (r.nextInt(100)<10){
             timestamp2 = System.currentTimeMillis();
-            mod2 = (r.nextFloat()*0.006f) - 0.003f;
+            mod2 = (r.nextFloat()*6f) - 3f;
         }
       //  //Mod 3
       //  if (System.currentTimeMillis() - timestamp < 6000){
@@ -60,8 +59,8 @@ public class EffectDrunk implements Effect {
     }
 
     @Override
-    public void create(PongzStart world, String name) {
-        this.ball = (EntityBall) PongzStart.entities.get("ball");
+    public void create(WorldPongz world, String name) {
+        this.ball = (EntityBall) WorldPongz.entities.get("ball");
         timestamp = System.currentTimeMillis();
         this.name = name;
     }

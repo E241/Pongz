@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.*;
-import se.doverfelt.PongzStart;
 
 
 /**
@@ -38,7 +36,7 @@ public class EntityBorder implements Collidable {
     }
 
     @Override
-    public void update(int delta) {
+    public void update(float delta) {
 
     }
 
