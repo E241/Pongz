@@ -37,10 +37,12 @@ public class Logo implements UIElement {
     @Override
     public void create(String name, float x, float y, World world) {
         batch = new SpriteBatch();
+        sprite = new Sprite(new Texture("logo.png"));
+        this.width = sprite.getWidth();
+        this.height = sprite.getHeight();
         rectangle = new Rectangle(x, y, width, height);
-        this.x = x;
-        this.y = y;
-        sprite = new Sprite(new Texture("button.png"));
+        this.x = x-(width/2f);
+        this.y = y-(height/2f);
         this.world = world;
     }
 

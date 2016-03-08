@@ -27,7 +27,7 @@ public class Button implements UIElement {
     private World world;
     private ButtonAction action;
     private BitmapFont font;
-    private String text = "";
+    private Sprite icon;
     private SpriteBatch fontBatch;
 
     @Override
@@ -41,16 +41,18 @@ public class Button implements UIElement {
         this.font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         fontBatch = new SpriteBatch();
+        icon = new Sprite(new Texture("ball.png"));
     }
     @Override
     public void render(OrthographicCamera camera) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         sprite.draw(batch);
+        icon.draw(batch);
         batch.end();
-        fontBatch.begin();
-        font.draw(fontBatch, text, camera.project(new Vector3(x, 0, 0)).x + camera.project(new Vector3(width, 0, 0)).y/2f - font.getSpaceWidth()*text.length()/2f, camera.project(new Vector3(0, y, 0)).y + camera.project(new Vector3(0, height, 0)).y/2f - font.getLineHeight()/2f);
-        fontBatch.end();
+//        fontBatch.begin();
+//        font.draw(fontBatch, icon, camera.project(new Vector3(x, 0, 0)).x + camera.project(new Vector3(width, 0, 0)).y/2f - font.getSpaceWidth()* icon.length()/2f, camera.project(new Vector3(0, y, 0)).y + camera.project(new Vector3(0, height, 0)).y/2f - font.getLineHeight()/2f);
+//        fontBatch.end();
     }
 
     public void setDimensions(float width, float height) {
@@ -63,8 +65,9 @@ public class Button implements UIElement {
         this.action = action;
     }
 
-    public void setText(String s) {
-        this.text = s;
+    public void setIcon(String s) {
+        this.icon.getTexture().dispose();
+        this.icon.setTexture(new Texture(s));
     }
 
     @Override
@@ -86,6 +89,8 @@ public class Button implements UIElement {
     public void update(float delta) {
         sprite.setPosition(x, y);
         sprite.setSize(width, height);
+        icon.setSize(height-(height*0.2f), height-(height*0.2f));
+        icon.setPosition(x+width/2f-icon.getWidth()/2f, y+height/2f-icon.getHeight()/2f);
     }
 
     @Override
