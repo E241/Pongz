@@ -77,6 +77,7 @@ public class Button implements UIElement {
 
     @Override
     public void onClick(float x, float y) {
+        sound.play();
         action.doAction(world);
     }
 

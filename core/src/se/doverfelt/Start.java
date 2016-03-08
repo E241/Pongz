@@ -2,6 +2,7 @@ package se.doverfelt;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import se.doverfelt.worlds.WorldMenu;
+import se.doverfelt.worlds.WorldOptions;
 import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.worlds.World;
 
@@ -19,9 +20,15 @@ public class Start extends ApplicationAdapter {
 
     @Override
     public void create() {
-        worlds.put("game", new WorldPongz());
-        worlds.put("menu", new WorldMenu());
+        addWorld("game", new WorldPongz());
+        addWorld("menu", new WorldMenu());
+        addWorld("options", new WorldOptions());
         setWorld("menu");
+    }
+
+    private void addWorld(String name, World world) {
+        world.create(this);
+        worlds.put(name, world);
     }
 
     @Override
@@ -41,7 +48,7 @@ public class Start extends ApplicationAdapter {
 
     public void setWorld(String name) {
         activeWorld = worlds.get(name);
-        activeWorld.create(this);
+        resume();
     }
 
 

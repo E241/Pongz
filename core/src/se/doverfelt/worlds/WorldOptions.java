@@ -21,7 +21,7 @@ import java.util.HashMap;
  *         Datum: 2016-02-21
  *         Filnamn: WorldMenu.java
  */
-public class WorldMenu implements World {
+public class WorldOptions implements World {
 
     public HashMap<String, UIElement> elements = new HashMap<String, UIElement>();
     private ArrayList<String> toRemove = new ArrayList<String>();
@@ -31,7 +31,7 @@ public class WorldMenu implements World {
     private Start start;
 
     @Override
-    public void create(final Start start) {
+    public void create(Start start) {
 
         aspect = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 
@@ -43,26 +43,17 @@ public class WorldMenu implements World {
         camera.zoom = 1f;
         camera.update();
         Button temp = buttonPool.obtain();
-        addElement(temp, "startBtn", camera.viewportWidth/2f-50, camera.viewportHeight/2f-50-12.5f);
+        addElement(temp, "backBtn", 10, camera.viewportHeight - 35);
         Logo logo = new Logo();
         addElement(logo,"logo",camera.viewportWidth/2f, camera.viewportHeight/2f+50);
-        temp.setDimensions(100, 25);
+        temp.setDimensions(25, 25);
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
-                world.getStart().setWorld("game");
+                world.getStart().setWorld("menu");
             }
         });
-        temp.setIcon("play.png");
-        temp = buttonPool.obtain();
-        addElement(temp, "optionsBtn", camera.viewportWidth/2f-50, camera.viewportHeight/2f-80-12.5f);
-        temp.setDimensions(100, 25);
-        temp.setAction(new ButtonAction() {
-            @Override
-            public void doAction(World world) {
-                start.setWorld("options");
-            }
-        });
+        temp.setIcon("backArrow.png");
         this.start = start;
     }
 

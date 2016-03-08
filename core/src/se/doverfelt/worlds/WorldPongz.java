@@ -64,7 +64,6 @@ public class WorldPongz implements World {
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
         camera.zoom = 1f;
         camera.update();
-        Gdx.input.setCursorCatched(true);
         bg = new Texture("bg.png");
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         white = new Texture("white.png");
@@ -239,11 +238,12 @@ public class WorldPongz implements World {
     public void pause() {
         running = false;
         Gdx.input.vibrate(500);
+        Gdx.input.setCursorCatched(false);
     }
 
     @Override
     public void resume() {
-
+        Gdx.input.setCursorCatched(true);
     }
 
     @Override
