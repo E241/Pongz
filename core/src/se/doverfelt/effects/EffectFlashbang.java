@@ -1,5 +1,6 @@
 package se.doverfelt.effects;
 
+import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 
 /**
@@ -67,7 +68,7 @@ public class EffectFlashbang implements Effect {
 
     @Override
     public int getWeight() {
-        return 15;
+        return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
     public float getR(){return this.r;}
     public float getG(){return this.g;}

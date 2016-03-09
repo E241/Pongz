@@ -1,5 +1,6 @@
 package se.doverfelt.effects;
 
+import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 
 import java.util.Random;
@@ -25,7 +26,7 @@ public class EffectRandomColor implements Effect{
 
     @Override
     public int getWeight() {
-        return 45;
+        return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
 
     @Override

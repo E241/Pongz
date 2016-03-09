@@ -1,5 +1,6 @@
 package se.doverfelt.effects;
 
+import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.entities.EntityBall;
 import se.doverfelt.entities.EntityPaddle;
@@ -65,6 +66,6 @@ public class EffectSizeUp implements Effect {
 
     @Override
     public int getWeight() {
-        return 45;
+        return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
 }

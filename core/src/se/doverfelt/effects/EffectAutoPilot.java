@@ -1,5 +1,7 @@
 package se.doverfelt.effects;
 
+import se.doverfelt.Start;
+import se.doverfelt.worlds.World;
 import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.entities.EntityBall;
 import se.doverfelt.entities.EntityPaddle;
@@ -14,6 +16,7 @@ public class EffectAutoPilot implements Effect {
     private EntityPaddle paddle;
     private EntityBall ball;
     private long timeStamp;
+    private World world;
 
     @Override
     public void update(WorldPongz world, float delta) {
@@ -47,6 +50,6 @@ public class EffectAutoPilot implements Effect {
 
     @Override
     public int getWeight() {
-        return 5;
+        return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
 }

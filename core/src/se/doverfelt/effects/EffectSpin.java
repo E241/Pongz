@@ -1,5 +1,6 @@
 package se.doverfelt.effects;
 
+import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 
 /**
@@ -56,6 +57,6 @@ public class EffectSpin implements Effect {
 
     @Override
     public int getWeight() {
-        return 10;
+        return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
 }

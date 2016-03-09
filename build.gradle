@@ -22,6 +22,7 @@ allprojects {
         ashleyVersion = '1.7.0'
         aiVersion = '1.7.0'
         gdxUtilsVersion = '0.13.1'
+        jsonVersion = '20160212'
     }
 
     repositories {
@@ -79,6 +80,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
         compile "net.dermetfan.libgdx-utils:libgdx-utils:$gdxUtilsVersion"
+        compile "org.json:json:$jsonVersion"
     }
 }
 
