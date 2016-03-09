@@ -8,10 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import se.doverfelt.Start;
-import se.doverfelt.entities.ui.Button;
-import se.doverfelt.entities.ui.ButtonAction;
-import se.doverfelt.entities.ui.Logo;
-import se.doverfelt.entities.ui.UIElement;
+import se.doverfelt.entities.ui.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +18,7 @@ import java.util.HashMap;
  *         Datum: 2016-02-21
  *         Filnamn: WorldMenu.java
  */
-public class WorldOptions implements World {
+public class WorldOptions implements UIManager {
 
     public HashMap<String, UIElement> elements = new HashMap<String, UIElement>();
     private ArrayList<String> toRemove = new ArrayList<String>();
@@ -29,6 +26,7 @@ public class WorldOptions implements World {
     private float aspect;
     private Pool<Button> buttonPool = Pools.get(Button.class);
     private Start start;
+    private boolean showTooltip = false;
 
     @Override
     public void create(Start start) {
@@ -57,8 +55,18 @@ public class WorldOptions implements World {
         this.start = start;
     }
 
+    @Override
+    public void setTooltip(String tooltip) {
+
+    }
+
     public void addElement(UIElement entity, String name, float x, float y) {
-        entity.create(name, x, y, this);
+        try {
+            entity.create(name, x, y, this);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
         elements.put(name, entity);
     }
 
@@ -77,12 +85,14 @@ public class WorldOptions implements World {
     }
 
     private void tickElements() {
+        showTooltip = false;
         for (UIElement uiElement : elements.values()) {
             if (uiElement.getRect().contains(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).x, camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).y)) {
                 uiElement.setHover(true);
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                     uiElement.onClick(Gdx.input.getX(), Gdx.input.getY());
                 }
+                showTooltip = true;
             } else {
                 uiElement.setHover(false);
             }
