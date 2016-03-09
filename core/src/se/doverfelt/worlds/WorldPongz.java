@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class WorldPongz implements World {
     private static Pool<ParticleEffect> particlePool = Pools.get(ParticleEffect.class);
-    long timestamp;
+    long timestamp, timestamp1 = -5000;
     public static HashMap<String, Entity> entities = new HashMap<String, Entity>();
     private HashMap<String, Effect> effects = new HashMap<String, Effect>();
     SpriteBatch batch;
@@ -49,7 +49,7 @@ public class WorldPongz implements World {
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
     private static I18NBundle local;
     public static boolean isFlashbanged = false;
-    private boolean running = false;
+    private boolean running = false, justStarted= true, menu = false;
     private float dim = 0;
     SpriteBatch particleBatch;
     private PerformanceCounter tickCounter;
@@ -146,10 +146,21 @@ public class WorldPongz implements World {
             tickEntities(delta);
             drawEntities();
             drawHUD(delta);
-            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 running = false;
             }
-        } else {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+                running = false;
+                menu = true;
+            }
+        } else if (justStarted){
+            drawEntities();
+            drawHUD(delta);
+            drawCountdown();
+        }else if (menu){
+            start.setWorld("pause");
+        }
+        else {
             drawEntities();
             drawHUD(delta);
             drawPause(delta);
@@ -271,7 +282,26 @@ public class WorldPongz implements World {
         }
         renderCounter.stop();
     }
-
+    private void drawCountdown(){
+        long temp = System.currentTimeMillis() - timestamp1;
+        if(temp > 4000){
+            timestamp1 = System.currentTimeMillis();
+        }
+        temp = System.currentTimeMillis() - timestamp1;
+        String s = "3";
+        if (temp > 3000){
+            s = "0";
+            justStarted = false;
+            running = true;
+        } else if (temp > 2000){
+            s = "1";
+        } else if (temp > 1000) {
+            s = "2";
+        }
+        batch.begin();
+        pointFnt.draw(batch, s, Gdx.graphics.getWidth() / 2f - pointFnt.getSpaceWidth() / 2f, Gdx.graphics.getHeight() / 2f /*- pointFnt.getLineHeight() / 2f*/);
+        batch.end();
+    }
     private void genPowerups() {
         tickCounter.start();
         if (System.currentTimeMillis() - lastPowerup >= 5000 && rand.nextInt() < 25){

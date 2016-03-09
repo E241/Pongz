@@ -1,10 +1,7 @@
 package se.doverfelt;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import se.doverfelt.worlds.WorldMenu;
-import se.doverfelt.worlds.WorldOptions;
-import se.doverfelt.worlds.WorldPongz;
-import se.doverfelt.worlds.World;
+import se.doverfelt.worlds.*;
 
 import java.util.HashMap;
 
@@ -23,6 +20,7 @@ public class Start extends ApplicationAdapter {
         addWorld("game", new WorldPongz());
         addWorld("menu", new WorldMenu());
         addWorld("options", new WorldOptions());
+        addWorld("pause", new WorldPause());
         setWorld("menu");
     }
 

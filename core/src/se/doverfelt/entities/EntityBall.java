@@ -147,14 +147,14 @@ public class EntityBall implements Collidable {
                 yv = Math.abs(yv);
                 if(System.currentTimeMillis()-ts1 >200) {
                     ts1 = System.currentTimeMillis();
-                    WorldPongz.startParticle("Particles/Spark.p", x, y, false);
+                    //WorldPongz.startParticle("Particles/Spark.p", x, y, false);
                 }
             }
             if (y > temp){
                 yv = -Math.abs(yv);
                 if(System.currentTimeMillis()-ts2 > 200) {
                     ts2 = System.currentTimeMillis();
-                    WorldPongz.startParticle("Particles/Spark.p", x, y + HEIGHT, true);
+                    //WorldPongz.startParticle("Particles/Spark.p", x, y + HEIGHT, true);
                 }
             }
         } else if (other instanceof EntityPaddle) {
