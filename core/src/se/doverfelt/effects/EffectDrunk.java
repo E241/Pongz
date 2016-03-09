@@ -1,5 +1,6 @@
 package se.doverfelt.effects;
 
+import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 import se.doverfelt.entities.EntityBall;
 
@@ -55,7 +56,7 @@ public class EffectDrunk implements Effect {
 
     @Override
     public int getWeight() {
-        return 10;
+        return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
 
     @Override
