@@ -2,6 +2,7 @@ package se.doverfelt;
 
 import com.badlogic.gdx.ApplicationAdapter;
 
+import se.doverfelt.effects.IEffectHandler;
 import se.doverfelt.worlds.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -23,6 +24,11 @@ public class Start extends ApplicationAdapter {
     private World activeWorld;
     private HashMap<String, World> worlds = new HashMap<String, World>();
     private static Preferences preferences;
+    private IEffectHandler effectHandler;
+
+    public Start(IEffectHandler effectHandler) {
+        this.effectHandler = effectHandler;
+    }
 
     @Override
     public void create() {
@@ -39,7 +45,7 @@ public class Start extends ApplicationAdapter {
         }
 
         preferences.flush();
-        addWorld("game", new WorldPongz());
+        addWorld("game", new WorldPongz(effectHandler));
         addWorld("menu", new WorldMenu());
         addWorld("options", new WorldOptions());
         addWorld("pause", new WorldPause());

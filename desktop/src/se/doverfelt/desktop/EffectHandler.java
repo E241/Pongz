@@ -1,7 +1,9 @@
-package se.doverfelt.effects;
+package se.doverfelt.desktop;
 
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import se.doverfelt.effects.Effect;
+import se.doverfelt.effects.IEffectHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +12,7 @@ import java.util.Random;
 /**
  * Created by rickard on 2016-02-17.
  */
-public class EffectHandler {
+public class EffectHandler implements IEffectHandler {
 
     private HashMap<Class, Pool> pools = new HashMap<Class, Pool>();
 

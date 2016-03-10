@@ -13,7 +13,6 @@ import se.doverfelt.Start;
 import se.doverfelt.effects.*;
 import se.doverfelt.entities.*;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -45,7 +44,7 @@ public class WorldPongz implements World {
     private int collisions = 0;
     private static ArrayList<ParticleEffect> pEffect = new ArrayList<ParticleEffect>();
     private ArrayList<ParticleEffect> pEffectRemove = new ArrayList<ParticleEffect>();
-    public static EffectHandler effectHandler = new EffectHandler();
+    public static IEffectHandler effectHandler;
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
     private static I18NBundle local;
     public static boolean isFlashbanged = false;
@@ -55,6 +54,10 @@ public class WorldPongz implements World {
     private PerformanceCounter tickCounter;
     private PerformanceCounter renderCounter;
     private Start start;
+
+    public WorldPongz(IEffectHandler effectHandler) {
+        this.effectHandler = effectHandler;
+    }
 
     @Override
 	public void create (Start start) {

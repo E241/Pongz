@@ -36,7 +36,7 @@ public class DesktopLauncher {
 		}
 		System.out.println(("DisplayMode: " + temp));
 		config3.setFullscreenMode(temp);
-		new Lwjgl3Application(new Start(), config3);
+		new Lwjgl3Application(new Start(new EffectHandler()), config3);
 
 	}
 }

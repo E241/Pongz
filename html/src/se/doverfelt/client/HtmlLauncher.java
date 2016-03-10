@@ -3,7 +3,7 @@ package se.doverfelt.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import se.doverfelt.worlds.WorldPongz;
+import se.doverfelt.Start;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -21,7 +21,7 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener() {
-            applicationListener = new WorldPongz();
+            applicationListener = new Start(new GWTEffectHandler());
             return applicationListener;
         }
 }
