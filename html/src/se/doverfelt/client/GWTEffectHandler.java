@@ -2,6 +2,8 @@ package se.doverfelt.client;
 
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.google.gwt.core.client.GWT;
 import se.doverfelt.effects.Effect;
 import se.doverfelt.effects.IEffectHandler;
@@ -35,17 +37,25 @@ public class GWTEffectHandler implements IEffectHandler {
     public Effect getRandomEffect() {
         int total = 0;
         for (Class<? extends Effect> aClass : effectRegistry) {
-            total += ((Effect)GWT.create(aClass)).getWeight();
+            try {
+                total += ((Effect)ClassReflection.newInstance(ClassReflection.forName(aClass.getName()))).getWeight();
+            } catch (ReflectionException e) {
+                e.printStackTrace();
+            }
         }
 
         int offset = 0;
         Random random = new Random();
         int seed = random.nextInt(total);
         for (Class<? extends Effect> aClass : effectRegistry) {
-            if (seed < ((Effect)GWT.create(aClass)).getWeight()+offset) {
-                return (Effect) pools.get(aClass).obtain();
-            } else {
-                offset += ((Effect)GWT.create(aClass)).getWeight();
+            try {
+                if (seed < ((Effect)ClassReflection.newInstance(ClassReflection.forName(aClass.getName()))).getWeight()+offset) {
+                    return (Effect) pools.get(aClass).obtain();
+                } else {
+                    offset += ((Effect)ClassReflection.newInstance(ClassReflection.forName(aClass.getName()))).getWeight();
+                }
+            } catch (ReflectionException e) {
+                e.printStackTrace();
             }
         }
         return null;
