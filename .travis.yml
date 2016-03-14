@@ -1,5 +1,5 @@
 language: java
-install: ./gradlew desktop:dist
+install: "./gradlew desktop:dist"
 script: true
 deploy:
   provider: releases
@@ -9,3 +9,6 @@ deploy:
   on:
     repo: E241/Pongz
     tags: true
+notifications:
+  slack:
+    secure: F1zsS71eUs+HEYIi1tJyUn7Cp17qNaAmegsr/jvN4lPVf+0nxu2TwdNnETy4jcP9AHsnCc4f/vx5KLDXDlvsVLMT5owoYheUY7A1++KuJbZJ6VT+vHv72p/LwtYrqR/8cf+C5zBiQb2aE5jkc+kMVMRN0d2USnJkQZ0EQDj4t+PmSfXI5J8BQyQUxwtatvpsQBr0auI2wznrV3ZhMP5E9BjmaNAnKGTFHxjJfT6R0dyyAau5zvoJB6l5QAZpyicBO9YMy5mHtqToWH8qt65lfuDzlz+pCfBn0r6u/5+munimKnusX9Nrb/9AhQgnURsMCegPhN0ix4RNcx5oJH8BGsYGuUsESx4bCefJbffLIK6XQMXl33/uL2b0NtHuOyEbj83rf9eR4yQ6wbKlk3I+ynp6QL5KduUM1eZJedEs6SAO9l8coy8+rK1MH36IYb+6Dh0ECzQFlZW3bi6nW3TD7SxQ4iZr1ZqxoQ6H0G+tL0+9HRkdiNwo2SwJFDMqOyEn8eJEYXd5KRnpYPy6w81jkUnPXMt0YX/G2dmredbQOcYytyjFexgQ5qUeWYS/pTIRlEYgPL8uHSCh5DlllYXGN1cN0lURDVMA/L/nn10K+nsuEEmyj6X4S0j7p0zO7PzfK0I3EIpSLc7RILCWYnxqiiteIYOsVRf48XSp6ERYc9I=
