@@ -129,7 +129,7 @@ public class WorldPongz implements World {
 	@Override
 	public void render () {
         tickCounter.start();
-        float delta = (System.currentTimeMillis() - timestamp)/1000f;
+        float delta = Gdx.graphics.getDeltaTime();
         timestamp = System.currentTimeMillis();
         collisionsChecks = 0;
         collisions = 0;
@@ -154,8 +154,6 @@ public class WorldPongz implements World {
                 running = false;
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-                running = false;
-                //menu = true;
                 start.setWorld("pause");
             }
         } else if (justStarted){
