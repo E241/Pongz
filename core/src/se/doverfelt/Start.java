@@ -100,8 +100,9 @@ public class Start extends ApplicationAdapter {
     }
 
     public void setWorld(String name) {
+        if (activeWorld != null) activeWorld.pause();
         activeWorld = worlds.get(name);
-        resume();
+        worlds.get(name).resume();
     }
 
 

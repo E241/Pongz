@@ -54,6 +54,7 @@ public class WorldPongz implements World {
     private PerformanceCounter tickCounter;
     private PerformanceCounter renderCounter;
     private Start start;
+    private long winTimestamp = -1;
 
     public WorldPongz(IEffectHandler effectHandler) {
         this.effectHandler = effectHandler;
@@ -143,7 +144,7 @@ public class WorldPongz implements World {
         TextureRegionDrawable drawable = new TextureRegionDrawable(region);
         drawable.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();*/
-        if (running) {
+        if (running && !(PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore"))) {
             genPowerups();
             tickEffects(delta);
             tickEntities(delta);
@@ -162,8 +163,9 @@ public class WorldPongz implements World {
             drawCountdown();
         }else if (menu){
             start.setWorld("pause");
-        }
-        else {
+        } else if (PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore")) {
+            drawVictory(PointsL >= Start.getPreferences().getInteger("maxScore"));
+        } else {
             drawEntities();
             drawHUD(delta);
             drawPause(delta);
@@ -238,6 +240,22 @@ public class WorldPongz implements World {
         tickCounter.stop();
         tickCounter.tick(delta);
         renderCounter.tick(delta);
+    }
+
+    private void drawVictory(boolean isLeft) {
+        if (winTimestamp == -1) winTimestamp = System.currentTimeMillis();
+        batch.begin();
+            font.draw(batch, "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
+        batch.end();
+        if (System.currentTimeMillis() - winTimestamp >= 5000) doVictory(isLeft);
+    }
+
+    private void doVictory(boolean isLeft) {
+        winTimestamp = -1;
+        PointsL = 0;
+        PointsR = 0;
+        Gdx.input.setCursorCatched(false);
+        start.setWorld("menu");
     }
 
     private void drawEntities() {
