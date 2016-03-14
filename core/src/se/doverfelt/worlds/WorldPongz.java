@@ -154,16 +154,13 @@ public class WorldPongz implements World {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
                 running = false;
-                menu = true;
+                //menu = true;
+                start.setWorld("pause");
             }
         } else if (justStarted){
             drawEntities();
             drawHUD(delta);
-            drawCountdown();
-        }else if (menu){
-            start.setWorld("pause");
-        }
-        else {
+        }else {
             drawEntities();
             drawHUD(delta);
             drawPause(delta);
@@ -258,6 +255,7 @@ public class WorldPongz implements World {
     @Override
     public void resume() {
         Gdx.input.setCursorCatched(true);
+        running = true;
     }
 
     @Override
