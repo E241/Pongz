@@ -163,7 +163,9 @@ public class WorldPongz implements World {
         }else if (menu){
             start.setWorld("pause");
         } else if (PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore")) {
-            drawVictory(PointsL >= Start.getPreferences().getInteger("maxScore"));
+            drawHUD(delta);
+            drawEntities();
+            drawVictory(PointsL >= Start.getPreferences().getInteger("maxScore"), delta);
         } else {
             drawEntities();
             drawHUD(delta);
@@ -241,18 +243,39 @@ public class WorldPongz implements World {
         renderCounter.tick(delta);
     }
 
-    private void drawVictory(boolean isLeft) {
+    private void drawVictory(boolean isLeft, float delta) {
         if (winTimestamp == -1) winTimestamp = System.currentTimeMillis();
-        batch.begin();
-            font.draw(batch, "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
-        batch.end();
-        if (System.currentTimeMillis() - winTimestamp >= 5000) doVictory(isLeft);
+        if (System.currentTimeMillis() - winTimestamp < 5000) {
+            dim = Math.min(dim + 2 * delta, 0.75f);
+        } else {
+            dim = Math.min(dim + 2 * delta, 1f);
+        }
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(new Color(0, 0, 0, dim));
+        shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        if (System.currentTimeMillis() - winTimestamp < 5000) {
+            batch.begin();
+                font.draw(batch, "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
+            batch.end();
+        }
+        if (dim == 1) doVictory(isLeft);
     }
 
     private void doVictory(boolean isLeft) {
         winTimestamp = -1;
+        r = 0;
+        g = 0;
+        b = 0;
         PointsL = 0;
         PointsR = 0;
+        dim = 0;
+        justStarted = true;
         Gdx.input.setCursorCatched(false);
         start.setWorld("menu");
     }
