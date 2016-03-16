@@ -2,10 +2,12 @@ package se.doverfelt.worlds;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.Pool;
@@ -35,6 +37,8 @@ public class WorldMenu implements UIManager {
     private String currentTooltip = "";
     private I18NBundle locale;
     private boolean showTooltip = false;
+    private float dim;
+    private boolean fadeIn = false;
 
     @Override
     public void create(final Start start) {
@@ -116,6 +120,21 @@ public class WorldMenu implements UIManager {
         tickElements();
         renderElements();
         renderTooltip();
+        if (fadeIn) {
+            dim = Math.max(dim - 2*Gdx.graphics.getDeltaTime(), 0);
+            ShapeRenderer shapeRenderer = new ShapeRenderer();
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(new Color(0, 0, 0, dim));
+            shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            shapeRenderer.end();
+            Gdx.gl.glDisable(GL20.GL_BLEND);
+            if (dim <= 0) {
+                fadeIn = false;
+            }
+        }
         camera.update();
 
     }
@@ -160,7 +179,8 @@ public class WorldMenu implements UIManager {
 
     @Override
     public void resume() {
-
+        dim = 1;
+        fadeIn = true;
     }
 
     @Override

@@ -253,13 +253,13 @@ public class WorldPongz implements World {
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        shapeRenderer.setProjectionMatrix(camera.combined);
+        //shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(0, 0, 0, dim));
         shapeRenderer.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
-        if (System.currentTimeMillis() - winTimestamp < 5000) {
+        if (System.currentTimeMillis() - winTimestamp < 5000 && dim == 0.75f) {
             batch.begin();
                 font.draw(batch, "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
             batch.end();
@@ -276,7 +276,6 @@ public class WorldPongz implements World {
         PointsL = 0;
         PointsR = 0;
         dim = 0;
-        //justStarted = true;
         Gdx.input.setCursorCatched(false);
         start.setWorld("menu");
     }
