@@ -166,7 +166,7 @@ public class WorldPongz implements World {
             drawHUD(delta);
             drawEntities();
             drawVictory(PointsL >= Start.getPreferences().getInteger("maxScore"), delta);
-        } else {
+        } else if (!running && !(PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore"))) {
             drawEntities();
             drawHUD(delta);
             drawPause(delta);
@@ -264,18 +264,19 @@ public class WorldPongz implements World {
                 font.draw(batch, "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
             batch.end();
         }
-        if (dim == 1) doVictory(isLeft);
+        if (System.currentTimeMillis() - winTimestamp > 7000) doVictory(isLeft);
     }
 
     private void doVictory(boolean isLeft) {
         winTimestamp = -1;
+        timestamp1 = -5000;
         r = 0;
         g = 0;
         b = 0;
         PointsL = 0;
         PointsR = 0;
         dim = 0;
-        justStarted = true;
+        //justStarted = true;
         Gdx.input.setCursorCatched(false);
         start.setWorld("menu");
     }
@@ -298,7 +299,8 @@ public class WorldPongz implements World {
     @Override
     public void resume() {
         Gdx.input.setCursorCatched(true);
-        running = true;
+        justStarted = timestamp1 < 0;
+        running = timestamp1 > 0;
     }
 
     @Override
