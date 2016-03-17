@@ -21,7 +21,7 @@ import se.doverfelt.worlds.World;
  */
 public class Button implements UIElement {
 
-    private float width = 0, height = 0, x, y;
+    private float width = 20, height = 20, x, y;
     private Rectangle rectangle;
     private SpriteBatch batch = new SpriteBatch();
     private boolean isMouseOver = false;
