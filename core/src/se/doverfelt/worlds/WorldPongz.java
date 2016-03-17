@@ -78,6 +78,7 @@ public class WorldPongz implements World {
         pointFnt = new BitmapFont(Gdx.files.internal("big.fnt"));
         font = new BitmapFont();
         addEntity(new EntityBall(camera), "ball");
+        ((EntityBall) entities.get("ball")).reset();
         addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f), "borderBottom");
         addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f), "borderTop");
         addEntity(new EntityPaddle(1, 1, false, this), "paddleLeft");
@@ -279,6 +280,17 @@ public class WorldPongz implements World {
         //justStarted = true;
         Gdx.input.setCursorCatched(false);
         start.setWorld("menu");
+    }
+    public void reset(){
+        timestamp1 = -5000;
+        r = 0;
+        g = 0;
+        b = 0;
+        PointsL = 0;
+        PointsR = 0;
+        dim = 0;
+        EntityBall ball =(EntityBall)entities.get("ball");
+        ball.reset();
     }
 
     private void drawEntities() {

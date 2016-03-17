@@ -22,7 +22,7 @@ import java.util.Locale;
 public class Start extends ApplicationAdapter {
 
     private World activeWorld;
-    private HashMap<String, World> worlds = new HashMap<String, World>();
+    private static HashMap<String, World> worlds = new HashMap<String, World>();
     private static Preferences preferences;
     private IEffectHandler effectHandler;
 
@@ -105,5 +105,8 @@ public class Start extends ApplicationAdapter {
         worlds.get(name).resume();
     }
 
+    public static World getWorld(String name){
+        return worlds.get(name);
+    }
 
 }
