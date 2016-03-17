@@ -56,6 +56,7 @@ public class EntityBall implements Collidable {
         batch.begin();
         img.draw(batch);
         batch.end();
+
     }
 
     @Override
@@ -110,7 +111,7 @@ public class EntityBall implements Collidable {
         img.getTexture().dispose();
     }
 
-    private void reset() {
+    public void reset() {
         Random r = new Random();
         yv = r.nextFloat()*10;
 

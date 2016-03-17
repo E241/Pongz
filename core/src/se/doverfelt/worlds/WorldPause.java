@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
@@ -30,6 +31,9 @@ public class WorldPause implements UIManager {
     private SpriteBatch batch;
     private BitmapFont font;
     private I18NBundle locale;
+    private boolean showTooltip;
+    private String currentTooltip;
+
     @Override
     public void create(Start start) {
         aspect = (float) Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
@@ -42,7 +46,13 @@ public class WorldPause implements UIManager {
         locale = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
 
         Button temp = buttonPool.obtain();
-        //addElement(temp, "backToGame", camera.viewportWidth / 2, camera.viewportHeight - 20);
+        addElement(temp, "resume", camera.viewportWidth / 2, camera.viewportHeight - 20);
+        temp = buttonPool.obtain();
+        addElement(temp, "restart", camera.viewportWidth / 2, camera.viewportHeight );
+        temp = buttonPool.obtain();
+        addElement(temp, "mainMenu", camera.viewportWidth / 2, camera.viewportHeight + 20);
+        temp = buttonPool.obtain();
+        addElement(temp, "exit", camera.viewportWidth / 2, camera.viewportHeight + 40);
 
     }
 
@@ -52,23 +62,56 @@ public class WorldPause implements UIManager {
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        tickElements();
         renderElements();
-
+        renderTooltip();
         camera.update();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
             start.setWorld("game");
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.M)){
+            start.setWorld("menu");
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)){
+            WorldPongz w = (WorldPongz)Start.getWorld("game");
+            w.reset();
+            start.setWorld("game");
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q)){
+            Gdx.app.exit();
         }
     }
 
+    private void tickElements() {
+        showTooltip = false;
+        for (UIElement uiElement : elements.values()) {
+            if (uiElement.getRect().contains(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).x, camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).y)) {
+                uiElement.setHover(true);
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    uiElement.onClick(Gdx.input.getX(), Gdx.input.getY());
+                }
+                showTooltip = true;
+            } else {
+                uiElement.setHover(false);
+            }
+            uiElement.update(Gdx.graphics.getDeltaTime());
+        }
+    }
     private void renderElements() {
         for (UIElement uiElement : elements.values()) {
             uiElement.render(camera);
         }
     }
 
-    public void setTooltip(String tooltip) {
-
+    private void renderTooltip() {
+        if (showTooltip) {
+            batch.begin();
+            font.draw(batch, currentTooltip, 1, 1 + font.getLineHeight());
+            batch.end();
+        }
+        batch.begin();
+        font.draw(batch, start.getPreferences().getString("test"), 20, 20);
+        batch.end();
     }
+
+    public void setTooltip(String tooltip) {this.currentTooltip = tooltip;}
 
     @Override
     public void addElement(UIElement element, String name, float x, float y) {
