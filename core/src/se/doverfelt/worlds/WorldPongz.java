@@ -88,7 +88,7 @@ public class WorldPongz implements World {
         if (Start.getPreferences().getBoolean("sizeUp")) effectHandler.registerEffect(EffectSizeUp.class);
         if (Start.getPreferences().getBoolean("spin")) effectHandler.registerEffect(EffectSpin.class);
         if (Start.getPreferences().getBoolean("zoom")) effectHandler.registerEffect(EffectZoomOut.class);
-        if (Start.getPreferences().getBoolean("flasbang")) effectHandler.registerEffect(EffectFlashbang.class);
+        if (Start.getPreferences().getBoolean("flashbang")) effectHandler.registerEffect(EffectFlashbang.class);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         local = I18NBundle.createBundle(Gdx.files.internal("lang"), new Locale(Start.getPreferences().getString("lang")));
         //local = I18NBundle.createBundle(Gdx.files.internal("lang"), new Locale("es", "ES"));
