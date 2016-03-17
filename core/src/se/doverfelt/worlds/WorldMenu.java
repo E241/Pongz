@@ -145,9 +145,6 @@ public class WorldMenu implements UIManager {
             font.draw(batch, currentTooltip, 1, 1 + font.getLineHeight());
             batch.end();
         }
-        batch.begin();
-        font.draw(batch, start.getPreferences().getString("test"), 20, 20);
-        batch.end();
     }
 
     private void tickElements() {

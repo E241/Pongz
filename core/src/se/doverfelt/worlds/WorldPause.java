@@ -106,9 +106,6 @@ public class WorldPause implements UIManager {
             font.draw(batch, currentTooltip, 1, 1 + font.getLineHeight());
             batch.end();
         }
-        batch.begin();
-        font.draw(batch, start.getPreferences().getString("test"), 20, 20);
-        batch.end();
     }
 
     public void setTooltip(String tooltip) {this.currentTooltip = tooltip;}
