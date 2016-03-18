@@ -71,6 +71,7 @@ public class Start extends ApplicationAdapter {
         preferences.putInteger("sizeUpChance", 45);
         preferences.putInteger("zoomChance", 10);
         preferences.putString("lang", Locale.getDefault().toString());
+        preferences.putBoolean("paddleBounds", false);
         preferences.putLong("init", System.currentTimeMillis());
         preferences.flush();
     }

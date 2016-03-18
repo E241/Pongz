@@ -265,7 +265,7 @@ public class WorldPongz implements World {
                 font.draw(batch, "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
             batch.end();
         }
-        if (System.currentTimeMillis() - winTimestamp > 7000) doVictory(isLeft);
+        if (System.currentTimeMillis() - winTimestamp > 6000) doVictory(isLeft);
     }
 
     private void doVictory(boolean isLeft) {

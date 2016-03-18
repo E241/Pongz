@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 
 
@@ -26,12 +27,15 @@ public class EntityPaddle implements Collidable {
     public static int isMovingR =0, isMovingL = 0;
     public static float ry, ly,rHeight, lHeight;
     private EntityPowerUpHUD powerUpHUD;
+    private OrthographicCamera camera;
+    private boolean canGoDown = true;
+    private boolean canGoUp = true;
 
     public EntityPaddle(float xIn, float yIn, boolean Right, WorldPongz world){
         x = xIn;
         y = yIn;
         isRight = Right;
-        yv = isRight ? world.getStart().getPreferences().getFloat("paddleRSpeed") : world.getStart().getPreferences().getFloat("paddleLSpeed");
+        yv = isRight ? Start.getPreferences().getFloat("paddleRSpeed") : Start.getPreferences().getFloat("paddleLSpeed");
         batch = new SpriteBatch();
         img = new Sprite(new Texture("white.png"));
         img.setPosition(x, y);
@@ -48,7 +52,7 @@ public class EntityPaddle implements Collidable {
         batch.begin();
         img.draw(batch);
         batch.end();
-
+        this.camera = camera;
     }
 
     @Override
@@ -64,20 +68,20 @@ public class EntityPaddle implements Collidable {
         if(isRight) {
             ry = y;
             rHeight = height;
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.UP) && canGoUp) {
                 y += yv*delta;
                 isMovingR = 1;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) && canGoDown) {
                 y -= yv*delta;
                 isMovingR = 2;
             }else {isMovingR = 0;}
         } else {
             ly = y;
             rHeight = height;
-            if (Gdx.input.isKeyPressed(Input.Keys.W)){
+            if (Gdx.input.isKeyPressed(Input.Keys.W) && canGoUp){
                 y += yv*delta;
                 isMovingL = 1;
-            } else if (Gdx.input.isKeyPressed(Input.Keys.S)){
+            } else if (Gdx.input.isKeyPressed(Input.Keys.S) && canGoDown){
                 y -= yv*delta;
                 isMovingL = 2;
             }else {isMovingL = 0;}
@@ -86,6 +90,8 @@ public class EntityPaddle implements Collidable {
         img.setSize(width, height);
         bounds.setPosition(x, y);
         img.setPosition(x, y);
+        canGoUp = true;
+        canGoDown = true;
     }
 
     @Override
@@ -101,7 +107,15 @@ public class EntityPaddle implements Collidable {
 
     @Override
     public void collide(Entity other) {
-
+        if (Start.getPreferences().getBoolean("paddleBounds")) {
+            if (other instanceof EntityBorder) {
+                if (y < camera.viewportHeight /2f) {
+                    canGoDown = false;
+                } else if (y > camera.viewportHeight/2f) {
+                    canGoUp = false;
+                }
+            }
+        }
     }
 
     public void setHeight(float height) {
