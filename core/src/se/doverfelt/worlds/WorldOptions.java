@@ -53,6 +53,14 @@ public class WorldOptions implements UIManager {
             }
         });
         temp.setIcon("backArrow.png");
+        CheckButton checkButton = new CheckButton();
+        addElement(checkButton, "cbutton", camera.viewportWidth/2f, camera.viewportHeight/2f);
+        checkButton.setAction(new ButtonAction() {
+            @Override
+            public void doAction(World world) {
+                setTooltip(String.valueOf(System.currentTimeMillis()));
+            }
+        });
         this.start = start;
     }
 
