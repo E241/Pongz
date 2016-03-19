@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import se.doverfelt.Start;
 import se.doverfelt.entities.ui.Button;
+import se.doverfelt.entities.ui.ButtonAction;
 import se.doverfelt.entities.ui.UIElement;
 import se.doverfelt.entities.ui.UIManager;
 
@@ -47,13 +48,46 @@ public class WorldPause implements UIManager {
 
         Button temp = buttonPool.obtain();
         addElement(temp, "resume", camera.viewportWidth / 2, camera.viewportHeight - 20);
+        //Size and Action
+        temp.setDimensions(100,25);
+        temp.setTooltip("");
+        temp.setAction(new ButtonAction() {
+            @Override
+            public void doAction(World world) {
+                world.getStart().setWorld("game");
+            }
+        });
         temp = buttonPool.obtain();
         addElement(temp, "restart", camera.viewportWidth / 2, camera.viewportHeight );
+        temp.setDimensions(100,25);
+        temp.setTooltip("");
+        temp.setAction(new ButtonAction() {
+            @Override
+            public void doAction(World world) {
+                ((WorldPongz) Start.getWorld("game")).reset();
+                world.getStart().setWorld("game");
+            }
+        });
         temp = buttonPool.obtain();
         addElement(temp, "mainMenu", camera.viewportWidth / 2, camera.viewportHeight + 20);
+        temp.setDimensions(100,25);
+        temp.setTooltip("");
+        temp.setAction(new ButtonAction() {
+            @Override
+            public void doAction(World world) {
+
+            }
+        });
         temp = buttonPool.obtain();
         addElement(temp, "exit", camera.viewportWidth / 2, camera.viewportHeight + 40);
+        temp.setDimensions(100,25);
+        temp.setTooltip("");
+        temp.setAction(new ButtonAction() {
+            @Override
+            public void doAction(World world) {
 
+            }
+        });
     }
 
 
