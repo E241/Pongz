@@ -39,6 +39,8 @@ public class WorldPause implements UIManager {
     public void create(Start start) {
         aspect = (float) Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
         camera = new OrthographicCamera(600, 600*aspect);
+        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+        camera.zoom = 1f;
         this.start = start;
 
         batch = new SpriteBatch();
@@ -47,7 +49,7 @@ public class WorldPause implements UIManager {
         locale = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
 
         Button temp = buttonPool.obtain();
-        addElement(temp, "resume", camera.viewportWidth / 2, camera.viewportHeight - 20);
+        addElement(temp, "resume", camera.viewportWidth / 2f, camera.viewportHeight - 20);
         //Size and Action
         temp.setDimensions(100,25);
         temp.setTooltip("");
@@ -172,6 +174,6 @@ public class WorldPause implements UIManager {
 
     @Override
     public Start getStart() {
-        return null;
+        return start;
     }
 }
