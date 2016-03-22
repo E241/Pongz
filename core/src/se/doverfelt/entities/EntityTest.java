@@ -1,6 +1,7 @@
 package se.doverfelt.entities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.Random;
@@ -20,7 +21,7 @@ public class EntityTest implements Collidable {
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
 
     }
 

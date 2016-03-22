@@ -23,7 +23,6 @@ public class WorldPongz implements World {
     long timestamp, timestamp1 = -5000;
     public static HashMap<String, Entity> entities = new HashMap<String, Entity>();
     private HashMap<String, Effect> effects = new HashMap<String, Effect>();
-    SpriteBatch batch;
     public BitmapFont font;
     BitmapFont pointFnt;
     public OrthographicCamera camera;
@@ -50,7 +49,6 @@ public class WorldPongz implements World {
     public static boolean isFlashbanged = false;
     private boolean running = false, justStarted= true, menu = false;
     private float dim = 0;
-    SpriteBatch particleBatch;
     private PerformanceCounter tickCounter;
     private PerformanceCounter renderCounter;
     private Start start;
@@ -73,8 +71,6 @@ public class WorldPongz implements World {
         white = new Texture("white.png");
         timestamp = System.currentTimeMillis();
         lastPowerup = System.currentTimeMillis();
-        batch = new SpriteBatch();
-        particleBatch = new SpriteBatch();
         pointFnt = new BitmapFont(Gdx.files.internal("big.fnt"));
         font = new BitmapFont();
         addEntity(new EntityBall(camera), "ball");
@@ -128,7 +124,7 @@ public class WorldPongz implements World {
 
     }
 	@Override
-	public void render () {
+	public void render(SpriteBatch batch) {
         tickCounter.start();
         float delta = Gdx.graphics.getDeltaTime();
         timestamp = System.currentTimeMillis();
@@ -149,7 +145,7 @@ public class WorldPongz implements World {
             genPowerups();
             tickEffects(delta);
             tickEntities(delta);
-            drawEntities();
+            drawEntities(batch);
             drawHUD(delta);
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 running = false;
@@ -158,19 +154,19 @@ public class WorldPongz implements World {
                 start.setWorld("pause");
             }
         } else if (justStarted){
-            drawEntities();
+            drawEntities(batch);
             drawHUD(delta);
             drawCountdown();
         }else if (menu){
             start.setWorld("pause");
         } else if (PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore")) {
             drawHUD(delta);
-            drawEntities();
+            drawEntities(batch);
             drawVictory(PointsL >= Start.getPreferences().getInteger("maxScore"), delta);
         } else if (!running && !(PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore"))) {
-            drawEntities();
+            drawEntities(batch);
             drawHUD(delta);
-            drawPause(delta);
+            drawPause(delta, batch);
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 running = true;
                 dim = 0;
@@ -187,10 +183,10 @@ public class WorldPongz implements World {
                 p.update(delta);
                 tickCounter.stop();
                 renderCounter.start();
-                particleBatch.setProjectionMatrix(camera.combined);
-                particleBatch.begin();
-                p.draw(particleBatch, delta);
-                particleBatch.end();
+                batch.setProjectionMatrix(camera.combined);
+                batch.begin();
+                p.draw(batch, delta);
+                batch.end();
                 renderCounter.stop();
             }
         }
@@ -199,14 +195,14 @@ public class WorldPongz implements World {
            //String n = effectName.substring(effectName.indexOf(' ')+1, effectName.length());
            //effectName = effectName.substring(0, effectName.indexOf(' ')+2);
            renderCounter.start();
-           batch.begin();
-           pointFnt.draw(batch, local.get("powerupMessage"), (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(local.get("powerupMessage").length()/2) ), Gdx.graphics.getHeight()/2f + pointFnt.getLineHeight());
-           pointFnt.draw(batch, effectName, (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(effectName.length()/2f) ), Gdx.graphics.getHeight()/2f );
+           start.getFontBatch().begin();
+           pointFnt.draw(start.getFontBatch(), local.get("powerupMessage"), (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(local.get("powerupMessage").length()/2) ), Gdx.graphics.getHeight()/2f + pointFnt.getLineHeight());
+           pointFnt.draw(start.getFontBatch(), effectName, (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(effectName.length()/2f) ), Gdx.graphics.getHeight()/2f );
            //pointFnt.draw(batch, local.format("powerupMessage", effectName), (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(local.get("powerupMessage").length()/2)), Gdx.graphics.getHeight()/2f + pointFnt.getLineHeight());
            //pF3.draw(batch, n, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
 
 
-           batch.end();
+           start.getFontBatch().end();
            renderCounter.stop();
            tickCounter.start();
            if( 2000 < System.currentTimeMillis() - timestamp2){
@@ -261,9 +257,9 @@ public class WorldPongz implements World {
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
         if (System.currentTimeMillis() - winTimestamp < 5000 && dim == 0.75f) {
-            batch.begin();
-                font.draw(batch, "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
-            batch.end();
+            start.getFontBatch().begin();
+                font.draw(start.getFontBatch(), "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
+            start.getFontBatch().end();
         }
         if (System.currentTimeMillis() - winTimestamp > 6000) doVictory(isLeft);
     }
@@ -292,10 +288,10 @@ public class WorldPongz implements World {
         ball.reset();
     }
 
-    private void drawEntities() {
+    private void drawEntities(SpriteBatch batch) {
         renderCounter.start();
         for (Entity entity : entities.values()) {
-            entity.render(camera);
+            entity.render(camera, batch);
         }
         renderCounter.stop();
     }
@@ -319,7 +315,7 @@ public class WorldPongz implements World {
         return start;
     }
 
-    private void drawPause(float delta) {
+    private void drawPause(float delta, SpriteBatch batch) {
         renderCounter.start();
         dim = Math.min(dim+2*delta, 0.75f);
         ShapeRenderer shapeRenderer = new ShapeRenderer();
@@ -333,9 +329,9 @@ public class WorldPongz implements World {
         Gdx.gl.glDisable(GL20.GL_BLEND);
 
         if (dim == 0.75f) {
-            batch.begin();
-            pointFnt.draw(batch, local.get("pause"), Gdx.graphics.getWidth() / 2f - (local.get("pause").length() * pointFnt.getSpaceWidth()) / 2f, Gdx.graphics.getHeight() / 2f - pointFnt.getLineHeight() / 2f);
-            batch.end();
+            start.getFontBatch().begin();
+            pointFnt.draw(start.getFontBatch(), local.get("pause"), Gdx.graphics.getWidth() / 2f - (local.get("pause").length() * pointFnt.getSpaceWidth()) / 2f, Gdx.graphics.getHeight() / 2f - pointFnt.getLineHeight() / 2f);
+            start.getFontBatch().end();
         }
         renderCounter.stop();
     }
@@ -355,9 +351,9 @@ public class WorldPongz implements World {
         } else if (temp > 1000) {
             s = "2";
         }
-        batch.begin();
-        pointFnt.draw(batch, s, Gdx.graphics.getWidth() / 2f - pointFnt.getSpaceWidth() / 2f, Gdx.graphics.getHeight() / 2f /*- pointFnt.getLineHeight() / 2f*/);
-        batch.end();
+        start.getFontBatch().begin();
+        pointFnt.draw(start.getFontBatch(), s, Gdx.graphics.getWidth() / 2f - pointFnt.getSpaceWidth() / 2f, Gdx.graphics.getHeight() / 2f /*- pointFnt.getLineHeight() / 2f*/);
+        start.getFontBatch().end();
     }
     private void genPowerups() {
         tickCounter.start();
@@ -378,6 +374,7 @@ public class WorldPongz implements World {
     }
 
     private void drawHUD(float delta) {
+        SpriteBatch batch = start.getFontBatch();
         renderCounter.start();
         String entitiesOut = "";
         for (String s : entities.keySet()) {

@@ -15,19 +15,17 @@ public class EntityPowerUpHUD implements Entity {
 
     private EntityPaddle parent;
     private Sprite img;
-    private SpriteBatch batch;
     private boolean visible = false;
 
     public EntityPowerUpHUD(EntityPaddle parent) {
         this.parent = parent;
         img = new Sprite(new Texture("arrow.png"));
-        batch = new SpriteBatch();
         img.setSize(parent.getWidth(), parent.getWidth());
         img.setColor(Color.GREEN);
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         if (visible) {
             batch.begin();
@@ -43,7 +41,6 @@ public class EntityPowerUpHUD implements Entity {
 
     @Override
     public void dispose() {
-        batch.dispose();
         img.getTexture().dispose();
     }
 

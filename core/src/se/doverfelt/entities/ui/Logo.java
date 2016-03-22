@@ -47,11 +47,11 @@ public class Logo implements UIElement {
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        sprite.draw(batch);
-        batch.end();
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
+        this.batch.setProjectionMatrix(camera.combined);
+        this.batch.begin();
+        sprite.draw(this.batch);
+        this.batch.end();
     }
 
     @Override

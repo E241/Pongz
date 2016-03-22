@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
@@ -84,11 +85,11 @@ public class WorldOptions implements UIManager {
     }
 
     @Override
-    public void render() {
+    public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         tickElements();
-        renderElements();
+        renderElements(batch);
         camera.update();
 
     }
@@ -109,9 +110,9 @@ public class WorldOptions implements UIManager {
         }
     }
 
-    private void renderElements() {
+    private void renderElements(SpriteBatch batch) {
         for (UIElement uiElement : elements.values()) {
-            uiElement.render(camera);
+            uiElement.render(camera, batch);
         }
     }
 
