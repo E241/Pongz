@@ -129,5 +129,4 @@ public class Start extends ApplicationAdapter {
         fontBatch.dispose();
         Gdx.app.exit();
     }
-
 }
