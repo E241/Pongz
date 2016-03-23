@@ -49,9 +49,11 @@ public class WorldPause implements UIManager {
         locale = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
 
         Button temp = buttonPool.obtain();
-        addElement(temp, "resume", camera.viewportWidth / 2f, camera.viewportHeight - 20);
+        int width;
+        addElement(temp, "resume", camera.viewportWidth / 2f, (camera.viewportHeight/2f) + 40);
         //Size and Action
-        temp.setDimensions(100,25);
+        width = 100;
+        temp.setDimensions(width,25);
         temp.setTooltip("");
         temp.setAction(new ButtonAction() {
             @Override
@@ -60,8 +62,8 @@ public class WorldPause implements UIManager {
             }
         });
         temp = buttonPool.obtain();
-        addElement(temp, "restart", camera.viewportWidth / 2, camera.viewportHeight );
-        temp.setDimensions(100,25);
+        addElement(temp, "restart", (camera.viewportWidth / 2) - (width / 2), (camera.viewportHeight/2) + 20 );
+        temp.setDimensions(-width,25);
         temp.setTooltip("");
         temp.setAction(new ButtonAction() {
             @Override
@@ -71,8 +73,8 @@ public class WorldPause implements UIManager {
             }
         });
         temp = buttonPool.obtain();
-        addElement(temp, "mainMenu", camera.viewportWidth / 2, camera.viewportHeight + 20);
-        temp.setDimensions(100,25);
+        addElement(temp, "mainMenu", (camera.viewportWidth / 2) - (width / 2), (camera.viewportHeight/2) - 20);
+        temp.setDimensions(width,25);
         temp.setTooltip("");
         temp.setAction(new ButtonAction() {
             @Override
@@ -81,8 +83,8 @@ public class WorldPause implements UIManager {
             }
         });
         temp = buttonPool.obtain();
-        addElement(temp, "exit", camera.viewportWidth / 2, camera.viewportHeight + 40);
-        temp.setDimensions(100,25);
+        addElement(temp, "exit", (camera.viewportWidth / 2) - (width / 2), (camera.viewportHeight/2) - 40);
+        temp.setDimensions(width,25);
         temp.setTooltip("");
         temp.setAction(new ButtonAction() {
             @Override
