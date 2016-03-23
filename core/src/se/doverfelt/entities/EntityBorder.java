@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public class EntityBorder implements Collidable {
 
-    private final SpriteBatch batch;
     private final Sprite img;
     private float x, y;
     private Rectangle bounds;
@@ -20,7 +19,6 @@ public class EntityBorder implements Collidable {
     public EntityBorder(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
-        batch = new SpriteBatch();
         img = new Sprite(new Texture("white.png"));
         img.setPosition(x, y);
         img.setSize(width, height);
@@ -28,7 +26,7 @@ public class EntityBorder implements Collidable {
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         img.draw(batch);
@@ -42,7 +40,6 @@ public class EntityBorder implements Collidable {
 
     @Override
     public void dispose() {
-        batch.dispose();
         img.getTexture().dispose();
     }
 

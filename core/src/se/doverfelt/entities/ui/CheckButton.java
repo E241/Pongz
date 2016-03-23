@@ -63,12 +63,12 @@ public class CheckButton implements UIElement {
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        sprite.draw(batch);
-        if (isChecked) icon.draw(batch);
-        batch.end();
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
+        this.batch.setProjectionMatrix(camera.combined);
+        this.batch.begin();
+        sprite.draw(this.batch);
+        if (isChecked) icon.draw(this.batch);
+        this.batch.end();
 
         if (isMouseOver) {
             dim = Math.min(dim+4* Gdx.graphics.getDeltaTime(), 0.5f);

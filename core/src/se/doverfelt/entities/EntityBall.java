@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 
 
@@ -21,7 +20,6 @@ import java.util.Random;
  */
 public class EntityBall implements Collidable {
 
-    private SpriteBatch batch;
     private Sprite img;
     private float x = 3, y = 3;
     public float xv = 100f, yv =100f;
@@ -37,8 +35,6 @@ public class EntityBall implements Collidable {
 
 
     public EntityBall(OrthographicCamera camera) {
-
-        batch = new SpriteBatch();
         img = new Sprite(new Texture("ball.png"));
         //img.setPosition(x-WIDTH/2, y-HEIGHT/2);
         img.setSize(WIDTH, HEIGHT);
@@ -51,7 +47,7 @@ public class EntityBall implements Collidable {
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         img.draw(batch);
@@ -105,7 +101,6 @@ public class EntityBall implements Collidable {
 
     @Override
     public void dispose() {
-        batch.dispose();
         bom.dispose();
         bounce.dispose();
         img.getTexture().dispose();

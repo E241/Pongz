@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import se.doverfelt.worlds.World;
 
 /**
@@ -23,7 +22,6 @@ public class Button implements UIElement {
 
     private float width = 20, height = 20, x, y;
     private Rectangle rectangle;
-    private SpriteBatch batch = new SpriteBatch();
     private boolean isMouseOver = false;
     private Sound sound;
     private Sprite sprite;
@@ -31,7 +29,6 @@ public class Button implements UIElement {
     private ButtonAction action;
     private BitmapFont font;
     private Sprite icon;
-    private SpriteBatch fontBatch;
     private String tooltip = "";
     private float dim = 0;
 
@@ -50,11 +47,10 @@ public class Button implements UIElement {
         }
         this.font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        fontBatch = new SpriteBatch();
         icon = new Sprite(new Texture("ball.png"));
     }
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         sprite.draw(batch);
@@ -138,7 +134,7 @@ public class Button implements UIElement {
 
     @Override
     public void dispose() {
-        batch.dispose();
+
     }
 
 

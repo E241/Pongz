@@ -29,7 +29,6 @@ public class WorldPause implements UIManager {
     private OrthographicCamera camera;
     private float aspect;
     private Pool<Button> buttonPool = Pools.get(Button.class);
-    private SpriteBatch batch;
     private BitmapFont font;
     private I18NBundle locale;
     private boolean showTooltip;
@@ -43,7 +42,6 @@ public class WorldPause implements UIManager {
         camera.zoom = 1f;
         this.start = start;
 
-        batch = new SpriteBatch();
         font = new BitmapFont();
 
         locale = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
@@ -97,11 +95,11 @@ public class WorldPause implements UIManager {
 
 
     @Override
-    public void render() {
+    public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         tickElements();
-        renderElements();
+        renderElements(batch);
         renderTooltip();
         camera.update();
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
@@ -132,17 +130,17 @@ public class WorldPause implements UIManager {
             uiElement.update(Gdx.graphics.getDeltaTime());
         }
     }
-    private void renderElements() {
+    private void renderElements(SpriteBatch batch) {
         for (UIElement uiElement : elements.values()) {
-            uiElement.render(camera);
+            uiElement.render(camera, batch);
         }
     }
 
     private void renderTooltip() {
         if (showTooltip) {
-            batch.begin();
-            font.draw(batch, currentTooltip, 1, 1 + font.getLineHeight());
-            batch.end();
+            start.getFontBatch().begin();
+            font.draw(start.getFontBatch(), currentTooltip, 1, 1 + font.getLineHeight());
+            start.getFontBatch().end();
         }
     }
 

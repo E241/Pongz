@@ -2,6 +2,7 @@ package se.doverfelt;
 
 import com.badlogic.gdx.ApplicationAdapter;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se.doverfelt.effects.IEffectHandler;
 import se.doverfelt.worlds.*;
 import com.badlogic.gdx.Gdx;
@@ -25,6 +26,12 @@ public class Start extends ApplicationAdapter {
     private static HashMap<String, World> worlds = new HashMap<String, World>();
     private static Preferences preferences;
     private IEffectHandler effectHandler;
+    private SpriteBatch batch;
+    private SpriteBatch fontBatch;
+
+    public SpriteBatch getFontBatch() {
+        return fontBatch;
+    }
 
     public Start(IEffectHandler effectHandler) {
         this.effectHandler = effectHandler;
@@ -43,6 +50,9 @@ public class Start extends ApplicationAdapter {
         if (!preferences.contains("init")) {
             initConfig();
         }
+
+        batch = new SpriteBatch();
+        fontBatch = new SpriteBatch();
 
         preferences.flush();
         addWorld("game", new WorldPongz(effectHandler));
@@ -87,7 +97,7 @@ public class Start extends ApplicationAdapter {
 
     @Override
     public void render() {
-        activeWorld.render();
+        activeWorld.render(batch);
     }
 
     @Override

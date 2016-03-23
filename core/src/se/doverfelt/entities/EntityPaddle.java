@@ -18,7 +18,6 @@ import se.doverfelt.worlds.WorldPongz;
  */
 public class EntityPaddle implements Collidable {
 
-    private SpriteBatch batch;
     private Sprite img;
     private float x,y , width = 2f, height = 15, yv = 150f;
     private final float origHeight;
@@ -36,7 +35,6 @@ public class EntityPaddle implements Collidable {
         y = yIn;
         isRight = Right;
         yv = isRight ? Start.getPreferences().getFloat("paddleRSpeed") : Start.getPreferences().getFloat("paddleLSpeed");
-        batch = new SpriteBatch();
         img = new Sprite(new Texture("white.png"));
         img.setPosition(x, y);
         img.setSize(width, height);
@@ -47,7 +45,7 @@ public class EntityPaddle implements Collidable {
     }
     
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         img.draw(batch);
@@ -96,7 +94,6 @@ public class EntityPaddle implements Collidable {
 
     @Override
     public void dispose() {
-        batch.dispose();
         img.getTexture().dispose();
     }
 

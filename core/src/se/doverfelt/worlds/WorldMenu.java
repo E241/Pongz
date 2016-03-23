@@ -114,11 +114,11 @@ public class WorldMenu implements UIManager {
     }
 
     @Override
-    public void render() {
+    public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         tickElements();
-        renderElements();
+        renderElements(batch);
         renderTooltip();
         if (fadeIn) {
             dim = Math.max(dim - 2*Gdx.graphics.getDeltaTime(), 0);
@@ -141,9 +141,9 @@ public class WorldMenu implements UIManager {
 
     private void renderTooltip() {
         if (showTooltip) {
-            batch.begin();
-            font.draw(batch, currentTooltip, 1, 1 + font.getLineHeight());
-            batch.end();
+            start.getFontBatch().begin();
+            font.draw(start.getFontBatch(), currentTooltip, 1, 1 + font.getLineHeight());
+            start.getFontBatch().end();
         }
     }
 
@@ -163,9 +163,9 @@ public class WorldMenu implements UIManager {
         }
     }
 
-    private void renderElements() {
+    private void renderElements(SpriteBatch batch) {
         for (UIElement uiElement : elements.values()) {
-            uiElement.render(camera);
+            uiElement.render(camera, batch);
         }
     }
 

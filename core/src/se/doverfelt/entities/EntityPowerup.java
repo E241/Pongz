@@ -20,7 +20,6 @@ public class EntityPowerup implements Collidable, Ploppable {
 
     private World world;
     private final Sprite img;
-    private final SpriteBatch batch;
     private final Rectangle bounds;
     private float x, y;
     private Random r;
@@ -31,7 +30,6 @@ public class EntityPowerup implements Collidable, Ploppable {
         img = new Sprite(new Texture("powerup.png"));
         img.setSize(10, 10);
         bounds = new Rectangle(1, 1, 10, 10);
-        batch = new SpriteBatch();
         r = new Random();
         powerUp = Gdx.audio.newSound(Gdx.files.internal("PowerUp.wav"));
     }
@@ -54,7 +52,7 @@ public class EntityPowerup implements Collidable, Ploppable {
     }
 
     @Override
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, SpriteBatch batch) {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         img.draw(batch);
@@ -71,7 +69,6 @@ public class EntityPowerup implements Collidable, Ploppable {
     public void dispose() {
         powerUp.dispose();
         img.getTexture().dispose();
-        batch.dispose();
     }
 
     @Override
