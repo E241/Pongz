@@ -105,6 +105,7 @@ public class CheckButton implements UIElement {
 
     @Override
     public void dispose() {
-
+        sprite.getTexture().dispose();
+        icon.getTexture().dispose();
     }
 }

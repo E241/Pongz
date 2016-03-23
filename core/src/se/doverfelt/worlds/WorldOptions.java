@@ -130,4 +130,11 @@ public class WorldOptions implements UIManager {
     public Start getStart() {
         return start;
     }
+
+    @Override
+    public void dispose() {
+        for (UIElement e : elements.values()) {
+            e.dispose();
+        }
+    }
 }

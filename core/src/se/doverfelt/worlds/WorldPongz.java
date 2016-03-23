@@ -212,7 +212,7 @@ public class WorldPongz implements World {
            tickCounter.stop();
        }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.Q)) Gdx.app.exit();
+        if (Gdx.input.isKeyPressed(Input.Keys.Q)) start.quit();
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) debug = !debug;
         tickCounter.start();
         for (String s : toRemove) {
@@ -313,6 +313,18 @@ public class WorldPongz implements World {
     @Override
     public Start getStart() {
         return start;
+    }
+
+    @Override
+    public void dispose() {
+        for (Entity e : entities.values()) {
+            e.dispose();
+        }
+        bg.dispose();
+        font.dispose();
+        pointFnt.dispose();
+        white.dispose();
+
     }
 
     private void drawPause(float delta, SpriteBatch batch) {

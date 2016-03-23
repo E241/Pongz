@@ -85,7 +85,7 @@ public class WorldPause implements UIManager {
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
-
+                world.getStart().quit();
             }
         });
     }
@@ -109,7 +109,7 @@ public class WorldPause implements UIManager {
             w.reset();
             start.setWorld("game");
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q)){
-            Gdx.app.exit();
+            start.quit();
         }
     }
 
@@ -173,5 +173,13 @@ public class WorldPause implements UIManager {
     @Override
     public Start getStart() {
         return start;
+    }
+
+    @Override
+    public void dispose() {
+        for (UIElement e : elements.values()) {
+            e.dispose();
+        }
+        font.dispose();
     }
 }

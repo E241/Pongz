@@ -16,4 +16,6 @@ public interface World {
     void resume();
 
     Start getStart();
+
+    void dispose();
 }

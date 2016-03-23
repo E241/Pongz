@@ -11,8 +11,6 @@ import se.doverfelt.worlds.World;
  * Created by robin.boregrim on 2016-02-24.
  */
 public class Logo implements UIElement {
-    private Texture logo;
-    private SpriteBatch batch;
     private Rectangle rectangle;
     private float height,width, y, x;
     private Sprite sprite;
@@ -36,7 +34,6 @@ public class Logo implements UIElement {
 
     @Override
     public void create(String name, float x, float y, World world) {
-        batch = new SpriteBatch();
         sprite = new Sprite(new Texture("logo.png"));
         this.width = sprite.getWidth();
         this.height = sprite.getHeight();
@@ -48,10 +45,10 @@ public class Logo implements UIElement {
 
     @Override
     public void render(OrthographicCamera camera, SpriteBatch batch) {
-        this.batch.setProjectionMatrix(camera.combined);
-        this.batch.begin();
-        sprite.draw(this.batch);
-        this.batch.end();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        sprite.draw(batch);
+        batch.end();
     }
 
     @Override
@@ -62,6 +59,6 @@ public class Logo implements UIElement {
 
     @Override
     public void dispose() {
-        batch.dispose();
+        sprite.getTexture().dispose();
     }
 }

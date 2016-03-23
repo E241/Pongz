@@ -134,7 +134,9 @@ public class Button implements UIElement {
 
     @Override
     public void dispose() {
-
+        icon.getTexture().dispose();
+        sprite.getTexture().dispose();
+        font.dispose();
     }
 
 

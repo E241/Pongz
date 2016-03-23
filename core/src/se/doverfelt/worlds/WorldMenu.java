@@ -32,7 +32,6 @@ public class WorldMenu implements UIManager {
     private float aspect;
     private Pool<Button> buttonPool = Pools.get(Button.class);
     private Start start;
-    private SpriteBatch batch;
     private BitmapFont font;
     private String currentTooltip = "";
     private I18NBundle locale;
@@ -53,7 +52,6 @@ public class WorldMenu implements UIManager {
         camera.zoom = 1f;
         camera.update();
 
-        batch = new SpriteBatch();
         font = new BitmapFont();
 
         locale = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
@@ -183,5 +181,13 @@ public class WorldMenu implements UIManager {
     @Override
     public Start getStart() {
         return start;
+    }
+
+    @Override
+    public void dispose() {
+        for (UIElement e : elements.values()) {
+            e.dispose();
+        }
+        font.dispose();
     }
 }

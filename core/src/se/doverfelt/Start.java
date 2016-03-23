@@ -120,4 +120,14 @@ public class Start extends ApplicationAdapter {
         return worlds.get(name);
     }
 
+    public void quit() {
+        Gdx.app.debug("Pongz", "Exit!");
+        for (World w : worlds.values()) {
+            w.dispose();
+        }
+        batch.dispose();
+        fontBatch.dispose();
+        Gdx.app.exit();
+    }
+
 }
