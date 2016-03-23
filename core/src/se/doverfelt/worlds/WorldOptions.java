@@ -29,7 +29,6 @@ public class WorldOptions implements UIManager {
     private Start start;
     private boolean showTooltip = false;
 
-
     @Override
     public void create(Start start) {
 
@@ -54,14 +53,16 @@ public class WorldOptions implements UIManager {
             }
         });
         temp.setIcon("backArrow.png");
-        CheckButton checkButton = new CheckButton();
+        /*CheckButton checkButton = new CheckButton();
         addElement(checkButton, "cbutton", camera.viewportWidth/2f, camera.viewportHeight/2f);
         checkButton.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
                 setTooltip(String.valueOf(System.currentTimeMillis()));
             }
-        });
+        });*/
+        Slider slider = new Slider();
+        addElement(slider, "slider", 200, 200);
         this.start = start;
     }
 
@@ -96,11 +97,12 @@ public class WorldOptions implements UIManager {
 
     private void tickElements() {
         showTooltip = false;
+        Vector3 pos = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
         for (UIElement uiElement : elements.values()) {
-            if (uiElement.getRect().contains(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).x, camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).y)) {
+            if (uiElement.getRect().contains(pos.x, pos.y)) {
                 uiElement.setHover(true);
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    uiElement.onClick(Gdx.input.getX(), Gdx.input.getY());
+                    uiElement.onClick(pos.x, pos.y);
                 }
                 showTooltip = true;
             } else {

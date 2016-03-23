@@ -86,7 +86,7 @@ public class WorldMenu implements UIManager {
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
-                System.exit(0);
+                start.quit();
             }
         });
         temp.setTooltip(locale.get("menu.quit"));
