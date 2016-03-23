@@ -97,17 +97,17 @@ public class Start extends ApplicationAdapter {
 
     @Override
     public void render() {
-        activeWorld.render(batch);
+        if (activeWorld != null) activeWorld.render(batch);
     }
 
     @Override
     public void pause() {
-        activeWorld.pause();
+        if (activeWorld != null) activeWorld.pause();
     }
 
     @Override
     public void resume() {
-        activeWorld.resume();
+        if (activeWorld != null) activeWorld.resume();
     }
 
     public void setWorld(String name) {
@@ -122,6 +122,7 @@ public class Start extends ApplicationAdapter {
 
     public void quit() {
         Gdx.app.debug("Pongz", "Exit!");
+        activeWorld = null;
         for (World w : worlds.values()) {
             w.dispose();
         }
