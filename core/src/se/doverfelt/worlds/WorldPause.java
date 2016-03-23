@@ -22,6 +22,14 @@ import java.util.Locale;
 /**
  * Created by robin.boregrim on 2016-03-09.
  */
+
+/*
+Checklista:
+Lägga till språk grejen
+Fixa nån slags design kanske
+Måste ha bättre ikoner
+
+ */
 public class WorldPause implements UIManager {
 
     private HashMap<String, UIElement> elements = new HashMap<String, UIElement>();
@@ -47,12 +55,11 @@ public class WorldPause implements UIManager {
         locale = I18NBundle.createBundle(Gdx.files.internal("lang"), Locale.getDefault());
 
         Button temp = buttonPool.obtain();
-        int width;
-        addElement(temp, "resume", camera.viewportWidth / 2f, (camera.viewportHeight/2f) + 40);
+        int width = 100;
+        addElement(temp, "resume", (camera.viewportWidth / 2f) - (width / 2), (camera.viewportHeight/2f) + 0);
         //Size and Action
-        width = 100;
         temp.setDimensions(width,25);
-        temp.setTooltip("");
+        temp.setTooltip("Resume");
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
@@ -60,9 +67,9 @@ public class WorldPause implements UIManager {
             }
         });
         temp = buttonPool.obtain();
-        addElement(temp, "restart", (camera.viewportWidth / 2) - (width / 2), (camera.viewportHeight/2) + 20 );
-        temp.setDimensions(-width,25);
-        temp.setTooltip("");
+        addElement(temp, "restart", (camera.viewportWidth / 2f) - (width / 2), (camera.viewportHeight/2) - 40);
+        temp.setDimensions(width,25);
+        temp.setTooltip("Restart");
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
@@ -71,23 +78,25 @@ public class WorldPause implements UIManager {
             }
         });
         temp = buttonPool.obtain();
-        addElement(temp, "mainMenu", (camera.viewportWidth / 2) - (width / 2), (camera.viewportHeight/2) - 20);
+        addElement(temp, "mainMenu", (camera.viewportWidth / 2f) - (width / 2), (camera.viewportHeight/2) - 80);
         temp.setDimensions(width,25);
-        temp.setTooltip("");
+        temp.setTooltip("Main Menu");
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
+                ((WorldPongz) Start.getWorld("game")).reset();
+                world.getStart().setWorld("menu");
 
             }
         });
         temp = buttonPool.obtain();
-        addElement(temp, "exit", (camera.viewportWidth / 2) - (width / 2), (camera.viewportHeight/2) - 40);
+        addElement(temp, "exit", (camera.viewportWidth / 2f) - (width / 2), (camera.viewportHeight/2) - 120);
         temp.setDimensions(width,25);
-        temp.setTooltip("");
+        temp.setTooltip("Exit");
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
-
+                System.exit(0);
             }
         });
     }
