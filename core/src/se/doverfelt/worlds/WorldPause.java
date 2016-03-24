@@ -66,6 +66,7 @@ public class WorldPause implements UIManager {
                 world.getStart().setWorld("game");
             }
         });
+        temp.setIcon("play.png");
         temp = buttonPool.obtain();
         addElement(temp, "restart", (camera.viewportWidth / 2f) - (width / 2), (camera.viewportHeight/2) - 40);
         temp.setDimensions(width,25);
@@ -93,6 +94,7 @@ public class WorldPause implements UIManager {
         addElement(temp, "exit", (camera.viewportWidth / 2f) - (width / 2), (camera.viewportHeight/2) - 120);
         temp.setDimensions(width,25);
         temp.setTooltip("Exit");
+        temp.setIcon("backArrow.png");
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
