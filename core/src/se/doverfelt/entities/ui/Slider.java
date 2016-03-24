@@ -110,4 +110,13 @@ public class Slider implements UIElement {
         bar.getTexture().dispose();
         marker.getTexture().dispose();
     }
+
+    public void setMax(float max) {
+        this.max = max;
+    }
+
+    public float getValue() {
+        return value;
+    }
+
 }

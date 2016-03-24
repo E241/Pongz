@@ -324,7 +324,6 @@ public class WorldPongz implements World {
         font.dispose();
         pointFnt.dispose();
         white.dispose();
-
     }
 
     private void drawPause(float delta, SpriteBatch batch) {
