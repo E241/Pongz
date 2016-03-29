@@ -28,6 +28,7 @@ public class Start extends ApplicationAdapter {
     private IEffectHandler effectHandler;
     private SpriteBatch batch;
     private SpriteBatch fontBatch;
+    private boolean shouldQuit = false;
 
     public SpriteBatch getFontBatch() {
         return fontBatch;
@@ -97,7 +98,8 @@ public class Start extends ApplicationAdapter {
 
     @Override
     public void render() {
-        if (activeWorld != null) activeWorld.render(batch);
+        if (activeWorld != null && !shouldQuit) activeWorld.render(batch);
+        if (shouldQuit) doQuit();
     }
 
     @Override
@@ -121,6 +123,10 @@ public class Start extends ApplicationAdapter {
     }
 
     public void quit() {
+        shouldQuit = true;
+    }
+
+    private void doQuit() {
         Gdx.app.debug("Pongz", "Exit!");
         activeWorld = null;
         for (World w : worlds.values()) {
