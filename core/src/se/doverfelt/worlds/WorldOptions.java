@@ -61,8 +61,14 @@ public class WorldOptions implements UIManager {
                 setTooltip(String.valueOf(System.currentTimeMillis()));
             }
         });*/
-        Slider slider = new Slider();
+        final Slider slider = new Slider();
         addElement(slider, "slider", 200, 200);
+        slider.setChangeListener(new ChangeListener() {
+            @Override
+            public void onChange() {
+                Gdx.app.debug("Change", String.valueOf(slider.getValue()));
+            }
+        });
         this.start = start;
     }
 

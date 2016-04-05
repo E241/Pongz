@@ -23,6 +23,7 @@ public class Slider implements UIElement {
     private float lastX = 0, lastY = 0, newX = 0, newY = 0, dx = 0, dy = 0;
     private BitmapFont font;
     private long lastClick = 0;
+    private ChangeListener listener;
 
     @Override
     public void create(String name, float x, float y, World world) {
@@ -89,13 +90,16 @@ public class Slider implements UIElement {
             }
         }
 
+        float oldValue = value;
         value = max * ((markerBounds.getX() + 7.5f - barBounds.getX())/barBounds.getWidth());
-
+        if (oldValue != value && listener != null) {
+            listener.onChange();
+        }
         marker.setPosition(markerBounds.getX(), markerBounds.getY());
         bar.setPosition(barBounds.getX(), barBounds.getY());
-        world.getStart().getFontBatch().begin();
-        font.draw(world.getStart().getFontBatch(), "Val: " + value, 50, 50);
-        world.getStart().getFontBatch().end();
+        //world.getStart().getFontBatch().begin();
+        //font.draw(world.getStart().getFontBatch(), "Val: " + value, 50, 50);
+        //world.getStart().getFontBatch().end();
         markerClicked = false;
         dx = 0;
         dy = 0;
@@ -109,6 +113,10 @@ public class Slider implements UIElement {
     public void dispose() {
         bar.getTexture().dispose();
         marker.getTexture().dispose();
+    }
+
+    public void setChangeListener(ChangeListener listener) {
+        this.listener = listener;
     }
 
     public void setMax(float max) {
