@@ -154,7 +154,7 @@ public class EntityBall implements Collidable {
                     ts2 = System.currentTimeMillis();
                     //WorldPongz.startParticle("Particles/Spark.p", x, y + HEIGHT, true);
                 }
-            } //Boll styrningen är omformulerad för att man kan välja på ingenstyrining (0) styrning 1 (Beror på farten) och styrning 2 (Beror på vart bollen träffar plattan)
+            }         
         } else if (other instanceof EntityPaddle) {
             float temp = camera.viewportWidth / 2;
             if(x < temp){
