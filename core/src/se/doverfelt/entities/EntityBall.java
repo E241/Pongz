@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.sun.xml.internal.fastinfoset.algorithm.BuiltInEncodingAlgorithm;
 import se.doverfelt.worlds.WorldPongz;
 
 
@@ -153,35 +154,31 @@ public class EntityBall implements Collidable {
                     ts2 = System.currentTimeMillis();
                     //WorldPongz.startParticle("Particles/Spark.p", x, y + HEIGHT, true);
                 }
-            }
+            } //Boll styrningen är omformulerad för att man kan välja på ingenstyrining (0) styrning 1 (Beror på farten) och styrning 2 (Beror på vart bollen träffar plattan)
         } else if (other instanceof EntityPaddle) {
             float temp = camera.viewportWidth / 2;
-            if(WorldPongz.Styrning == 1) {
-                if (x < temp) {
-                    xv = Math.abs(xv);
-                    if (EntityPaddle.isMovingL == 1) {
+            if(x < temp){
+                xv = Math.abs(xv);
+                if (WorldPongz.Styrning == 1 || WorldPongz.Styrning == 3){
+                    if (EntityPaddle.isMovingL == 1 || WorldPongz.Styrning == 3) {
                         yv = (yv + 20);
-                    } else if (EntityPaddle.isMovingL == 2) {
+                    } else if (EntityPaddle.isMovingL == 2 || WorldPongz.Styrning == 3) {
                         yv = (yv - 20);
                     }
-                }
-                if (x > temp) {
-                    xv = -Math.abs(xv);
-                    if (EntityPaddle.isMovingR == 1) {
-                        yv = (yv + 25.1f);
-                    } else if (EntityPaddle.isMovingR == 2) {
-                        yv = (yv - 25.1f);
-                    }
-                }
-            } else if (WorldPongz.Styrning == 2){
-                if (x < temp) {
-                    xv = Math.abs(xv);
+                } else if (WorldPongz.Styrning == 2 || WorldPongz.Styrning == 3){
                     float temp2 = y - EntityPaddle.ly - (EntityPaddle.lHeight/2);
                     yv += (temp2*10);
-
                 }
-                if (x > temp) {
-                    xv = -Math.abs(xv);
+            }
+            if(x > temp){
+                xv = -Math.abs(xv);
+                if (WorldPongz.Styrning == 1 || WorldPongz.Styrning == 3){
+                    if (EntityPaddle.isMovingR == 1 || WorldPongz.Styrning == 3) {
+                        yv = (yv + 20);
+                    } else if (EntityPaddle.isMovingR == 2 || WorldPongz.Styrning == 3) {
+                        yv = (yv - 20);
+                    }
+                } else if (WorldPongz.Styrning == 2 || WorldPongz.Styrning == 3){
                     float temp2 = y - EntityPaddle.ry - (EntityPaddle.rHeight/2);
                     yv += (temp2*10);
                 }
