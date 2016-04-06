@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.sun.xml.internal.fastinfoset.algorithm.BuiltInEncodingAlgorithm;
 import se.doverfelt.worlds.WorldPongz;
 
 
@@ -154,7 +153,7 @@ public class EntityBall implements Collidable {
                     ts2 = System.currentTimeMillis();
                     //WorldPongz.startParticle("Particles/Spark.p", x, y + HEIGHT, true);
                 }
-            }         
+            }
         } else if (other instanceof EntityPaddle) {
             float temp = camera.viewportWidth / 2;
             if(x < temp){
