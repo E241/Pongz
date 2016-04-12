@@ -38,6 +38,7 @@ public class WorldMenu implements UIManager {
     private boolean showTooltip = false;
     private float dim;
     private boolean fadeIn = false;
+    public static int gameCount = 0, wl = 0, wr = 0;
 
     @Override
     public void create(final Start start) {
@@ -92,6 +93,7 @@ public class WorldMenu implements UIManager {
         temp.setTooltip(locale.get("menu.quit"));
         this.start = start;
     }
+
 
     public void addElement(UIElement entity, String name, float x, float y) {
         try {

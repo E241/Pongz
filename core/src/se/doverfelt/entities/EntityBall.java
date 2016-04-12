@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 
 
@@ -156,28 +157,29 @@ public class EntityBall implements Collidable {
             }
         } else if (other instanceof EntityPaddle) {
             float temp = camera.viewportWidth / 2;
+            int i = Start.getPreferences().getInteger("control");
             if(x < temp){
                 xv = Math.abs(xv);
-                if (WorldPongz.Styrning == 1 || WorldPongz.Styrning == 3){
-                    if (EntityPaddle.isMovingL == 1 || WorldPongz.Styrning == 3) {
+                if (i == 1 || i == 3){
+                    if (EntityPaddle.isMovingL == 1) {
                         yv = (yv + 20);
-                    } else if (EntityPaddle.isMovingL == 2 || WorldPongz.Styrning == 3) {
+                    } else if (EntityPaddle.isMovingL == 2 ) {
                         yv = (yv - 20);
                     }
-                } else if (WorldPongz.Styrning == 2 || WorldPongz.Styrning == 3){
+                } else if (i == 2 || i == 3){
                     float temp2 = y - EntityPaddle.ly - (EntityPaddle.lHeight/2);
                     yv += (temp2*10);
                 }
             }
             if(x > temp){
                 xv = -Math.abs(xv);
-                if (WorldPongz.Styrning == 1 || WorldPongz.Styrning == 3){
-                    if (EntityPaddle.isMovingR == 1 || WorldPongz.Styrning == 3) {
+                if (i == 1 || i == 3){
+                    if (EntityPaddle.isMovingR == 1) {
                         yv = (yv + 20);
-                    } else if (EntityPaddle.isMovingR == 2 || WorldPongz.Styrning == 3) {
+                    } else if (EntityPaddle.isMovingR == 2) {
                         yv = (yv - 20);
                     }
-                } else if (WorldPongz.Styrning == 2 || WorldPongz.Styrning == 3){
+                } else if (i == 2 || i == 3){
                     float temp2 = y - EntityPaddle.ry - (EntityPaddle.rHeight/2);
                     yv += (temp2*10);
                 }
