@@ -12,9 +12,12 @@ import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 //import com.sun.xml.internal.ws.api.pipe.Engine;
 import com.uwsoft.editor.renderer.SceneLoader;
+import com.uwsoft.editor.renderer.components.TransformComponent;
 import com.uwsoft.editor.renderer.data.SceneVO;
 import com.uwsoft.editor.renderer.resources.IResourceRetriever;
 import com.uwsoft.editor.renderer.resources.ResourceManager;
+import com.uwsoft.editor.renderer.utils.ComponentRetriever;
+import com.uwsoft.editor.renderer.utils.ItemWrapper;
 import se.doverfelt.Start;
 import se.doverfelt.entities.ui.*;
 
@@ -36,16 +39,17 @@ public class WorldOptions implements UIManager {
     private Start start;
     private boolean showTooltip = false;
     private SceneLoader sl;
+    private ItemWrapper root;
 
     @Override
     public void create(Start start) {
 
         aspect = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 
-        camera = new OrthographicCamera(600, 600*aspect);
+        camera = new OrthographicCamera(800, 600*aspect);
         //camera.viewportWidth = Gdx.graphics.getWidth();
         //camera.viewportHeight = Gdx.graphics.getWidth();
-        camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
+        //camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
         //camera.position.set(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0);
         camera.zoom = 1f;
         camera.update();
@@ -61,9 +65,12 @@ public class WorldOptions implements UIManager {
         });
         temp.setIcon("backArrow.png");*/
 
-        FitViewport viewport = new FitViewport(1920, 1080, camera);
+        FitViewport viewport = new FitViewport(1920, 1080);
         sl = new SceneLoader();
-        sl.loadScene("MainScene");
+        sl.loadScene("Options", viewport);
+
+        root = new ItemWrapper(sl.rootEntity);
+        //root.getChild("mouseLigh").addScript(new MouseFollower(viewport));
 
         this.start = start;
     }
