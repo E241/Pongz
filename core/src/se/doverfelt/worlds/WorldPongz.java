@@ -53,6 +53,7 @@ public class WorldPongz implements World {
     private PerformanceCounter renderCounter;
     private Start start;
     private long winTimestamp = -1;
+    public static int gameCount = 0, wl = 0, wr = 0;
 
     public WorldPongz(IEffectHandler effectHandler) {
         this.effectHandler = effectHandler;
@@ -60,6 +61,7 @@ public class WorldPongz implements World {
 
     @Override
 	public void create (Start start) {
+        WorldMenu.gameCount ++;
         this.start = start;
         aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
         camera = new OrthographicCamera(200f, 200f*aspect);
@@ -258,8 +260,18 @@ public class WorldPongz implements World {
         Gdx.gl.glDisable(GL20.GL_BLEND);
         if (System.currentTimeMillis() - winTimestamp < 5000 && dim == 0.75f) {
             start.getFontBatch().begin();
-                font.draw(start.getFontBatch(), "Winner: " + (isLeft? "left" : "right") + "!", Gdx.graphics.getWidth()/2f - (font.getSpaceWidth() * ("Winner: " + (isLeft? "left" : "right") + "!").length())/2f, 400);
+
+                if(start.getPreferences().getInteger("bestOf") <= 1) {
+                    font.draw(start.getFontBatch(), "Winner: " + (isLeft ? "left" : "right") + "!", Gdx.graphics.getWidth() / 2f - (font.getSpaceWidth() * ("Winner: " + (isLeft ? "left" : "right") + "!").length()) / 2f, 400);
+                }else{
+                    font.draw(start.getFontBatch(), "Winner of game " + WorldMenu.gameCount + " is " + (isLeft ? "left" : "right") + "!", Gdx.graphics.getWidth() / 2f - (font.getSpaceWidth() * ("Winner of game " + WorldMenu.gameCount + " is " + (isLeft ? "left" : "right") + "!").length()) / 2f, 400);
+                }
             start.getFontBatch().end();
+            if(isLeft) {
+                wr++;
+            }else {
+                wl++;
+            }
         }
         if (System.currentTimeMillis() - winTimestamp > 6000) doVictory(isLeft);
     }
@@ -274,7 +286,13 @@ public class WorldPongz implements World {
         PointsR = 0;
         dim = 0;
         Gdx.input.setCursorCatched(false);
-        start.setWorld("menu");
+        if(WorldMenu.gameCount >= start.getPreferences().getInteger("bestOf")){
+            start.setWorld("menu");
+            WorldMenu.gameCount = 0;
+        }else {
+            this.reset();
+            create(start);
+        }
     }
     public void reset(){
         timestamp1 = -5000;
@@ -286,6 +304,11 @@ public class WorldPongz implements World {
         dim = 0;
         EntityBall ball =(EntityBall)entities.get("ball");
         ball.reset();
+        for (String toRemoveEffect : effects.keySet()) {
+            effectHandler.free(effects.get(toRemoveEffect).getClass(), effects.get(toRemoveEffect));
+            effects.remove(toRemoveEffect);
+        }
+        toRemoveEffects.clear();
     }
 
     private void drawEntities(SpriteBatch batch) {

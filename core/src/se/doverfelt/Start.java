@@ -66,7 +66,7 @@ public class Start extends ApplicationAdapter {
     private void initConfig() {
         preferences.putFloat("paddleRSpeed", 150f);
         preferences.putFloat("paddleLSpeed", 150f);
-        preferences.putInteger("maxScore", 30);
+        preferences.putInteger("maxScore", 20);
         preferences.putBoolean("drunk", true);
         preferences.putBoolean("spin", true);
         preferences.putBoolean("flashbang", true);
@@ -84,6 +84,8 @@ public class Start extends ApplicationAdapter {
         preferences.putString("lang", Locale.getDefault().toString());
         preferences.putBoolean("paddleBounds", false);
         preferences.putLong("init", System.currentTimeMillis());
+        preferences.putInteger("control", 2);
+        preferences.putInteger("bestOf", 3);
         preferences.flush();
     }
 

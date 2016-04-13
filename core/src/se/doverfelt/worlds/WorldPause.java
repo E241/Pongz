@@ -85,6 +85,7 @@ public class WorldPause implements UIManager {
         temp.setAction(new ButtonAction() {
             @Override
             public void doAction(World world) {
+                WorldMenu.gameCount = 0;
                 ((WorldPongz) Start.getWorld("game")).reset();
                 world.getStart().setWorld("menu");
 
