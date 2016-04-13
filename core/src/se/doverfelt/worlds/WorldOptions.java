@@ -5,7 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
@@ -40,6 +43,7 @@ public class WorldOptions implements UIManager {
     private boolean showTooltip = false;
     private SceneLoader sl;
     private ItemWrapper root;
+    private Sprite bg;
 
     @Override
     public void create(Start start) {
@@ -70,7 +74,9 @@ public class WorldOptions implements UIManager {
         sl.loadScene("Options", viewport);
 
         root = new ItemWrapper(sl.rootEntity);
-        //root.getChild("mouseLigh").addScript(new MouseFollower(viewport));
+        root.getChild("mouseLight").addScript(new MouseFollower(viewport));
+
+        bg = new Sprite(new Texture("bg.png"));
 
         this.start = start;
     }
@@ -98,6 +104,10 @@ public class WorldOptions implements UIManager {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        sl.getBatch().begin();
+        bg.setSize(Gdx.graphics.getWidth()*2, Gdx.graphics.getWidth()*2);
+        bg.draw(sl.getBatch());
+        sl.getBatch().end();
         sl.getEngine().update(Gdx.graphics.getDeltaTime());
         tickElements();
         renderElements(batch);

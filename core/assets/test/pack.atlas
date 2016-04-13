@@ -1,0 +1,90 @@
+
+pack.png
+size: 256,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+PowerupIcon
+  rotate: false
+  xy: 95, 24
+  size: 10, 10
+  orig: 10, 10
+  offset: 0, 0
+  index: -1
+TestPaddle
+  rotate: false
+  xy: 95, 36
+  size: 16, 32
+  orig: 16, 32
+  offset: 0, 0
+  index: -1
+arrow
+  rotate: false
+  xy: 2, 17
+  size: 91, 109
+  orig: 91, 109
+  offset: 0, 0
+  index: -1
+backArrow
+  rotate: false
+  xy: 113, 51
+  size: 6, 7
+  orig: 6, 7
+  offset: 0, 0
+  index: -1
+ball
+  rotate: false
+  xy: 187, 118
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+bar
+  rotate: false
+  xy: 43, 7
+  size: 26, 8
+  orig: 26, 8
+  offset: 0, 0
+  index: -1
+bg
+  rotate: false
+  xy: 113, 60
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 153, 118
+  size: 32, 8
+  orig: 32, 8
+  offset: 0, 0
+  index: -1
+logo
+  rotate: false
+  xy: 2, 2
+  size: 39, 13
+  orig: 39, 13
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 71, 7
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+powerup
+  rotate: false
+  xy: 153, 108
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 95, 70
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
