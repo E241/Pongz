@@ -1,5 +1,6 @@
 package se.doverfelt.worlds;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,6 +9,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+//import com.sun.xml.internal.ws.api.pipe.Engine;
+import com.uwsoft.editor.renderer.SceneLoader;
+import com.uwsoft.editor.renderer.data.SceneVO;
+import com.uwsoft.editor.renderer.resources.IResourceRetriever;
+import com.uwsoft.editor.renderer.resources.ResourceManager;
 import se.doverfelt.Start;
 import se.doverfelt.entities.ui.*;
 
@@ -28,6 +35,7 @@ public class WorldOptions implements UIManager {
     private Pool<Button> buttonPool = Pools.get(Button.class);
     private Start start;
     private boolean showTooltip = false;
+    private SceneLoader sl;
 
     @Override
     public void create(Start start) {
@@ -41,10 +49,9 @@ public class WorldOptions implements UIManager {
         //camera.position.set(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 0);
         camera.zoom = 1f;
         camera.update();
-        Button temp = buttonPool.obtain();
+
+        /*Button temp = buttonPool.obtain();
         addElement(temp, "backBtn", 10, camera.viewportHeight - 35);
-        Logo logo = new Logo();
-        addElement(logo,"logo",camera.viewportWidth/2f, camera.viewportHeight/2f+50);
         temp.setDimensions(25, 25);
         temp.setAction(new ButtonAction() {
             @Override
@@ -52,23 +59,12 @@ public class WorldOptions implements UIManager {
                 world.getStart().setWorld("menu");
             }
         });
-        temp.setIcon("backArrow.png");
-        /*CheckButton checkButton = new CheckButton();
-        addElement(checkButton, "cbutton", camera.viewportWidth/2f, camera.viewportHeight/2f);
-        checkButton.setAction(new ButtonAction() {
-            @Override
-            public void doAction(World world) {
-                setTooltip(String.valueOf(System.currentTimeMillis()));
-            }
-        });*/
-        final Slider slider = new Slider();
-        addElement(slider, "slider", 200, 200);
-        slider.setChangeListener(new ChangeListener() {
-            @Override
-            public void onChange() {
-                Gdx.app.debug("Change", String.valueOf(slider.getValue()));
-            }
-        });
+        temp.setIcon("backArrow.png");*/
+
+        FitViewport viewport = new FitViewport(1920, 1080, camera);
+        sl = new SceneLoader();
+        sl.loadScene("MainScene");
+
         this.start = start;
     }
 
@@ -95,6 +91,7 @@ public class WorldOptions implements UIManager {
     public void render(SpriteBatch batch) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        sl.getEngine().update(Gdx.graphics.getDeltaTime());
         tickElements();
         renderElements(batch);
         camera.update();
