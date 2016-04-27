@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 //import com.sun.xml.internal.ws.api.pipe.Engine;
 import com.uwsoft.editor.renderer.SceneLoader;
 import com.uwsoft.editor.renderer.components.TransformComponent;
+import com.uwsoft.editor.renderer.components.label.LabelComponent;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 import com.uwsoft.editor.renderer.utils.ItemWrapper;
 import se.doverfelt.Start;
@@ -75,7 +76,19 @@ public class WorldOptions implements UIManager {
         root.getChild("BackBtn").addScript(new ButtonScript(viewport, this, new ButtonAction() {
             @Override
             public void doAction(World world) {
+                Start.getPreferences().flush();
                 world.getStart().setWorld("menu");
+            }
+        }));
+        LabelComponent label = ComponentRetriever.get(root.getChild("ParentMode").getChild("BtnLabel").getEntity(), LabelComponent.class);
+        label.setText("Parent Mode: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
+        root.getChild("ParentMode").addScript(new ButtonScript(viewport, this, new ButtonAction() {
+            @Override
+            public void doAction(World world) {
+                Start.getPreferences().putBoolean("paddleBounds", !Start.getPreferences().getBoolean("paddleBounds"));
+                LabelComponent label = ComponentRetriever.get(root.getChild("ParentMode").getChild("BtnLabel").getEntity(), LabelComponent.class);
+                label.setText("Parent Mode: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
+
             }
         }));
         bg = new Sprite(new Texture("bg.png"));
