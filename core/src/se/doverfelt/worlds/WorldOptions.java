@@ -1,6 +1,5 @@
 package se.doverfelt.worlds;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -8,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
@@ -16,13 +14,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 //import com.sun.xml.internal.ws.api.pipe.Engine;
 import com.uwsoft.editor.renderer.SceneLoader;
 import com.uwsoft.editor.renderer.components.TransformComponent;
-import com.uwsoft.editor.renderer.data.SceneVO;
-import com.uwsoft.editor.renderer.resources.IResourceRetriever;
-import com.uwsoft.editor.renderer.resources.ResourceManager;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 import com.uwsoft.editor.renderer.utils.ItemWrapper;
 import se.doverfelt.Start;
 import se.doverfelt.entities.ui.*;
+import se.doverfelt.scripts.ButtonScript;
+import se.doverfelt.scripts.MouseFollower;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +43,7 @@ public class WorldOptions implements UIManager {
     private Sprite bg;
 
     @Override
-    public void create(Start start) {
+    public void create(final Start start) {
 
         aspect = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 
@@ -75,7 +72,12 @@ public class WorldOptions implements UIManager {
 
         root = new ItemWrapper(sl.rootEntity);
         root.getChild("mouseLight").addScript(new MouseFollower(viewport));
-
+        root.getChild("BackBtn").addScript(new ButtonScript(viewport, this, new ButtonAction() {
+            @Override
+            public void doAction(World world) {
+                world.getStart().setWorld("menu");
+            }
+        }));
         bg = new Sprite(new Texture("bg.png"));
 
         this.start = start;

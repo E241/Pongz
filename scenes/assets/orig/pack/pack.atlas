@@ -57,6 +57,15 @@ button
   rotate: false
   xy: 595, 458
   size: 128, 32
+  split: 4, 4, 4, 4
+  orig: 128, 32
+  offset: 0, 0
+  index: -1
+button9
+  rotate: false
+  xy: 595, 458
+  size: 128, 32
+  split: 4, 4, 4, 4
   orig: 128, 32
   offset: 0, 0
   index: -1
