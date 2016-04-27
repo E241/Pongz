@@ -1,4 +1,4 @@
-package se.doverfelt.worlds;
+package se.doverfelt.scripts;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;

@@ -27,28 +27,28 @@ arrow
   index: -1
 backArrow
   rotate: false
-  xy: 113, 51
+  xy: 141, 61
   size: 6, 7
   orig: 6, 7
   offset: 0, 0
   index: -1
 ball
   rotate: false
-  xy: 187, 118
+  xy: 77, 7
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 bar
   rotate: false
-  xy: 43, 7
+  xy: 113, 60
   size: 26, 8
   orig: 26, 8
   offset: 0, 0
   index: -1
 bg
   rotate: false
-  xy: 113, 60
+  xy: 153, 108
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -57,6 +57,14 @@ button
   rotate: false
   xy: 153, 118
   size: 32, 8
+  orig: 32, 8
+  offset: 0, 0
+  index: -1
+button9
+  rotate: false
+  xy: 43, 7
+  size: 32, 8
+  split: 1, 1, 1, 1
   orig: 32, 8
   offset: 0, 0
   index: -1
@@ -69,14 +77,14 @@ logo
   index: -1
 play
   rotate: false
-  xy: 71, 7
+  xy: 113, 50
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 powerup
   rotate: false
-  xy: 153, 108
+  xy: 187, 118
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
