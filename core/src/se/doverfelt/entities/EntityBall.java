@@ -33,6 +33,7 @@ public class EntityBall implements Collidable {
     private long resetTime;
     private float maxVel = 2500f;
     private long ts1= 0, ts2 = 0;
+    private boolean pause = true;
 
 
     public EntityBall(OrthographicCamera camera) {
@@ -58,30 +59,31 @@ public class EntityBall implements Collidable {
 
     @Override
     public void update(float delta) {
-        if (System.currentTimeMillis() - resetTime > 500) {
 
-            if (xv >= 0) {
-                x += Math.min(xv * delta, maxVel*delta);
-            } else {
-                x += Math.max(xv * delta, -maxVel*delta);
-            }
-            if (yv >= 0) {
-                y += Math.min(yv * delta, maxVel*delta);
-            } else {
-                y += Math.max(yv * delta, -maxVel*delta);
-            }
-
-            if (x < 0) {
-                //x = 0;
-                // xv = -xv; //Vinst Höger
-                WorldPongz.PointsR++;
-                reset();
-            } else if (x > camera.viewportWidth - WIDTH) {
-                //x = camera.viewportWidth -WIDTH;
-                //xv = -xv; //Vinst Vänster
-                WorldPongz.PointsL++;
-                reset();
-            }
+            if (System.currentTimeMillis() - resetTime > 500) {
+                if (!pause) {
+                    if (xv >= 0) {
+                        x += Math.min(xv * delta, maxVel * delta);
+                    } else {
+                        x += Math.max(xv * delta, -maxVel * delta);
+                    }
+                    if (yv >= 0) {
+                        y += Math.min(yv * delta, maxVel * delta);
+                    } else {
+                        y += Math.max(yv * delta, -maxVel * delta);
+                    }
+                }
+                if (x < 0) {
+                    //x = 0;
+                    // xv = -xv; //Vinst Höger
+                    WorldPongz.PointsR++;
+                    reset();
+                } else if (x > camera.viewportWidth - WIDTH) {
+                    //x = camera.viewportWidth -WIDTH;
+                    //xv = -xv; //Vinst Vänster
+                    WorldPongz.PointsL++;
+                    reset();
+                }
         /*if (y < 0){
 
             yv = -yv;
@@ -95,16 +97,23 @@ public class EntityBall implements Collidable {
             y = camera.viewportHeight-HEIGHT;
 
         }*/
+            }
+            bounds.setPosition(x, y);
+            img.setPosition(x, y);
         }
-        bounds.setPosition(x, y);
-        img.setPosition(x,y);
-    }
+
 
     @Override
     public void dispose() {
         bom.dispose();
         bounce.dispose();
         img.getTexture().dispose();
+    }
+    public void pause(){
+        pause = true;
+    }
+    public void unPause(){
+        pause = false;
     }
 
     public void reset() {

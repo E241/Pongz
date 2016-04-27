@@ -66,7 +66,7 @@ public class Start extends ApplicationAdapter {
     private void initConfig() {
         preferences.putFloat("paddleRSpeed", 150f);
         preferences.putFloat("paddleLSpeed", 150f);
-        preferences.putInteger("maxScore", 20);
+        preferences.putInteger("maxScore", 5);
         preferences.putBoolean("drunk", true);
         preferences.putBoolean("spin", true);
         preferences.putBoolean("flashbang", true);
