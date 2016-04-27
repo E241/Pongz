@@ -107,8 +107,8 @@ public class WorldOptions implements UIManager {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sl.getBatch().begin();
-        bg.setSize(Gdx.graphics.getWidth()*2, Gdx.graphics.getWidth()*2);
-        bg.draw(sl.getBatch());
+        //bg.setSize(Gdx.graphics.getWidth()*2, Gdx.graphics.getWidth()*2);
+        //bg.draw(sl.getBatch());
         sl.getBatch().end();
         sl.getEngine().update(Gdx.graphics.getDeltaTime());
         tickElements();

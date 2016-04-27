@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.GdxBuild;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.uwsoft.editor.renderer.components.DimensionsComponent;
 import com.uwsoft.editor.renderer.components.TransformComponent;
@@ -39,7 +38,8 @@ public class ButtonScript implements IScript {
             Vector2 pos = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
             TransformComponent t = ComponentRetriever.get(entity, TransformComponent.class);
             DimensionsComponent d = ComponentRetriever.get(entity, DimensionsComponent.class);
-            if (pos.x > t.x && pos.x < t.x + d.width && pos.y > t.y && pos.y < t.y + d.height) {
+            Vector2 dim = viewport.unproject(new Vector2(d.width, d.height));
+            if (pos.x > t.x && pos.x < t.x + dim.x && pos.y > t.y && pos.y < t.y + dim.y) {
                 action.doAction(world);
             }
         }
