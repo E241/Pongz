@@ -61,9 +61,9 @@ public class WorldPongz implements World {
 
     @Override
 	public void create (Start start) {
-        //System.out.println(WorldMenu.gameCount);
+        System.out.println(WorldMenu.gameCount);
         WorldMenu.gameCount ++;
-        //System.out.println(WorldMenu.gameCount);
+        System.out.println(WorldMenu.gameCount);
         this.start = start;
         aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
         camera = new OrthographicCamera(200f, 200f*aspect);
@@ -145,6 +145,21 @@ public class WorldPongz implements World {
         TextureRegionDrawable drawable = new TextureRegionDrawable(region);
         drawable.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();*/
+
+       if (justStarted){
+           drawEntities(batch);
+           drawHUD(delta);
+           drawCountdown();
+           //if(WorldMenu.gameCount >= start.getPreferences().getInteger("bestOf")){
+           start.getFontBatch().begin();
+           String s = "Game " + WorldMenu.gameCount + " of " + start.getPreferences().getInteger("bestOf");
+           pointFnt.draw(start.getFontBatch(), s, (Gdx.graphics.getWidth()/2f)  - (pointFnt.getSpaceWidth() * s.length() / 2f), (Gdx.graphics.getHeight()/2f)+ (Gdx.graphics.getHeight()/8f) + pointFnt.getLineHeight());
+           start.getFontBatch().end();
+           //System.out.println("Space width" + pointFnt.getSpaceWidth());
+           float s2 = ((Gdx.graphics.getWidth()/2f)  - (pointFnt.getSpaceWidth() * s.length()));
+           //System.out.printf("%s%n", s2);
+           //}
+       }
         if (running && !(PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore"))) {
             genPowerups();
             tickEffects(delta);
@@ -157,27 +172,13 @@ public class WorldPongz implements World {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
                 start.setWorld("pause");
             }
-        }
-        if (justStarted){
-            drawEntities(batch);
-            drawHUD(delta);
-            drawCountdown();
-            //if(WorldMenu.gameCount >= start.getPreferences().getInteger("bestOf")){
-                start.getFontBatch().begin();
-                String s = "Game " + WorldMenu.gameCount + " of " + start.getPreferences().getInteger("bestOf");
-                pointFnt.draw(start.getFontBatch(), s, (Gdx.graphics.getWidth()/2f)  - (pointFnt.getSpaceWidth() * s.length() / 2f), (Gdx.graphics.getHeight()/2f)+ (Gdx.graphics.getHeight()/8f) + pointFnt.getLineHeight());
-                start.getFontBatch().end();
-            //System.out.println("Space width" + pointFnt.getSpaceWidth());
-            float s2 = ((Gdx.graphics.getWidth()/2f)  - (pointFnt.getSpaceWidth() * s.length()));
-            //System.out.printf("%s%n", s2);
-            //}
-        } if (menu){
+        } else if (menu){
             start.setWorld("pause");
         } else if (PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore")) {
             drawHUD(delta);
             drawEntities(batch);
             drawVictory(PointsL >= Start.getPreferences().getInteger("maxScore"), delta);
-        } else if (!running && !(PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore"))) {
+        } else if (!running && (!(PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore")))) {
             drawEntities(batch);
             drawHUD(delta);
             drawPause(delta, batch);
@@ -398,7 +399,6 @@ public class WorldPongz implements World {
         if (temp > 3000){
             s = "0";
             justStarted = false;
-            running = true;
             ((EntityBall)entities.get("ball")).unPause();
         } else if (temp > 2000){
             s = "1";
