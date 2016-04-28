@@ -47,20 +47,20 @@ public class WorldPongz implements World {
     public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
     private static I18NBundle local;
     public static boolean isFlashbanged = false;
-    private boolean running = true, justStarted= true, menu = false;
+    private boolean running = true, justStarted= true, menu = false, wt = true;
     private float dim = 0;
     private PerformanceCounter tickCounter;
     private PerformanceCounter renderCounter;
     private Start start;
     private long winTimestamp = -1;
     public static int gameCount = 0, wl = 0, wr = 0;
-
     public WorldPongz(IEffectHandler effectHandler) {
         this.effectHandler = effectHandler;
     }
 
     @Override
 	public void create (Start start) {
+        wt = true;
         System.out.println(WorldMenu.gameCount);
         WorldMenu.gameCount ++;
         System.out.println(WorldMenu.gameCount);
@@ -282,11 +282,22 @@ public class WorldPongz implements World {
             start.getFontBatch().begin();
             font.draw(start.getFontBatch(), s, Gdx.graphics.getWidth() / 2f - (font.getSpaceWidth() * (s).length()) / 2f, 400);
             start.getFontBatch().end();
-            if(isLeft) {
+            if(isLeft && wt) {
                 wr++;
-            }else {
+            }else if (wt) {
                 wl++;
             }
+            wt = false;
+            start.getFontBatch().begin();
+            if(WorldMenu.gameCount >= start.getPreferences().getInteger("bestOf")) {
+                s = "The Winner is " + (wl>wr ? "left": "right");
+
+                pointFnt.draw(start.getFontBatch(), s, Gdx.graphics.getWidth() / 2f - (pointFnt.getSpaceWidth() * (s).length()) / 2f, Gdx.graphics.getHeight() / 2f);
+
+            }
+            s = wl + " : " + wr;
+            pointFnt.draw(start.getFontBatch(), s, Gdx.graphics.getWidth() / 2f - (pointFnt.getSpaceWidth() * (s).length()) / 2f, (Gdx.graphics.getHeight() / 2f) + (pointFnt.getCapHeight() * 1.5f));
+            start.getFontBatch().end();
         }
         if (System.currentTimeMillis() - winTimestamp > 6000) doVictory(isLeft);
     }
@@ -309,7 +320,6 @@ public class WorldPongz implements World {
             this.reset();
             justStarted = true;
             create(start);
-
         }
     }
     public void reset(){
