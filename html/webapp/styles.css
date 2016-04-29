@@ -5,6 +5,22 @@ canvas {
 
 body {
     background-color: #222222;
+    margin: 0px;
+    padding: 0px;
+}
+
+html {
+    padding: 0px;
+    margin: 0px;
+}
+
+#embed-html {
+   position: fixed;
+   top: 0;
+   left: 0;
+   bottom: 0;
+   right: 0;
+   padding 50%;
 }
 
 .superdev {

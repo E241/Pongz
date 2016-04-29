@@ -1,6 +1,7 @@
 package se.doverfelt.worlds;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -53,6 +54,9 @@ public class WorldPongz implements World {
     private PerformanceCounter renderCounter;
     private Start start;
     private long winTimestamp = -1;
+    private Music bgMusic;
+    private String currentSong = "Pongz.wav";
+    private Music.OnCompletionListener musicListener;
 
     public WorldPongz(IEffectHandler effectHandler) {
         this.effectHandler = effectHandler;
@@ -91,6 +95,27 @@ public class WorldPongz implements World {
         //local = I18NBundle.createBundle(Gdx.files.internal("lang"), new Locale("es", "ES"));
         tickCounter = new PerformanceCounter("Tick");
         renderCounter = new PerformanceCounter("Render");
+
+        musicListener = new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                if (currentSong == "Pongz.wav") {
+                    currentSong = "Pongz2.wav";
+                } else {
+                    currentSong = "Pongz.wav";
+                }
+                bgMusic.dispose();
+                bgMusic = Gdx.audio.newMusic(Gdx.files.internal(currentSong));
+                bgMusic.setOnCompletionListener(this);
+                bgMusic.setVolume(0.5f);
+                bgMusic.play();
+            }
+        };
+
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal(currentSong));
+        //bgMusic.setLooping(true);
+        bgMusic.setVolume(0.5f);
+        bgMusic.setOnCompletionListener(musicListener);
     }
 
     public void addEntity(Entity entity, String name) {
@@ -301,6 +326,7 @@ public class WorldPongz implements World {
         running = false;
         Gdx.input.vibrate(500);
         Gdx.input.setCursorCatched(false);
+        bgMusic.pause();
     }
 
     @Override
@@ -308,6 +334,7 @@ public class WorldPongz implements World {
         Gdx.input.setCursorCatched(true);
         justStarted = timestamp1 < 0;
         running = timestamp1 > 0;
+        bgMusic.play();
     }
 
     @Override
@@ -324,6 +351,7 @@ public class WorldPongz implements World {
         font.dispose();
         pointFnt.dispose();
         white.dispose();
+        bgMusic.dispose();
     }
 
     private void drawPause(float delta, SpriteBatch batch) {
