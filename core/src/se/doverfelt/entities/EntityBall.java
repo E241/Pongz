@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import se.doverfelt.Start;
 import se.doverfelt.worlds.WorldPongz;
 
 
@@ -32,6 +33,7 @@ public class EntityBall implements Collidable {
     private long resetTime;
     private float maxVel = 2500f;
     private long ts1= 0, ts2 = 0;
+    private boolean pause = true;
 
 
     public EntityBall(OrthographicCamera camera) {
@@ -57,30 +59,31 @@ public class EntityBall implements Collidable {
 
     @Override
     public void update(float delta) {
-        if (System.currentTimeMillis() - resetTime > 500) {
 
-            if (xv >= 0) {
-                x += Math.min(xv * delta, maxVel*delta);
-            } else {
-                x += Math.max(xv * delta, -maxVel*delta);
-            }
-            if (yv >= 0) {
-                y += Math.min(yv * delta, maxVel*delta);
-            } else {
-                y += Math.max(yv * delta, -maxVel*delta);
-            }
-
-            if (x < 0) {
-                //x = 0;
-                // xv = -xv; //Vinst Höger
-                WorldPongz.PointsR++;
-                reset();
-            } else if (x > camera.viewportWidth - WIDTH) {
-                //x = camera.viewportWidth -WIDTH;
-                //xv = -xv; //Vinst Vänster
-                WorldPongz.PointsL++;
-                reset();
-            }
+            if (System.currentTimeMillis() - resetTime > 500) {
+                if (!pause) {
+                    if (xv >= 0) {
+                        x += Math.min(xv * delta, maxVel * delta);
+                    } else {
+                        x += Math.max(xv * delta, -maxVel * delta);
+                    }
+                    if (yv >= 0) {
+                        y += Math.min(yv * delta, maxVel * delta);
+                    } else {
+                        y += Math.max(yv * delta, -maxVel * delta);
+                    }
+                }
+                if (x < 0) {
+                    //x = 0;
+                    // xv = -xv; //Vinst Höger
+                    WorldPongz.PointsR++;
+                    reset();
+                } else if (x > camera.viewportWidth - WIDTH) {
+                    //x = camera.viewportWidth -WIDTH;
+                    //xv = -xv; //Vinst Vänster
+                    WorldPongz.PointsL++;
+                    reset();
+                }
         /*if (y < 0){
 
             yv = -yv;
@@ -94,16 +97,23 @@ public class EntityBall implements Collidable {
             y = camera.viewportHeight-HEIGHT;
 
         }*/
+            }
+            bounds.setPosition(x, y);
+            img.setPosition(x, y);
         }
-        bounds.setPosition(x, y);
-        img.setPosition(x,y);
-    }
+
 
     @Override
     public void dispose() {
         bom.dispose();
         bounce.dispose();
         img.getTexture().dispose();
+    }
+    public void pause(){
+        pause = true;
+    }
+    public void unPause(){
+        pause = false;
     }
 
     public void reset() {
@@ -156,32 +166,29 @@ public class EntityBall implements Collidable {
             }
         } else if (other instanceof EntityPaddle) {
             float temp = camera.viewportWidth / 2;
-            if(WorldPongz.Styrning == 1) {
-                if (x < temp) {
-                    xv = Math.abs(xv);
+            int i = Start.getPreferences().getInteger("control");
+            if(x < temp){
+                xv = Math.abs(xv);
+                if (i == 1 || i == 3){
                     if (EntityPaddle.isMovingL == 1) {
                         yv = (yv + 20);
-                    } else if (EntityPaddle.isMovingL == 2) {
+                    } else if (EntityPaddle.isMovingL == 2 ) {
                         yv = (yv - 20);
                     }
-                }
-                if (x > temp) {
-                    xv = -Math.abs(xv);
-                    if (EntityPaddle.isMovingR == 1) {
-                        yv = (yv + 25.1f);
-                    } else if (EntityPaddle.isMovingR == 2) {
-                        yv = (yv - 25.1f);
-                    }
-                }
-            } else if (WorldPongz.Styrning == 2){
-                if (x < temp) {
-                    xv = Math.abs(xv);
+                } else if (i == 2 || i == 3){
                     float temp2 = y - EntityPaddle.ly - (EntityPaddle.lHeight/2);
                     yv += (temp2*10);
-
                 }
-                if (x > temp) {
-                    xv = -Math.abs(xv);
+            }
+            if(x > temp){
+                xv = -Math.abs(xv);
+                if (i == 1 || i == 3){
+                    if (EntityPaddle.isMovingR == 1) {
+                        yv = (yv + 20);
+                    } else if (EntityPaddle.isMovingR == 2) {
+                        yv = (yv - 20);
+                    }
+                } else if (i == 2 || i == 3){
                     float temp2 = y - EntityPaddle.ry - (EntityPaddle.rHeight/2);
                     yv += (temp2*10);
                 }

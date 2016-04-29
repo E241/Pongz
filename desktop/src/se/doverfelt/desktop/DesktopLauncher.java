@@ -36,6 +36,7 @@ public class DesktopLauncher {
 		}
 		System.out.println(("DisplayMode: " + temp));
 		config3.setFullscreenMode(temp);
+		//config3.setWindowedMode(1280, 720);
 		new Lwjgl3Application(new Start(new EffectHandler()), config3);
 
 	}

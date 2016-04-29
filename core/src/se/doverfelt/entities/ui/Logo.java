@@ -29,7 +29,7 @@ public class Logo implements UIElement {
 
     @Override
     public void setHover(boolean hovering) {
-
+        if (hovering) ((UIManager)world).setTooltip("");
     }
 
     @Override
