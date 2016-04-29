@@ -146,21 +146,20 @@ public class WorldPongz implements World {
         drawable.draw(batch, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch.end();*/
 
-       if (justStarted){
+       if (justStarted) {
            drawEntities(batch);
            drawHUD(delta);
            drawCountdown();
            //if(WorldMenu.gameCount >= start.getPreferences().getInteger("bestOf")){
            start.getFontBatch().begin();
            String s = "Game " + WorldMenu.gameCount + " of " + start.getPreferences().getInteger("bestOf");
-           pointFnt.draw(start.getFontBatch(), s, (Gdx.graphics.getWidth()/2f)  - (pointFnt.getSpaceWidth() * s.length() / 2f), (Gdx.graphics.getHeight()/2f)+ (Gdx.graphics.getHeight()/8f) + pointFnt.getLineHeight());
+           pointFnt.draw(start.getFontBatch(), s, (Gdx.graphics.getWidth() / 2f) - (pointFnt.getSpaceWidth() * s.length() / 2f), (Gdx.graphics.getHeight() / 2f) + (Gdx.graphics.getHeight() / 8f) + pointFnt.getLineHeight());
            start.getFontBatch().end();
            //System.out.println("Space width" + pointFnt.getSpaceWidth());
-           float s2 = ((Gdx.graphics.getWidth()/2f)  - (pointFnt.getSpaceWidth() * s.length()));
+           float s2 = ((Gdx.graphics.getWidth() / 2f) - (pointFnt.getSpaceWidth() * s.length()));
            //System.out.printf("%s%n", s2);
            //}
-       }
-        if (running && !(PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore"))) {
+       } else if (running && !(PointsR >= Start.getPreferences().getInteger("maxScore") || PointsL >= Start.getPreferences().getInteger("maxScore"))) {
             genPowerups();
             tickEffects(delta);
             tickEntities(delta);
@@ -410,6 +409,7 @@ public class WorldPongz implements World {
             s = "0";
             justStarted = false;
             ((EntityBall)entities.get("ball")).unPause();
+            running = true;
         } else if (temp > 2000){
             s = "1";
         } else if (temp > 1000) {
