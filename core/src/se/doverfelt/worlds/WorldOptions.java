@@ -91,6 +91,19 @@ public class WorldOptions implements UIManager {
 
             }
         }));
+
+        label = ComponentRetriever.get(root.getChild("FlashBtn").getChild("BtnLabel").getEntity(), LabelComponent.class);
+        label.setText("Flashbang: " + (Start.getPreferences().getBoolean("flashbang") ? "On" : "Off"));
+        root.getChild("FlashBtn").addScript(new ButtonScript(viewport, this, new ButtonAction() {
+            @Override
+            public void doAction(World world) {
+                Start.getPreferences().putBoolean("flashbang", !Start.getPreferences().getBoolean("flashbang"));
+                LabelComponent label = ComponentRetriever.get(root.getChild("FlashBtn").getChild("BtnLabel").getEntity(), LabelComponent.class);
+                label.setText("Flashbang: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
+
+            }
+        }));
+
         bg = new Sprite(new Texture("bg.png"));
 
         this.start = start;
