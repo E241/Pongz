@@ -21,6 +21,7 @@ public class ButtonScript implements IScript {
     private ButtonAction action;
     private World world;
     private boolean wasDown = false;
+    private float fade = 0;
 
     public ButtonScript(Viewport viewport, World world, ButtonAction action) {
         this.viewport = viewport;
@@ -35,12 +36,12 @@ public class ButtonScript implements IScript {
 
     @Override
     public void act(float delta) {
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !wasDown) {
-            Vector2 pos = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
-            TransformComponent t = ComponentRetriever.get(entity, TransformComponent.class);
-            DimensionsComponent d = ComponentRetriever.get(entity, DimensionsComponent.class);
-            Vector2 dim = viewport.unproject(new Vector2(d.width, d.height));
-            if (pos.x > t.x && pos.x < t.x + dim.x && pos.y > t.y && pos.y < t.y + dim.y) {
+        Vector2 pos = viewport.unproject(new Vector2(Gdx.input.getX(), Gdx.input.getY()));
+        TransformComponent t = ComponentRetriever.get(entity, TransformComponent.class);
+        DimensionsComponent d = ComponentRetriever.get(entity, DimensionsComponent.class);
+        Vector2 dim = viewport.unproject(new Vector2(d.width, d.height));
+        if (pos.x > t.x && pos.x < t.x + d.width && pos.y > t.y && pos.y < t.y + d.height) {
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !wasDown ) {
                 action.doAction(world);
             }
         }

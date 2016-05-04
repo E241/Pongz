@@ -11,9 +11,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-//import com.sun.xml.internal.ws.api.pipe.Engine;
 import com.uwsoft.editor.renderer.SceneLoader;
 import com.uwsoft.editor.renderer.components.TransformComponent;
+import com.uwsoft.editor.renderer.components.additional.ButtonComponent;
 import com.uwsoft.editor.renderer.components.label.LabelComponent;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 import com.uwsoft.editor.renderer.utils.ItemWrapper;
@@ -40,7 +40,7 @@ public class WorldOptions implements UIManager {
     private Start start;
     private boolean showTooltip = false;
     private SceneLoader sl;
-    private ItemWrapper root;
+    public static ItemWrapper root;
     private Sprite bg;
 
     @Override
@@ -82,9 +82,11 @@ public class WorldOptions implements UIManager {
         }));
         LabelComponent label = ComponentRetriever.get(root.getChild("ParentMode").getChild("BtnLabel").getEntity(), LabelComponent.class);
         label.setText("Parent Mode: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
+        root.getChild("ParentMode").getEntity().add(new ButtonComponent());
         root.getChild("ParentMode").addScript(new ButtonScript(viewport, this, new ButtonAction() {
             @Override
             public void doAction(World world) {
+                System.out.println("PaddleClick");
                 Start.getPreferences().putBoolean("paddleBounds", !Start.getPreferences().getBoolean("paddleBounds"));
                 LabelComponent label = ComponentRetriever.get(root.getChild("ParentMode").getChild("BtnLabel").getEntity(), LabelComponent.class);
                 label.setText("Parent Mode: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
@@ -94,12 +96,14 @@ public class WorldOptions implements UIManager {
 
         label = ComponentRetriever.get(root.getChild("FlashBtn").getChild("BtnLabel").getEntity(), LabelComponent.class);
         label.setText("Flashbang: " + (Start.getPreferences().getBoolean("flashbang") ? "On" : "Off"));
+        root.getChild("FlashBtn").getEntity().add(new ButtonComponent());
         root.getChild("FlashBtn").addScript(new ButtonScript(viewport, this, new ButtonAction() {
             @Override
             public void doAction(World world) {
+                System.out.println("FlashClick");
                 Start.getPreferences().putBoolean("flashbang", !Start.getPreferences().getBoolean("flashbang"));
                 LabelComponent label = ComponentRetriever.get(root.getChild("FlashBtn").getChild("BtnLabel").getEntity(), LabelComponent.class);
-                label.setText("Flashbang: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
+                label.setText("Flashbang: " + (Start.getPreferences().getBoolean("flashbang") ? "On" : "Off"));
 
             }
         }));

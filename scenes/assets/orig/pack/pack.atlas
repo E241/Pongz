@@ -27,16 +27,9 @@ arrow
   index: -1
 backArrow
   rotate: false
-  xy: 368, 64
+  xy: 266, 28
   size: 24, 26
   orig: 24, 26
-  offset: 0, 0
-  index: -1
-ball
-  rotate: false
-  xy: 725, 458
-  size: 32, 32
-  orig: 32, 32
   offset: 0, 0
   index: -1
 bar
@@ -78,7 +71,7 @@ logo
   index: -1
 play
   rotate: false
-  xy: 266, 22
+  xy: 725, 458
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

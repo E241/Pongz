@@ -6,14 +6,14 @@ filter: Linear,Linear
 repeat: none
 PowerupIcon
   rotate: false
-  xy: 95, 24
+  xy: 129, 58
   size: 10, 10
   orig: 10, 10
   offset: 0, 0
   index: -1
 TestPaddle
   rotate: false
-  xy: 95, 36
+  xy: 95, 2
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
@@ -27,28 +27,28 @@ arrow
   index: -1
 backArrow
   rotate: false
-  xy: 141, 61
+  xy: 87, 8
   size: 6, 7
   orig: 6, 7
   offset: 0, 0
   index: -1
 ball
   rotate: false
-  xy: 77, 7
+  xy: 187, 118
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 bar
   rotate: false
-  xy: 113, 60
+  xy: 153, 108
   size: 26, 8
   orig: 26, 8
   offset: 0, 0
   index: -1
 bg
   rotate: false
-  xy: 153, 108
+  xy: 113, 26
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
@@ -77,16 +77,16 @@ logo
   index: -1
 play
   rotate: false
-  xy: 113, 50
+  xy: 77, 7
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 powerup
   rotate: false
-  xy: 187, 118
-  size: 8, 8
-  orig: 8, 8
+  xy: 95, 36
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 white
