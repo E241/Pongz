@@ -174,6 +174,12 @@ public class WorldPause implements UIManager {
     public void removeElement(String name) {
 
     }
+
+    @Override
+    public void shouldShowTooltip(boolean show) {
+
+    }
+
     @Override
     public void pause() {
 

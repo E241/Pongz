@@ -10,6 +10,7 @@ import com.uwsoft.editor.renderer.components.TransformComponent;
 import com.uwsoft.editor.renderer.scripts.IScript;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 import se.doverfelt.entities.ui.ButtonAction;
+import se.doverfelt.entities.ui.UIManager;
 import se.doverfelt.worlds.World;
 
 /**
@@ -22,11 +23,13 @@ public class ButtonScript implements IScript {
     private World world;
     private boolean wasDown = false;
     private float fade = 0;
+    private String tooltip = "";
 
-    public ButtonScript(Viewport viewport, World world, ButtonAction action) {
+    public ButtonScript(Viewport viewport, World world, ButtonAction action, String tooltip) {
         this.viewport = viewport;
         this.world = world;
         this.action = action;
+        this.tooltip = tooltip;
     }
 
     @Override
@@ -44,6 +47,10 @@ public class ButtonScript implements IScript {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && !wasDown ) {
                 action.doAction(world);
             }
+            ((UIManager) world).setTooltip(tooltip);
+            ((UIManager) world).shouldShowTooltip(true);
+        } else {
+            ((UIManager) world).shouldShowTooltip(false);
         }
         wasDown = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
     }

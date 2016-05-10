@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -42,6 +43,8 @@ public class WorldOptions implements UIManager {
     private SceneLoader sl;
     public static ItemWrapper root;
     private Sprite bg;
+    private String currentTooltip = "";
+    private BitmapFont font;
 
     @Override
     public void create(final Start start) {
@@ -70,6 +73,8 @@ public class WorldOptions implements UIManager {
         FitViewport viewport = new FitViewport(1920, 1080);
         sl = new SceneLoader();
         sl.loadScene("Options", viewport);
+        //font = sl.getRm().getBitmapFont("Hack", 18);
+        font = new BitmapFont();
 
         root = new ItemWrapper(sl.rootEntity);
         root.getChild("mouseLight").addScript(new MouseFollower(viewport));
@@ -79,7 +84,7 @@ public class WorldOptions implements UIManager {
                 Start.getPreferences().flush();
                 world.getStart().setWorld("menu");
             }
-        }));
+        }, "Back"));
         LabelComponent label = ComponentRetriever.get(root.getChild("ParentMode").getChild("BtnLabel").getEntity(), LabelComponent.class);
         label.setText("Parent Mode: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
         root.getChild("ParentMode").getEntity().add(new ButtonComponent());
@@ -92,7 +97,7 @@ public class WorldOptions implements UIManager {
                 label.setText("Parent Mode: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
 
             }
-        }));
+        }, "Whether paddles can go off-screen or not"));
 
         label = ComponentRetriever.get(root.getChild("FlashBtn").getChild("BtnLabel").getEntity(), LabelComponent.class);
         label.setText("Flashbang: " + (Start.getPreferences().getBoolean("flashbang") ? "On" : "Off"));
@@ -106,7 +111,7 @@ public class WorldOptions implements UIManager {
                 label.setText("Flashbang: " + (Start.getPreferences().getBoolean("flashbang") ? "On" : "Off"));
 
             }
-        }));
+        }, "Flashbang effect"));
 
         bg = new Sprite(new Texture("bg.png"));
 
@@ -115,7 +120,11 @@ public class WorldOptions implements UIManager {
 
     @Override
     public void setTooltip(String tooltip) {
+        this.currentTooltip = tooltip;
+    }
 
+    public void shouldShowTooltip(boolean show) {
+        showTooltip = showTooltip || show;
     }
 
     public void addElement(UIElement entity, String name, float x, float y) {
@@ -134,6 +143,7 @@ public class WorldOptions implements UIManager {
 
     @Override
     public void render(SpriteBatch batch) {
+        showTooltip = false;
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         sl.getBatch().begin();
@@ -143,8 +153,16 @@ public class WorldOptions implements UIManager {
         sl.getEngine().update(Gdx.graphics.getDeltaTime());
         tickElements();
         renderElements(batch);
+        renderTooltip();
         camera.update();
+    }
 
+    private void renderTooltip() {
+        if (showTooltip) {
+            start.getFontBatch().begin();
+            font.draw(start.getFontBatch(), currentTooltip, 400, 400 + font.getLineHeight());
+            start.getFontBatch().end();
+        }
     }
 
     private void tickElements() {

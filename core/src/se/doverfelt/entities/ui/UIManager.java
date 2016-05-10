@@ -9,4 +9,5 @@ public interface UIManager extends World {
     void setTooltip(String tooltip);
     void addElement(UIElement element, String name, float x, float y);
     void removeElement(String name);
+    void shouldShowTooltip(boolean show);
 }

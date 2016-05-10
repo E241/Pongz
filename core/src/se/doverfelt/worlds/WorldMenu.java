@@ -109,6 +109,11 @@ public class WorldMenu implements UIManager {
         toRemove.add(name);
     }
 
+    @Override
+    public void shouldShowTooltip(boolean show) {
+
+    }
+
     public void setTooltip(String currentTooltip) {
         this.currentTooltip = currentTooltip;
     }
