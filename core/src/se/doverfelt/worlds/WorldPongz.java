@@ -14,6 +14,7 @@ import se.doverfelt.Start;
 import se.doverfelt.effects.*;
 import se.doverfelt.entities.*;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -58,6 +59,7 @@ public class WorldPongz implements World {
     private String currentSong = "Pongz.wav";
     private Music.OnCompletionListener musicListener;
     public static int gameCount = 0, wl = 0, wr = 0;
+    private ArrayList<EffectHUD> toAdd = new ArrayList<EffectHUD>();
 
     public WorldPongz(IEffectHandler effectHandler) {
         this.effectHandler = effectHandler;
@@ -140,6 +142,11 @@ public class WorldPongz implements World {
     }
 
     public void addEffect(Effect effect, String name) {
+        if (effect.isTimed()) {
+            EffectHUD hud = new EffectHUD();
+            hud.setEffect(effect);
+            toAdd.add(hud);
+        }
         effects.put(name, effect);
         effect.create(this, name);
     }
@@ -178,7 +185,7 @@ public class WorldPongz implements World {
            drawCountdown();
            //if(WorldMenu.gameCount >= start.getPreferences().getInteger("bestOf")){
            start.getFontBatch().begin();
-           String s = "Game " + WorldMenu.gameCount + " of " + start.getPreferences().getInteger("bestOf");
+           String s = "Game " + WorldMenu.gameCount + " of " + Start.getPreferences().getInteger("bestOf");
            pointFnt.draw(start.getFontBatch(), s, (Gdx.graphics.getWidth() / 2f) - (pointFnt.getSpaceWidth() * s.length() / 2f), (Gdx.graphics.getHeight() / 2f) + (Gdx.graphics.getHeight() / 8f) + pointFnt.getLineHeight());
            start.getFontBatch().end();
            //System.out.println("Space width" + pointFnt.getSpaceWidth());
@@ -275,6 +282,11 @@ public class WorldPongz implements World {
             pEffect.remove(p);
         }
         pEffectRemove.clear();
+
+        for (EffectHUD e : toAdd) {
+            addPloppable(e, "effectHUD" + System.currentTimeMillis(), Math.max(rand.nextFloat()*400, 100), Math.max(rand.nextFloat()*400, 100));
+        }
+        toAdd.clear();
         tickCounter.stop();
         tickCounter.tick(delta);
         renderCounter.tick(delta);
@@ -298,23 +310,25 @@ public class WorldPongz implements World {
         Gdx.gl.glDisable(GL20.GL_BLEND);
         if (System.currentTimeMillis() - winTimestamp < 5000 && dim == 0.75f) {
 
-                String s;
-                if(start.getPreferences().getInteger("bestOf") <= 1) {
+                /*String s;
+                if(Start.getPreferences().getInteger("bestOf") <= 1) {
                     s ="Winner: " + (isLeft ? "left" : "right") + "!";
                 }else{
-                    s = "Winner of game " + WorldMenu.gameCount + " is " + (isLeft ? "left" : "right") + "!";
+                    //s = "Winner of game " + WorldMenu.gameCount + " is " + (isLeft ? "left" : "right") + "!";
+                    s = "";
                 }
             start.getFontBatch().begin();
             font.draw(start.getFontBatch(), s, Gdx.graphics.getWidth() / 2f - (font.getSpaceWidth() * (s).length()) / 2f, 400);
-            start.getFontBatch().end();
+            start.getFontBatch().end();*/
             if(isLeft && wt) {
-                wr++;
-            }else if (wt) {
                 wl++;
+            }else if (wt) {
+                wr++;
             }
             wt = false;
+            String s;
             start.getFontBatch().begin();
-            if(WorldMenu.gameCount >= start.getPreferences().getInteger("bestOf")) {
+            if(WorldMenu.gameCount >= Start.getPreferences().getInteger("bestOf")) {
                 s = "The Winner is " + (wl>wr ? "left": "right");
 
                 pointFnt.draw(start.getFontBatch(), s, Gdx.graphics.getWidth() / 2f - (pointFnt.getSpaceWidth() * (s).length()) / 2f, Gdx.graphics.getHeight() / 2f);
@@ -327,6 +341,8 @@ public class WorldPongz implements World {
         if (System.currentTimeMillis() - winTimestamp > 6000) doVictory(isLeft);
     }
 
+
+
     private void doVictory(boolean isLeft) {
         winTimestamp = -1;
         timestamp1 = -5000;
@@ -338,7 +354,7 @@ public class WorldPongz implements World {
         dim = 0;
         Gdx.input.setCursorCatched(false);
         // Ta den under och gör en funktion i början av create "Game X out of X"
-        if(WorldMenu.gameCount >= start.getPreferences().getInteger("bestOf")){
+        if(WorldMenu.gameCount >= Start.getPreferences().getInteger("bestOf")){
             start.setWorld("menu");
             WorldMenu.gameCount = 0;
         }else {
@@ -347,7 +363,10 @@ public class WorldPongz implements World {
             create(start);
         }
     }
-    public void reset(){
+
+
+
+    void reset(){
         timestamp1 = -5000;
         r = 0;
         g = 0;
@@ -359,6 +378,12 @@ public class WorldPongz implements World {
         ball.reset();
         for (String toRemoveEffect : effects.keySet()) {
             toRemoveEffects.add(toRemoveEffect);
+        }
+        for (String n : entities.keySet()) {
+            Entity e = entities.get(n);
+            if (e instanceof EffectHUD) {
+                toRemove.add(n);
+            }
         }
     }
 
@@ -488,10 +513,10 @@ public class WorldPongz implements World {
             font.draw(batch, "Effects: " + effects.size() + "\n" + effectsOut, 1, font.getLineHeight() * (effects.size() + 2));
             font.draw(batch, "CollisionChecks: " + collisionsChecks + "\nCollisions: " + collisions, 1, font.getLineHeight() * (effects.size() + 4));
             font.draw(batch, "Java Heap: " + (Gdx.app.getJavaHeap()/1024/1024) + "MB | Native Heap: " + (Gdx.app.getNativeHeap()/1024/1024) + "MB", 1, Gdx.graphics.getHeight()-(font.getLineHeight()*(entities.size() + 3)));
-            //MessageFormat.format("{0,number,#.##%}", tickCounter.current)
-            //font.draw(batch, "Tick: " + MessageFormat.format("{0,number,#.####%}", tickCounter.current), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 4)));
-            //font.draw(batch, "Render: " + MessageFormat.format("{0,number,#.####%}", renderCounter.current), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 5)));
-            //font.draw(batch, "Sum: " + (renderCounter.load.latest + tickCounter.load.latest), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 6)));
+            MessageFormat.format("{0,number,#.##%}", tickCounter.current);
+            font.draw(batch, "Tick: " + MessageFormat.format("{0,number,#.####%}", tickCounter.current), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 4)));
+            font.draw(batch, "Render: " + MessageFormat.format("{0,number,#.####%}", renderCounter.current), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 5)));
+            font.draw(batch, "Sum: " + (renderCounter.load.latest + tickCounter.load.latest), 1, Gdx.graphics.getHeight() - (font.getLineHeight()*(entities.size() + 6)));
         }
 
         String pl = "" + PointsL, pr = "" + PointsR;

@@ -59,4 +59,19 @@ public class EffectSpin implements Effect {
     public int getWeight() {
         return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
+
+    @Override
+    public boolean isTimed() {
+        return true;
+    }
+
+    @Override
+    public long totalTime() {
+        return 360;
+    }
+
+    @Override
+    public long currentTime() {
+        return (long)rotation;
+    }
 }

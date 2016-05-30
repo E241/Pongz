@@ -11,5 +11,8 @@ public interface Effect {
     String getName();
     String getEffectType();
     int getWeight();
+    boolean isTimed();
+    long totalTime();
+    long currentTime();
 }
 

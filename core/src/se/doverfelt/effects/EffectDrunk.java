@@ -60,6 +60,21 @@ public class EffectDrunk implements Effect {
     }
 
     @Override
+    public boolean isTimed() {
+        return true;
+    }
+
+    @Override
+    public long totalTime() {
+        return 30000;
+    }
+
+    @Override
+    public long currentTime() {
+        return (System.currentTimeMillis() - timestamp);
+    }
+
+    @Override
     public void create(WorldPongz world, String name) {
         this.ball = (EntityBall) WorldPongz.entities.get("ball");
         timestamp = System.currentTimeMillis();

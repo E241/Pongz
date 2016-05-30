@@ -52,4 +52,19 @@ public class EffectAutoPilot implements Effect {
     public int getWeight() {
         return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
+
+    @Override
+    public boolean isTimed() {
+        return true;
+    }
+
+    @Override
+    public long totalTime() {
+        return 5000;
+    }
+
+    @Override
+    public long currentTime() {
+        return (System.currentTimeMillis() - timeStamp);
+    }
 }

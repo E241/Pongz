@@ -68,4 +68,19 @@ public class EffectSizeUp implements Effect {
     public int getWeight() {
         return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
+
+    @Override
+    public boolean isTimed() {
+        return true;
+    }
+
+    @Override
+    public long totalTime() {
+        return 11000;
+    }
+
+    @Override
+    public long currentTime() {
+        return (System.currentTimeMillis() - timestamp);
+    }
 }

@@ -70,6 +70,22 @@ public class EffectFlashbang implements Effect {
     public int getWeight() {
         return Start.getPreferences().getInteger(getEffectType()+"Chance");
     }
+
+    @Override
+    public boolean isTimed() {
+        return false;
+    }
+
+    @Override
+    public long totalTime() {
+        return 0;
+    }
+
+    @Override
+    public long currentTime() {
+        return 0;
+    }
+
     public float getR(){return this.r;}
     public float getG(){return this.g;}
     public float getB(){return this.b;}

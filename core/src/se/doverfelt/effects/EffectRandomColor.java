@@ -30,6 +30,21 @@ public class EffectRandomColor implements Effect{
     }
 
     @Override
+    public boolean isTimed() {
+        return false;
+    }
+
+    @Override
+    public long totalTime() {
+        return 0;
+    }
+
+    @Override
+    public long currentTime() {
+        return 0;
+    }
+
+    @Override
     public void create(WorldPongz world, String name) {
         if(WorldPongz.isFlashbanged){
             Random r = new Random();
