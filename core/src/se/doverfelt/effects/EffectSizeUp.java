@@ -83,4 +83,22 @@ public class EffectSizeUp implements Effect {
     public long currentTime() {
         return (System.currentTimeMillis() - timestamp);
     }
+
+    @Override
+    public boolean isSided() {
+        return paddle != null;
+    }
+
+    @Override
+    public boolean isLeft() {
+        return paddle.isLeft();
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof EffectSizeUp)) return false;
+        EffectSizeUp obj = (EffectSizeUp) o;
+        return obj.name == this.name;
+    }
 }

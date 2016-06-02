@@ -86,6 +86,16 @@ public class EffectFlashbang implements Effect {
         return 0;
     }
 
+    @Override
+    public boolean isSided() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeft() {
+        return false;
+    }
+
     public float getR(){return this.r;}
     public float getG(){return this.g;}
     public float getB(){return this.b;}
@@ -94,5 +104,14 @@ public class EffectFlashbang implements Effect {
         this.r = r;
         this.g = g;
         this.b = b;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof EffectFlashbang)) return false;
+        EffectFlashbang obj = (EffectFlashbang) o;
+        return obj.name == this.name;
     }
 }

@@ -75,9 +75,29 @@ public class EffectDrunk implements Effect {
     }
 
     @Override
+    public boolean isSided() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeft() {
+        return false;
+    }
+
+    @Override
     public void create(WorldPongz world, String name) {
         this.ball = (EntityBall) WorldPongz.entities.get("ball");
         timestamp = System.currentTimeMillis();
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof EffectDrunk)) return false;
+        EffectDrunk obj = (EffectDrunk) o;
+        return obj.name == this.name;
+    }
+
 }

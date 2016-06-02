@@ -1,5 +1,6 @@
 package se.doverfelt.effects;
 
+import com.uwsoft.editor.renderer.Overlap2D;
 import se.doverfelt.Start;
 import se.doverfelt.worlds.World;
 import se.doverfelt.worlds.WorldPongz;
@@ -66,5 +67,24 @@ public class EffectAutoPilot implements Effect {
     @Override
     public long currentTime() {
         return (System.currentTimeMillis() - timeStamp);
+    }
+
+    @Override
+    public boolean isSided() {
+        return paddle != null;
+    }
+
+    @Override
+    public boolean isLeft() {
+        return paddle.isLeft();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof EffectAutoPilot)) return false;
+        EffectAutoPilot obj = (EffectAutoPilot) o;
+        return obj.name == this.name;
     }
 }

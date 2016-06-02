@@ -60,6 +60,9 @@ public class WorldPongz implements World {
     private Music.OnCompletionListener musicListener;
     public static int gameCount = 0, wl = 0, wr = 0;
     private ArrayList<EffectHUD> toAdd = new ArrayList<EffectHUD>();
+    private ArrayList<EffectHUD> eHUDLeft = new ArrayList<EffectHUD>();
+    private ArrayList<EffectHUD> eHUDRight = new ArrayList<EffectHUD>();
+    private ArrayList<EffectHUD> eHUDCenter = new ArrayList<EffectHUD>();
 
     public WorldPongz(IEffectHandler effectHandler) {
         this.effectHandler = effectHandler;
@@ -75,7 +78,7 @@ public class WorldPongz implements World {
         aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
         camera = new OrthographicCamera(200f, 200f*aspect);
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
-        camera.zoom = 1f;
+        camera.zoom = 2f;
         camera.update();
         bg = new Texture("bg.png");
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
@@ -284,7 +287,18 @@ public class WorldPongz implements World {
         pEffectRemove.clear();
 
         for (EffectHUD e : toAdd) {
-            addPloppable(e, "effectHUD" + System.currentTimeMillis(), Math.max(rand.nextFloat()*400, 100), Math.max(rand.nextFloat()*400, 100));
+            if (e.getEffect().isSided()) {
+                if (!e.getEffect().isLeft()) {
+                    eHUDRight.add(e);
+                    addPloppable(e, "effectHUD" + System.currentTimeMillis(), 5, 5 + 10 * (eHUDRight.size()-1));
+                } else {
+                    eHUDLeft.add(e);
+                    addPloppable(e, "effectHUD" + System.currentTimeMillis(), camera.viewportWidth - 46, 5 + 10 * (eHUDLeft.indexOf(e) - 1));
+                }
+            } else {
+                eHUDCenter.add(e);
+                addPloppable(e, "effectHUD" + System.currentTimeMillis(), camera.viewportWidth/2f - 20.5f, 5 + 10 * (eHUDCenter.indexOf(e) - 1));
+            }
         }
         toAdd.clear();
         tickCounter.stop();

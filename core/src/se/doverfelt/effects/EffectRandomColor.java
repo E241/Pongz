@@ -9,6 +9,9 @@ import java.util.Random;
  * Created by rickard on 2016-02-03.
  */
 public class EffectRandomColor implements Effect{
+
+    String name;
+
     @Override
     public void update(WorldPongz world, float delta) {
 
@@ -45,7 +48,18 @@ public class EffectRandomColor implements Effect{
     }
 
     @Override
+    public boolean isSided() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeft() {
+        return false;
+    }
+
+    @Override
     public void create(WorldPongz world, String name) {
+        this.name = name;
         if(WorldPongz.isFlashbanged){
             Random r = new Random();
             for (String s : world.getEffects().keySet()) {
@@ -59,5 +73,14 @@ public class EffectRandomColor implements Effect{
             world.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat());
             world.removeEffect(name);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof EffectRandomColor)) return false;
+        EffectRandomColor obj = (EffectRandomColor) o;
+        return obj.name == this.name;
     }
 }

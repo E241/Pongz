@@ -74,4 +74,23 @@ public class EffectZoomOut implements Effect {
     public long currentTime() {
         return (long)(counter*1000);
     }
+
+    @Override
+    public boolean isSided() {
+        return false;
+    }
+
+    @Override
+    public boolean isLeft() {
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (o == this) return true;
+        if (!(o instanceof EffectZoomOut)) return false;
+        EffectZoomOut obj = (EffectZoomOut) o;
+        return obj.name == this.name;
+    }
 }

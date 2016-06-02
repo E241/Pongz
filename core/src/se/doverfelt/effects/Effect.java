@@ -14,5 +14,7 @@ public interface Effect {
     boolean isTimed();
     long totalTime();
     long currentTime();
+    boolean isSided();
+    boolean isLeft();
 }
 

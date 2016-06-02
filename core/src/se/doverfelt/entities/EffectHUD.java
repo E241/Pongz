@@ -42,19 +42,19 @@ public class EffectHUD implements Ploppable {
     @Override
     public void render(OrthographicCamera camera, SpriteBatch batch) {
         ShapeRenderer renderer = new ShapeRenderer();
-        //renderer.setProjectionMatrix(camera.combined);
+        renderer.setProjectionMatrix(camera.combined);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.WHITE);
-        renderer.rect(x + font.getSpaceWidth()*local.get(effect.getEffectType()).length() - 2.5f, y - 2.5f, 205f, 25f);
+        renderer.rect(x - 0.5f, y - 0.5f, 41f, 5f);
         renderer.setColor(new Color(0, 0.1f, 0, 1));
-        renderer.rect(x + font.getSpaceWidth()*local.get(effect.getEffectType()).length(), y, 200, 20);
+        renderer.rect(x, y, 40, 4);
         renderer.setColor(Color.GREEN);
-        renderer.rect(x + font.getSpaceWidth()*local.get(effect.getEffectType()).length(), y, 200*((float)effect.currentTime()/(float)effect.totalTime()), 20);
+        renderer.rect(x, y, 40*((float)effect.currentTime()/(float)effect.totalTime()), 4);
         renderer.end();
 
-        world.getStart().getFontBatch().begin();
+        /*world.getStart().getFontBatch().begin();
         font.draw(world.getStart().getFontBatch(), local.get(effect.getEffectType()), x + 210 + font.getSpaceWidth()*local.get(effect.getEffectType()).length(), y + 12.5f);
-        world.getStart().getFontBatch().end();
+        world.getStart().getFontBatch().end();*/
     }
 
     @Override
@@ -67,5 +67,9 @@ public class EffectHUD implements Ploppable {
     @Override
     public void dispose() {
 
+    }
+
+    public Effect getEffect() {
+        return effect;
     }
 }
