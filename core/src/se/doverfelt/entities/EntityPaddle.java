@@ -29,7 +29,6 @@ public class EntityPaddle implements Collidable {
     private OrthographicCamera camera;
     private boolean canGoDown = true;
     private boolean canGoUp = true;
-    private boolean left;
 
     public EntityPaddle(float xIn, float yIn, boolean Right, WorldPongz world){
         x = xIn;
@@ -149,6 +148,6 @@ public class EntityPaddle implements Collidable {
     }
 
     public boolean isLeft() {
-        return left;
+        return !isRight;
     }
 }

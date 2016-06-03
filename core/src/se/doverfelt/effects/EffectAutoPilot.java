@@ -1,6 +1,5 @@
 package se.doverfelt.effects;
 
-import com.uwsoft.editor.renderer.Overlap2D;
 import se.doverfelt.Start;
 import se.doverfelt.worlds.World;
 import se.doverfelt.worlds.WorldPongz;

@@ -61,6 +61,15 @@ public class EffectHUD implements Ploppable {
     public void update(float delta) {
         if (effect.currentTime() >= effect.totalTime()) {
             ((WorldPongz)world).removeEntity(name);
+            if (effect.isSided()) {
+                if (effect.isLeft()) {
+                    ((WorldPongz)world).removeHUD(name, "left");
+                } else {
+                    ((WorldPongz)world).removeHUD(name, "right");
+                }
+            } else {
+                ((WorldPongz)world).removeHUD(name, "center");
+            }
         }
     }
 
@@ -71,5 +80,9 @@ public class EffectHUD implements Ploppable {
 
     public Effect getEffect() {
         return effect;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -60,9 +60,9 @@ public class WorldPongz implements World {
     private Music.OnCompletionListener musicListener;
     public static int gameCount = 0, wl = 0, wr = 0;
     private ArrayList<EffectHUD> toAdd = new ArrayList<EffectHUD>();
-    private ArrayList<EffectHUD> eHUDLeft = new ArrayList<EffectHUD>();
-    private ArrayList<EffectHUD> eHUDRight = new ArrayList<EffectHUD>();
-    private ArrayList<EffectHUD> eHUDCenter = new ArrayList<EffectHUD>();
+    private HashMap<String, EffectHUD> eHUDLeft = new HashMap<String, EffectHUD>();
+    private HashMap<String, EffectHUD> eHUDRight = new HashMap<String, EffectHUD>();
+    private HashMap<String, EffectHUD> eHUDCenter = new HashMap<String, EffectHUD>();
 
     public WorldPongz(IEffectHandler effectHandler) {
         this.effectHandler = effectHandler;
@@ -78,7 +78,7 @@ public class WorldPongz implements World {
         aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
         camera = new OrthographicCamera(200f, 200f*aspect);
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
-        camera.zoom = 2f;
+        camera.zoom = 1f;
         camera.update();
         bg = new Texture("bg.png");
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
@@ -138,6 +138,16 @@ public class WorldPongz implements World {
         }
         entity.create(name, x, y, this);
         entities.put(name, entity);
+    }
+
+    public void removeHUD(String name, String side) {
+        if (side == "left") {
+            eHUDLeft.remove(name);
+        } else if (side == "right") {
+            eHUDRight.remove(name);
+        } else if (side == "center") {
+            eHUDCenter.remove(name);
+        }
     }
 
     public void removeEntity(String name) {
@@ -287,17 +297,19 @@ public class WorldPongz implements World {
         pEffectRemove.clear();
 
         for (EffectHUD e : toAdd) {
+            String s = "effectHUD" + System.currentTimeMillis();
             if (e.getEffect().isSided()) {
                 if (!e.getEffect().isLeft()) {
-                    eHUDRight.add(e);
-                    addPloppable(e, "effectHUD" + System.currentTimeMillis(), 5, 5 + 10 * (eHUDRight.size()-1));
+                    eHUDRight.put(s, e);
+                    addPloppable(e, s, camera.viewportWidth - 46, 5 + 10 * (eHUDRight.size()-1));
                 } else {
-                    eHUDLeft.add(e);
-                    addPloppable(e, "effectHUD" + System.currentTimeMillis(), camera.viewportWidth - 46, 5 + 10 * (eHUDLeft.indexOf(e) - 1));
+                    eHUDLeft.put(s, e);
+                    addPloppable(e, s, 5, 5 + 10 * (eHUDLeft.size() - 1));
                 }
             } else {
-                eHUDCenter.add(e);
-                addPloppable(e, "effectHUD" + System.currentTimeMillis(), camera.viewportWidth/2f - 20.5f, 5 + 10 * (eHUDCenter.indexOf(e) - 1));
+
+                eHUDCenter.put(s, e);
+                addPloppable(e, s, camera.viewportWidth/2f - 20.5f, 5 + 10 * (eHUDCenter.size() - 1));
             }
         }
         toAdd.clear();
