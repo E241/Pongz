@@ -254,7 +254,7 @@ public class WorldPongz implements World {
            if (timestamp2 == 0){ timestamp2 = System.currentTimeMillis();}
            //String n = effectName.substring(effectName.indexOf(' ')+1, effectName.length());
            //effectName = effectName.substring(0, effectName.indexOf(' ')+2);
-           renderCounter.start();
+           /*renderCounter.start();
            start.getFontBatch().begin();
            pointFnt.draw(start.getFontBatch(), local.get("powerupMessage"), (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(local.get("powerupMessage").length()/2) ), Gdx.graphics.getHeight()/2f + pointFnt.getLineHeight());
            pointFnt.draw(start.getFontBatch(), effectName, (Gdx.graphics.getWidth()/2f) - (pointFnt.getSpaceWidth()*(effectName.length()/2f) ), Gdx.graphics.getHeight()/2f );
@@ -263,13 +263,13 @@ public class WorldPongz implements World {
 
 
            start.getFontBatch().end();
-           renderCounter.stop();
-           tickCounter.start();
+           renderCounter.stop();*/
+           /*tickCounter.start();
            if( 2000 < System.currentTimeMillis() - timestamp2){
                effectTextOn = false;
                timestamp2 = 0;
            }
-           tickCounter.stop();
+           tickCounter.stop();*/
        }
 
         if (Gdx.input.isKeyPressed(Input.Keys.Q)) start.quit();

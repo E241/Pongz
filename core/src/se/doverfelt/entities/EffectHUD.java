@@ -3,7 +3,9 @@ package se.doverfelt.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.I18NBundle;
@@ -24,6 +26,7 @@ public class EffectHUD implements Ploppable {
     private BitmapFont font;
     private I18NBundle local;
     private String name;
+    private Sprite sprite;
 
     @Override
     public void create(String name, float x, float y, World world) {
@@ -33,10 +36,14 @@ public class EffectHUD implements Ploppable {
         font = new BitmapFont();
         local = I18NBundle.createBundle(Gdx.files.internal("lang"), new Locale(Start.getPreferences().getString("lang")));
         this.name = name;
+        //sprite = new Sprite(new Texture("ball.png"));
+        //sprite.setSize(4, 4);
     }
 
     public void setEffect(Effect effect) {
         this.effect = effect;
+        this.sprite = new Sprite(new Texture(effect.getEffectType() + ".png"));
+        sprite.setSize(4, 4);
     }
 
     @Override
@@ -51,6 +58,12 @@ public class EffectHUD implements Ploppable {
         renderer.setColor(Color.GREEN);
         renderer.rect(x, y, 40*((float)effect.currentTime()/(float)effect.totalTime()), 4);
         renderer.end();
+
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        sprite.setPosition(x + 20 - sprite.getWidth() / 2f, y + 2 - sprite.getHeight()/2f);
+        sprite.draw(batch);
+        batch.end();
 
         /*world.getStart().getFontBatch().begin();
         font.draw(world.getStart().getFontBatch(), local.get(effect.getEffectType()), x + 210 + font.getSpaceWidth()*local.get(effect.getEffectType()).length(), y + 12.5f);

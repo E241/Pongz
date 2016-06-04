@@ -37,6 +37,7 @@ public class EffectZoomOut implements Effect {
     @Override
     public void create(WorldPongz world, String name) {
         if (world.camera.zoom != 1f) {
+            world.removeHUD(name, "center");
             world.removeEffect(name);
         }
         counter = 0;
