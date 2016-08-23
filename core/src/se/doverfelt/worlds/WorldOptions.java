@@ -75,7 +75,7 @@ public class WorldOptions implements UIManager {
         });
         temp.setIcon("backArrow.png");*/
 
-        FitViewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        FitViewport viewport = new FitViewport(Math.max(Gdx.graphics.getWidth(), 1920), Math.max(Gdx.graphics.getHeight(), 1080));
         sl = new SceneLoader();
         sl.loadScene("Options", viewport);
         //font = sl.getRm().getBitmapFont("Hack", 18);
