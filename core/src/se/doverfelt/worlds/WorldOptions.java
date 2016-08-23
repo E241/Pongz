@@ -2,23 +2,26 @@ package se.doverfelt.worlds;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.uwsoft.editor.renderer.SceneLoader;
-import com.uwsoft.editor.renderer.components.TransformComponent;
 import com.uwsoft.editor.renderer.components.additional.ButtonComponent;
 import com.uwsoft.editor.renderer.components.label.LabelComponent;
 import com.uwsoft.editor.renderer.utils.ComponentRetriever;
 import com.uwsoft.editor.renderer.utils.ItemWrapper;
 import se.doverfelt.Start;
+import se.doverfelt.Utils;
 import se.doverfelt.entities.ui.*;
 import se.doverfelt.scripts.ButtonScript;
 import se.doverfelt.scripts.MouseFollower;
@@ -33,7 +36,7 @@ import java.util.HashMap;
  */
 public class WorldOptions implements UIManager {
 
-    public HashMap<String, UIElement> elements = new HashMap<String, UIElement>();
+    private HashMap<String, UIElement> elements = new HashMap<String, UIElement>();
     private ArrayList<String> toRemove = new ArrayList<String>();
     private OrthographicCamera camera;
     private float aspect;
@@ -41,10 +44,12 @@ public class WorldOptions implements UIManager {
     private Start start;
     private boolean showTooltip = false;
     private SceneLoader sl;
-    public static ItemWrapper root;
+    private static ItemWrapper root;
     private Sprite bg;
     private String currentTooltip = "";
     private BitmapFont font;
+    private GlyphLayout layout = new GlyphLayout();
+    private ShapeRenderer renderer = new ShapeRenderer();
 
     @Override
     public void create(final Start start) {
@@ -70,7 +75,7 @@ public class WorldOptions implements UIManager {
         });
         temp.setIcon("backArrow.png");*/
 
-        FitViewport viewport = new FitViewport(1920, 1080);
+        FitViewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         sl = new SceneLoader();
         sl.loadScene("Options", viewport);
         //font = sl.getRm().getBitmapFont("Hack", 18);
@@ -124,7 +129,8 @@ public class WorldOptions implements UIManager {
     }
 
     public void shouldShowTooltip(boolean show) {
-        showTooltip = showTooltip || show;
+        showTooltip = show;
+        //Gdx.app.debug("Tooltip show: ", currentTooltip + ": " + show);
     }
 
     public void addElement(UIElement entity, String name, float x, float y) {
@@ -151,17 +157,20 @@ public class WorldOptions implements UIManager {
         //bg.draw(sl.getBatch());
         sl.getBatch().end();
         sl.getEngine().update(Gdx.graphics.getDeltaTime());
-        tickElements();
-        renderElements(batch);
+        //tickElements();
+        //renderElements(batch);
         renderTooltip();
         camera.update();
     }
 
     private void renderTooltip() {
         if (showTooltip) {
-            start.getFontBatch().begin();
-            font.draw(start.getFontBatch(), currentTooltip, 400, 400 + font.getLineHeight());
-            start.getFontBatch().end();
+            //Vars
+            float x = Gdx.input.getX();
+            float y = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+            Utils.renderTextInBox(x, y, font, start.getFontBatch(), currentTooltip);
+
         }
     }
 

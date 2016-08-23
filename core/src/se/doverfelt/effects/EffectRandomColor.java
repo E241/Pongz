@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class EffectRandomColor implements Effect{
 
-    String name;
+    private String name;
 
     @Override
     public void update(WorldPongz world, float delta) {
@@ -81,6 +81,6 @@ public class EffectRandomColor implements Effect{
         if (o == this) return true;
         if (!(o instanceof EffectRandomColor)) return false;
         EffectRandomColor obj = (EffectRandomColor) o;
-        return obj.name == this.name;
+        return obj.name.equals(this.name);
     }
 }

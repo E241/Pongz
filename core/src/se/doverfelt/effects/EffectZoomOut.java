@@ -92,6 +92,6 @@ public class EffectZoomOut implements Effect {
         if (o == this) return true;
         if (!(o instanceof EffectZoomOut)) return false;
         EffectZoomOut obj = (EffectZoomOut) o;
-        return obj.name == this.name;
+        return obj.name.equals(this.name);
     }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import se.doverfelt.Start;
+import se.doverfelt.Utils;
 import se.doverfelt.entities.ui.Button;
 import se.doverfelt.entities.ui.ButtonAction;
 import se.doverfelt.entities.ui.UIElement;
@@ -150,9 +151,10 @@ public class WorldPause implements UIManager {
 
     private void renderTooltip() {
         if (showTooltip) {
-            start.getFontBatch().begin();
-            font.draw(start.getFontBatch(), currentTooltip, 1, 1 + font.getLineHeight());
-            start.getFontBatch().end();
+            float x = Gdx.input.getX();
+            float y = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+            Utils.renderTextInBox(x, y, font, start.getFontBatch(), currentTooltip);
         }
     }
 

@@ -23,8 +23,8 @@ public class EntityPaddle implements Collidable {
     private final float origHeight;
     boolean isRight;
     private Rectangle bounds;
-    public static int isMovingR =0, isMovingL = 0;
-    public static float ry, ly,rHeight, lHeight;
+    static int isMovingR =0, isMovingL = 0;
+    static float ry, ly,rHeight, lHeight;
     private EntityPowerUpHUD powerUpHUD;
     private OrthographicCamera camera;
     private boolean canGoDown = true;

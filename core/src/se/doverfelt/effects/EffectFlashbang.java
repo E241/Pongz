@@ -96,11 +96,11 @@ public class EffectFlashbang implements Effect {
         return false;
     }
 
-    public float getR(){return this.r;}
-    public float getG(){return this.g;}
-    public float getB(){return this.b;}
+    private float getR(){return this.r;}
+    private float getG(){return this.g;}
+    private float getB(){return this.b;}
 
-    public void setColors(float r, float g, float b) {
+    void setColors(float r, float g, float b) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -112,6 +112,6 @@ public class EffectFlashbang implements Effect {
         if (o == this) return true;
         if (!(o instanceof EffectFlashbang)) return false;
         EffectFlashbang obj = (EffectFlashbang) o;
-        return obj.name == this.name;
+        return obj.name.equals(this.name);
     }
 }

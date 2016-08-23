@@ -16,7 +16,6 @@ public class EffectAutoPilot implements Effect {
     private EntityPaddle paddle;
     private EntityBall ball;
     private long timeStamp;
-    private World world;
 
     @Override
     public void update(WorldPongz world, float delta) {
@@ -84,6 +83,6 @@ public class EffectAutoPilot implements Effect {
         if (o == this) return true;
         if (!(o instanceof EffectAutoPilot)) return false;
         EffectAutoPilot obj = (EffectAutoPilot) o;
-        return obj.name == this.name;
+        return obj.name.equals(this.name);
     }
 }

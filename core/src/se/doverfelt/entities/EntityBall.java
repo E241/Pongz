@@ -31,7 +31,7 @@ public class EntityBall implements Collidable {
     private EntityPaddle lastPaddle = null;
     private boolean b = false;
     private long resetTime;
-    private float maxVel = 2500f;
+    private final float maxVel = 2500f;
     private long ts1= 0, ts2 = 0;
     private boolean pause = true;
 
@@ -175,7 +175,7 @@ public class EntityBall implements Collidable {
                     } else if (EntityPaddle.isMovingL == 2 ) {
                         yv = (yv - 20);
                     }
-                } else if (i == 2 || i == 3){
+                } else if (i == 2){
                     float temp2 = y - EntityPaddle.ly - (EntityPaddle.lHeight/2);
                     yv += (temp2*10);
                 }
@@ -188,7 +188,7 @@ public class EntityBall implements Collidable {
                     } else if (EntityPaddle.isMovingR == 2) {
                         yv = (yv - 20);
                     }
-                } else if (i == 2 || i == 3){
+                } else if (i == 2){
                     float temp2 = y - EntityPaddle.ry - (EntityPaddle.rHeight/2);
                     yv += (temp2*10);
                 }
