@@ -90,6 +90,6 @@ public class EffectSpin implements Effect {
         if (o == this) return true;
         if (!(o instanceof EffectSpin)) return false;
         EffectSpin obj = (EffectSpin) o;
-        return obj.name == this.name;
+        return obj.name.equals(this.name);
     }
 }

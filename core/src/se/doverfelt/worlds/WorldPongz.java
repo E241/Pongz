@@ -22,13 +22,13 @@ import java.util.Random;
 
 public class WorldPongz implements World {
     private static Pool<ParticleEffect> particlePool = Pools.get(ParticleEffect.class);
-    long timestamp, timestamp1 = -5000;
+    private long timestamp, timestamp1 = -5000;
     public static HashMap<String, Entity> entities = new HashMap<String, Entity>();
     private HashMap<String, Effect> effects = new HashMap<String, Effect>();
-    public BitmapFont font;
-    BitmapFont pointFnt;
+    private BitmapFont font;
+    private BitmapFont pointFnt;
     public OrthographicCamera camera;
-    public float aspect;
+    private float aspect;
     public static int PointsR= 0, PointsL = 0;
     private Texture white;
     private float r = 0, g = 0, b = 0;
@@ -46,7 +46,7 @@ public class WorldPongz implements World {
     private static ArrayList<ParticleEffect> pEffect = new ArrayList<ParticleEffect>();
     private ArrayList<ParticleEffect> pEffectRemove = new ArrayList<ParticleEffect>();
     public static IEffectHandler effectHandler;
-    public static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
+    private static Pool<EntityPowerup> powerupPool = Pools.get(EntityPowerup.class);
     private static I18NBundle local;
     public static boolean isFlashbanged = false;
     private boolean running = true, justStarted= true, menu = false, wt = true;
@@ -58,14 +58,14 @@ public class WorldPongz implements World {
     private Music bgMusic;
     private String currentSong = "Pongz.wav";
     private Music.OnCompletionListener musicListener;
-    public static int gameCount = 0, wl = 0, wr = 0;
+    private static int gameCount = 0, wl = 0, wr = 0;
     private ArrayList<EffectHUD> toAdd = new ArrayList<EffectHUD>();
     private HashMap<String, EffectHUD> eHUDLeft = new HashMap<String, EffectHUD>();
     private HashMap<String, EffectHUD> eHUDRight = new HashMap<String, EffectHUD>();
     private HashMap<String, EffectHUD> eHUDCenter = new HashMap<String, EffectHUD>();
 
     public WorldPongz(IEffectHandler effectHandler) {
-        this.effectHandler = effectHandler;
+        WorldPongz.effectHandler = effectHandler;
     }
 
     @Override

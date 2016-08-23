@@ -99,6 +99,6 @@ public class EffectSizeUp implements Effect {
         if (o == this) return true;
         if (!(o instanceof EffectSizeUp)) return false;
         EffectSizeUp obj = (EffectSizeUp) o;
-        return obj.name == this.name;
+        return obj.name.equals(this.name);
     }
 }

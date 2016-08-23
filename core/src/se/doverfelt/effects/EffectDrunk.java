@@ -11,8 +11,8 @@ import java.util.Random;
  */
 public class EffectDrunk implements Effect {
     private EntityBall ball;
-    private long timestamp,timestamp1 = 0,timestamp2 = 0, timestamp3 = 0;
-    private float mod , mod2, mod3;
+    private long timestamp,timestamp1 = 0;//timestamp2 = 0, timestamp3 = 0;
+    private float mod , mod2;
     private String name;
 
     @Override
@@ -29,7 +29,7 @@ public class EffectDrunk implements Effect {
         if (System.currentTimeMillis() - timestamp1 < 1000){
             ball.yv += mod2;
         }else if (r.nextInt(100)<10){
-            timestamp2 = System.currentTimeMillis();
+            //timestamp2 = System.currentTimeMillis();
             mod2 = (r.nextFloat()*6f) - 3f;
         }
       //  //Mod 3
@@ -97,7 +97,7 @@ public class EffectDrunk implements Effect {
         if (o == this) return true;
         if (!(o instanceof EffectDrunk)) return false;
         EffectDrunk obj = (EffectDrunk) o;
-        return obj.name == this.name;
+        return obj.name.equals(this.name);
     }
 
 }

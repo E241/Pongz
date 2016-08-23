@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import se.doverfelt.Start;
+import se.doverfelt.Utils;
 import se.doverfelt.entities.ui.*;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.Locale;
  */
 public class WorldMenu implements UIManager {
 
-    public HashMap<String, UIElement> elements = new HashMap<String, UIElement>();
+    private HashMap<String, UIElement> elements = new HashMap<String, UIElement>();
     private ArrayList<String> toRemove = new ArrayList<String>();
     private OrthographicCamera camera;
     private float aspect;
@@ -38,7 +39,7 @@ public class WorldMenu implements UIManager {
     private boolean showTooltip = false;
     private float dim;
     private boolean fadeIn = false;
-    public static int gameCount = 0, wl = 0, wr = 0;
+    static int gameCount = 0, wl = 0, wr = 0;
 
     @Override
     public void create(final Start start) {
@@ -146,9 +147,10 @@ public class WorldMenu implements UIManager {
 
     private void renderTooltip() {
         if (showTooltip) {
-            start.getFontBatch().begin();
-            font.draw(start.getFontBatch(), currentTooltip, 1, 1 + font.getLineHeight());
-            start.getFontBatch().end();
+            float x = Gdx.input.getX();
+            float y = Gdx.graphics.getHeight() - Gdx.input.getY();
+
+            Utils.renderTextInBox(x, y, font, start.getFontBatch(), currentTooltip);
         }
     }
 
