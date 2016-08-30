@@ -2,8 +2,8 @@ package se.doverfelt.worlds;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -42,9 +42,10 @@ public class WorldMenu implements UIManager {
     private boolean fadeIn = false;
     static int gameCount = 0, wl = 0, wr = 0;
     private long timestamp;
+    private AssetManager manager;
 
     @Override
-    public void create(final Start start) {
+    public void create(final Start start, AssetManager assets) {
 
         aspect = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 
@@ -95,6 +96,7 @@ public class WorldMenu implements UIManager {
         });
         temp.setTooltip(locale.get("menu.quit"));
         this.start = start;
+        this.manager = assets;
         timestamp = System.currentTimeMillis();
     }
 
@@ -194,6 +196,11 @@ public class WorldMenu implements UIManager {
     @Override
     public Start getStart() {
         return start;
+    }
+
+    @Override
+    public AssetManager getAssetManager() {
+        return this.manager;
     }
 
     @Override

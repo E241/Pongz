@@ -2,7 +2,7 @@ package se.doverfelt.worlds;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -52,7 +52,7 @@ public class WorldOptions implements UIManager {
     private ShapeRenderer renderer = new ShapeRenderer();
 
     @Override
-    public void create(final Start start) {
+    public void create(final Start start, AssetManager assets) {
 
         aspect = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 
@@ -100,7 +100,7 @@ public class WorldOptions implements UIManager {
         root.getChild("FlashBtn").getEntity().add(new ButtonComponent());
         root.getChild("FlashBtn").addScript(new ButtonScript(viewport, this, new ToggleButton(root, "FlashBtn", "flashbang", "ui.flashbang"), "Flashbang effect"));
 
-        bg = new Sprite(new Texture("bg.png"));
+        bg = new Sprite(assets.get("bg.png", Texture.class));
 
         this.start = start;
     }
@@ -192,6 +192,11 @@ public class WorldOptions implements UIManager {
     @Override
     public Start getStart() {
         return start;
+    }
+
+    @Override
+    public AssetManager getAssetManager() {
+        return null;
     }
 
     @Override

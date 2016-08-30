@@ -34,7 +34,7 @@ public class Logo implements UIElement {
 
     @Override
     public void create(String name, float x, float y, World world) {
-        sprite = new Sprite(new Texture("logo.png"));
+        sprite = new Sprite(world.getAssetManager().get("logo.png", Texture.class));
         this.width = sprite.getWidth();
         this.height = sprite.getHeight();
         rectangle = new Rectangle(x, y, width, height);

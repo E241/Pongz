@@ -2,6 +2,7 @@ package se.doverfelt.worlds;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -44,7 +45,7 @@ public class WorldPause implements UIManager {
     private String currentTooltip;
 
     @Override
-    public void create(Start start) {
+    public void create(Start start, AssetManager assets) {
         aspect = (float) Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
         camera = new OrthographicCamera(600, 600*aspect);
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
@@ -195,6 +196,11 @@ public class WorldPause implements UIManager {
     @Override
     public Start getStart() {
         return start;
+    }
+
+    @Override
+    public AssetManager getAssetManager() {
+        return null;
     }
 
     @Override

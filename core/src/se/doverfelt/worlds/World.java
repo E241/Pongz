@@ -1,5 +1,6 @@
 package se.doverfelt.worlds;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se.doverfelt.Start;
 
@@ -10,12 +11,13 @@ import se.doverfelt.Start;
  */
 public interface World {
 
-    void create(Start start);
+    void create(Start start, AssetManager assets);
     void render(SpriteBatch batch);
     void pause();
     void resume();
 
     Start getStart();
+    AssetManager getAssetManager();
 
     void dispose();
 }

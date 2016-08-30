@@ -2,6 +2,11 @@ package se.doverfelt;
 
 import com.badlogic.gdx.ApplicationAdapter;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import se.doverfelt.effects.IEffectHandler;
 import se.doverfelt.worlds.*;
@@ -29,6 +34,7 @@ public class Start extends ApplicationAdapter {
     private SpriteBatch batch;
     private SpriteBatch fontBatch;
     private boolean shouldQuit = false;
+    public AssetManager assets;
 
     public SpriteBatch getFontBatch() {
         return fontBatch;
@@ -52,15 +58,55 @@ public class Start extends ApplicationAdapter {
             initConfig();
         }
 
+        initAssets();
+
         batch = new SpriteBatch();
         fontBatch = new SpriteBatch();
 
         preferences.flush();
+        addWorld("loading", new WorldLoading());
+        setWorld("loading");
+    }
+
+    public void initWorlds() {
         addWorld("game", new WorldPongz(effectHandler));
         addWorld("menu", new WorldMenu());
         addWorld("options", new WorldOptions());
         addWorld("pause", new WorldPause());
-        setWorld("menu");
+    }
+
+    private void initAssets() {
+        assets = new AssetManager();
+
+        // Textures
+        assets.load("arrow.png", Texture.class);
+        assets.load("autoPilot.png", Texture.class);
+        assets.load("backArrow.png", Texture.class);
+        assets.load("ball.png", Texture.class);
+        assets.load("bar.png", Texture.class);
+        assets.load("bg.png", Texture.class);
+        assets.load("button.png", Texture.class);
+        assets.load("drunk.png", Texture.class);
+        assets.load("logo.png", Texture.class);
+        assets.load("play.png", Texture.class);
+        assets.load("powerup.png", Texture.class);
+        assets.load("sizeUp.png", Texture.class);
+        assets.load("spin.png", Texture.class);
+        assets.load("white.png", Texture.class);
+        assets.load("zoom.png", Texture.class);
+
+        // Font
+        assets.load("big.fnt", BitmapFont.class);
+
+        // Sounds
+        assets.load("bom.wav", Sound.class);
+        assets.load("bounce.wav", Sound.class);
+        assets.load("PowerUp.wav", Sound.class);
+
+        // Music
+        assets.load("Pongz.wav", Music.class);
+        assets.load("Pongz2.wav", Music.class);
+
     }
 
     private void initConfig() {
@@ -90,7 +136,7 @@ public class Start extends ApplicationAdapter {
     }
 
     private void addWorld(String name, World world) {
-        world.create(this);
+        world.create(this, assets);
         worlds.put(name, world);
     }
 

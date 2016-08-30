@@ -1,6 +1,7 @@
 package se.doverfelt.worlds;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -63,13 +64,15 @@ public class WorldPongz implements World {
     private HashMap<String, EffectHUD> eHUDLeft = new HashMap<String, EffectHUD>();
     private HashMap<String, EffectHUD> eHUDRight = new HashMap<String, EffectHUD>();
     private HashMap<String, EffectHUD> eHUDCenter = new HashMap<String, EffectHUD>();
+    private AssetManager assets;
 
     public WorldPongz(IEffectHandler effectHandler) {
         WorldPongz.effectHandler = effectHandler;
     }
 
     @Override
-	public void create (Start start) {
+	public void create(Start start, AssetManager assets) {
+        this.assets = assets;
         wt = true;
         System.out.println(WorldMenu.gameCount);
         WorldMenu.gameCount ++;
@@ -386,7 +389,7 @@ public class WorldPongz implements World {
         }else {
             this.reset();
             justStarted = true;
-            create(start);
+            create(start, assets);
         }
     }
 
@@ -440,6 +443,11 @@ public class WorldPongz implements World {
     @Override
     public Start getStart() {
         return start;
+    }
+
+    @Override
+    public AssetManager getAssetManager() {
+        return null;
     }
 
     @Override

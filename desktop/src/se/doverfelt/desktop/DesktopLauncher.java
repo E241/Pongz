@@ -28,13 +28,13 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config3 = new Lwjgl3ApplicationConfiguration();
 		config3.setTitle("Pongz");
 		Graphics.DisplayMode temp = Lwjgl3ApplicationConfiguration.getDisplayMode();
-		for (Graphics.DisplayMode d : Lwjgl3ApplicationConfiguration.getDisplayModes()) {
+		/*for (Graphics.DisplayMode d : Lwjgl3ApplicationConfiguration.getDisplayModes()) {
 			System.out.println(d.toString());
 			if ((d.refreshRate > temp.refreshRate && d.height >= temp.height && d.width >= temp.width) || d.height > temp.height && d.width > temp.width) {
 				temp = d;
 			}
 		}
-		System.out.println(("DisplayMode: " + temp));
+		System.out.println(("DisplayMode: " + temp));*/
 		config3.setFullscreenMode(temp);
 		//config3.setWindowedMode(1280, 720);
 		new Lwjgl3Application(new Start(new EffectHandler()), config3);
