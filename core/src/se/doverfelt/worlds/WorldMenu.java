@@ -3,6 +3,7 @@ package se.doverfelt.worlds;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -40,6 +41,7 @@ public class WorldMenu implements UIManager {
     private float dim;
     private boolean fadeIn = false;
     static int gameCount = 0, wl = 0, wr = 0;
+    private long timestamp;
 
     @Override
     public void create(final Start start) {
@@ -93,6 +95,7 @@ public class WorldMenu implements UIManager {
         });
         temp.setTooltip(locale.get("menu.quit"));
         this.start = start;
+        timestamp = System.currentTimeMillis();
     }
 
 
@@ -159,7 +162,7 @@ public class WorldMenu implements UIManager {
         for (UIElement uiElement : elements.values()) {
             if (uiElement.getRect().contains(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).x, camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)).y)) {
                 uiElement.setHover(true);
-                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && System.currentTimeMillis() - timestamp >= 200) {
                     uiElement.onClick(Gdx.input.getX(), Gdx.input.getY());
                 }
                 showTooltip = true;
@@ -185,6 +188,7 @@ public class WorldMenu implements UIManager {
     public void resume() {
         dim = 1;
         fadeIn = true;
+        timestamp = System.currentTimeMillis();
     }
 
     @Override

@@ -93,30 +93,12 @@ public class WorldOptions implements UIManager {
         LabelComponent label = ComponentRetriever.get(root.getChild("ParentMode").getChild("BtnLabel").getEntity(), LabelComponent.class);
         label.setText("Parent Mode: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
         root.getChild("ParentMode").getEntity().add(new ButtonComponent());
-        root.getChild("ParentMode").addScript(new ButtonScript(viewport, this, new ButtonAction() {
-            @Override
-            public void doAction(World world) {
-                System.out.println("PaddleClick");
-                Start.getPreferences().putBoolean("paddleBounds", !Start.getPreferences().getBoolean("paddleBounds"));
-                LabelComponent label = ComponentRetriever.get(root.getChild("ParentMode").getChild("BtnLabel").getEntity(), LabelComponent.class);
-                label.setText("Parent Mode: " + (Start.getPreferences().getBoolean("paddleBounds") ? "On" : "Off"));
-
-            }
-        }, "Whether paddles can go off-screen or not"));
+        root.getChild("ParentMode").addScript(new ButtonScript(viewport, this, new ToggleButton(root, "ParentMode", "paddleBounds", "ui.parentMode"), "Whether paddles can go off-screen or not"));
 
         label = ComponentRetriever.get(root.getChild("FlashBtn").getChild("BtnLabel").getEntity(), LabelComponent.class);
         label.setText("Flashbang: " + (Start.getPreferences().getBoolean("flashbang") ? "On" : "Off"));
         root.getChild("FlashBtn").getEntity().add(new ButtonComponent());
-        root.getChild("FlashBtn").addScript(new ButtonScript(viewport, this, new ButtonAction() {
-            @Override
-            public void doAction(World world) {
-                System.out.println("FlashClick");
-                Start.getPreferences().putBoolean("flashbang", !Start.getPreferences().getBoolean("flashbang"));
-                LabelComponent label = ComponentRetriever.get(root.getChild("FlashBtn").getChild("BtnLabel").getEntity(), LabelComponent.class);
-                label.setText("Flashbang: " + (Start.getPreferences().getBoolean("flashbang") ? "On" : "Off"));
-
-            }
-        }, "Flashbang effect"));
+        root.getChild("FlashBtn").addScript(new ButtonScript(viewport, this, new ToggleButton(root, "FlashBtn", "flashbang", "ui.flashbang"), "Flashbang effect"));
 
         bg = new Sprite(new Texture("bg.png"));
 

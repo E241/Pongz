@@ -49,8 +49,6 @@ public class ButtonScript implements IScript {
             }
             ((UIManager) world).setTooltip(tooltip);
             ((UIManager) world).shouldShowTooltip(true);
-        } else {
-            //((UIManager) world).shouldShowTooltip(false);
         }
         wasDown = Gdx.input.isButtonPressed(Input.Buttons.LEFT);
     }
