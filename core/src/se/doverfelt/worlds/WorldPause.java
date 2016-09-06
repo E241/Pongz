@@ -157,7 +157,7 @@ public class WorldPause implements UIManager {
             float x = Gdx.input.getX();
             float y = Gdx.graphics.getHeight() - Gdx.input.getY();
 
-            Utils.renderTextInBox(x, y, font, start.getFontBatch(), currentTooltip);
+            if (!currentTooltip.isEmpty()) Utils.renderTextInBox(x, y, font, start.getFontBatch(), currentTooltip);
         }
     }
 
