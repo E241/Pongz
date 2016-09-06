@@ -71,7 +71,7 @@ public class WorldPongz implements World {
     }
 
     @Override
-	public void create(Start start, AssetManager assets) {
+	public void create(Start start, final AssetManager assets) {
         this.assets = assets;
         wt = true;
         System.out.println(WorldMenu.gameCount);
@@ -83,17 +83,17 @@ public class WorldPongz implements World {
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
         camera.zoom = 1f;
         camera.update();
-        bg = new Texture("bg.png");
+        bg = assets.get("bg.png", Texture.class);
         bg.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        white = new Texture("white.png");
+        white = assets.get("white.png", Texture.class);
         timestamp = System.currentTimeMillis();
         lastPowerup = System.currentTimeMillis();
-        pointFnt = new BitmapFont(Gdx.files.internal("big.fnt"));
+        pointFnt = assets.get("big.fnt", BitmapFont.class);
         font = new BitmapFont();
-        addEntity(new EntityBall(camera), "ball");
+        addEntity(new EntityBall(camera, this), "ball");
         ((EntityBall) entities.get("ball")).reset();
-        addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f), "borderBottom");
-        addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f), "borderTop");
+        addEntity(new EntityBorder(0.1f, 0, camera.viewportWidth - 0.2f, 2f, this), "borderBottom");
+        addEntity(new EntityBorder(0.1f, camera.viewportHeight-2f, camera.viewportWidth - 0.2f, 2f, this), "borderTop");
         addEntity(new EntityPaddle(1, 1, false, this), "paddleLeft");
         addEntity(new EntityPaddle(camera.viewportWidth-3f, 1, true, this), "paddleRight");
         if (Start.getPreferences().getBoolean("autoPilot")) effectHandler.registerEffect(EffectAutoPilot.class);
@@ -118,14 +118,14 @@ public class WorldPongz implements World {
                     currentSong = "Pongz.wav";
                 }
                 bgMusic.dispose();
-                bgMusic = Gdx.audio.newMusic(Gdx.files.internal(currentSong));
+                bgMusic = assets.get(currentSong, Music.class);
                 bgMusic.setOnCompletionListener(this);
                 bgMusic.setVolume(0.5f);
                 bgMusic.play();
             }
         };
 
-        bgMusic = Gdx.audio.newMusic(Gdx.files.internal(currentSong));
+        bgMusic = assets.get(currentSong, Music.class);
         //bgMusic.setLooping(true);
         bgMusic.setVolume(0.5f);
         bgMusic.setOnCompletionListener(musicListener);
@@ -159,7 +159,7 @@ public class WorldPongz implements World {
 
     public void addEffect(Effect effect, String name) {
         if (effect.isTimed()) {
-            EffectHUD hud = new EffectHUD();
+            EffectHUD hud = new EffectHUD(this);
             hud.setEffect(effect);
             toAdd.add(hud);
         }
@@ -447,7 +447,7 @@ public class WorldPongz implements World {
 
     @Override
     public AssetManager getAssetManager() {
-        return null;
+        return assets;
     }
 
     @Override

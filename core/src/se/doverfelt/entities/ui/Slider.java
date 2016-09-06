@@ -31,9 +31,9 @@ public class Slider implements UIElement {
         barBounds = new Rectangle(x, y, 100, 15);
         markerBounds = new Rectangle(x+7.5f, y-10, 15, 15);
         outerBounds = new Rectangle(x, y, 100, 25);
-        bar = new Sprite(new Texture("bar.png"));
+        bar = new Sprite(world.getAssetManager().<Texture>get("bar.png"));
         bar.setSize(barBounds.getWidth(), barBounds.getHeight());
-        marker = new Sprite(new Texture("play.png"));
+        marker = new Sprite(world.getAssetManager().<Texture>get("play.png"));
         marker.setSize(markerBounds.getWidth(), markerBounds.getHeight());
         marker.rotate90(false);
         font = new BitmapFont();

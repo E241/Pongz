@@ -50,10 +50,12 @@ public class WorldOptions implements UIManager {
     private BitmapFont font;
     private GlyphLayout layout = new GlyphLayout();
     private ShapeRenderer renderer = new ShapeRenderer();
+    private AssetManager manager;
 
     @Override
     public void create(final Start start, AssetManager assets) {
 
+        this.manager = assets;
         aspect = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
 
         camera = new OrthographicCamera(800, 600*aspect);
@@ -196,7 +198,7 @@ public class WorldOptions implements UIManager {
 
     @Override
     public AssetManager getAssetManager() {
-        return null;
+        return manager;
     }
 
     @Override

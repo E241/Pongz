@@ -1,5 +1,6 @@
 package se.doverfelt.entities.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -34,7 +35,11 @@ public class Logo implements UIElement {
 
     @Override
     public void create(String name, float x, float y, World world) {
-        sprite = new Sprite(world.getAssetManager().get("logo.png", Texture.class));
+        if (world.getAssetManager().isLoaded("logo.png")) {
+            sprite = new Sprite(world.getAssetManager().<Texture>get("logo.png"));
+        } else {
+            Gdx.app.error("Asset", "logo.png not loaded!");
+        }
         this.width = sprite.getWidth();
         this.height = sprite.getHeight();
         rectangle = new Rectangle(x, y, width, height);

@@ -28,6 +28,10 @@ public class EffectHUD implements Ploppable {
     private String name;
     private Sprite sprite;
 
+    public EffectHUD(World world) {
+        this.world = world;
+    }
+
     @Override
     public void create(String name, float x, float y, World world) {
         this.x = x;
@@ -42,7 +46,11 @@ public class EffectHUD implements Ploppable {
 
     public void setEffect(Effect effect) {
         this.effect = effect;
-        this.sprite = new Sprite(new Texture(effect.getEffectType() + ".png"));
+        if (world.getAssetManager().isLoaded(effect.getEffectType() + ".png")) {
+            this.sprite = new Sprite(world.getAssetManager().get(effect.getEffectType() + ".png", Texture.class));
+        } else {
+            sprite = new Sprite(new Texture("badlogic.png"));
+        }
         sprite.setSize(4, 4);
     }
 

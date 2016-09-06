@@ -31,14 +31,15 @@ public class Button implements UIElement {
     private Sprite icon;
     private String tooltip = "";
     private float dim = 0;
+    private String currentIcon = "ball.png";
 
     @Override
     public void create(String name, float x, float y, World world) {
         rectangle = new Rectangle(x, y, width, height);
         this.x = x;
         this.y = y;
-        sound = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
-        sprite = new Sprite(new Texture("button.png"));
+        sound = world.getAssetManager().get("bounce.wav");
+        sprite = new Sprite(world.getAssetManager().<Texture>get("button.png"));
         if (world instanceof UIManager) {
             this.world = (UIManager) world;
         } else {
@@ -47,7 +48,7 @@ public class Button implements UIElement {
         }
         this.font = new BitmapFont();
         font.getRegion().getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        icon = new Sprite(new Texture("ball.png"));
+        icon = new Sprite(world.getAssetManager().<Texture>get(currentIcon));
     }
     @Override
     public void render(OrthographicCamera camera, SpriteBatch batch) {
@@ -97,8 +98,9 @@ public class Button implements UIElement {
     }
 
     public void setIcon(String s) {
-        this.icon.getTexture().dispose();
-        this.icon.setTexture(new Texture(s));
+        //world.getAssetManager().unload(currentIcon);
+        currentIcon = s;
+        this.icon.setTexture(world.getAssetManager().<Texture>get(currentIcon));
     }
 
     @Override

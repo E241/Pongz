@@ -48,6 +48,7 @@ public class WorldMenu implements UIManager {
     public void create(final Start start, AssetManager assets) {
 
         aspect = (float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth();
+        this.manager = assets;
 
         camera = new OrthographicCamera(600, 600*aspect);
         //camera.viewportWidth = Gdx.graphics.getWidth();
@@ -96,7 +97,6 @@ public class WorldMenu implements UIManager {
         });
         temp.setTooltip(locale.get("menu.quit"));
         this.start = start;
-        this.manager = assets;
         timestamp = System.currentTimeMillis();
     }
 

@@ -35,7 +35,7 @@ public class EntityPaddle implements Collidable {
         y = yIn;
         isRight = Right;
         yv = isRight ? Start.getPreferences().getFloat("paddleRSpeed") : Start.getPreferences().getFloat("paddleLSpeed");
-        img = new Sprite(new Texture("white.png"));
+        img = new Sprite(world.getAssetManager().<Texture>get("white.png"));
         img.setPosition(x, y);
         img.setSize(width, height);
         bounds = new Rectangle(x, y, width, height);

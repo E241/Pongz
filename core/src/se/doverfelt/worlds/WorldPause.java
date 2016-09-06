@@ -43,6 +43,7 @@ public class WorldPause implements UIManager {
     private I18NBundle locale;
     private boolean showTooltip;
     private String currentTooltip;
+    private AssetManager manager;
 
     @Override
     public void create(Start start, AssetManager assets) {
@@ -51,6 +52,7 @@ public class WorldPause implements UIManager {
         camera.position.set(camera.viewportWidth/2f, camera.viewportHeight/2f, 0);
         camera.zoom = 1f;
         this.start = start;
+        this.manager = assets;
 
         font = new BitmapFont();
 
@@ -200,7 +202,7 @@ public class WorldPause implements UIManager {
 
     @Override
     public AssetManager getAssetManager() {
-        return null;
+        return manager;
     }
 
     @Override

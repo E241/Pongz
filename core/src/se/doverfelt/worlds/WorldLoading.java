@@ -3,6 +3,7 @@ package se.doverfelt.worlds;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -16,6 +17,8 @@ public class WorldLoading implements World {
     private AssetManager manager;
     private BitmapFont font;
     private ShapeRenderer renderer;
+    private OrthographicCamera camera;
+    private float aspect;
 
     @Override
     public void create(Start start, AssetManager assets) {
@@ -24,24 +27,30 @@ public class WorldLoading implements World {
         font = new BitmapFont();
         renderer = new ShapeRenderer();
         renderer.setAutoShapeType(true);
+        aspect = 1f * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth());
+        camera = new OrthographicCamera(400, 400*aspect);
     }
 
     @Override
     public void render(SpriteBatch batch) {
+        batch.setProjectionMatrix(camera.combined);
         if (manager.update()) {
+            manager.finishLoading();
             start.initWorlds();
             start.setWorld("menu");
         }
+        //renderer.setProjectionMatrix(camera.combined);
         renderer.begin();
         renderer.set(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.GREEN);
-        renderer.rect(10, 10, (200*manager.getProgress()), 40);
+        renderer.rect(Gdx.graphics.getWidth()/2f - 100, Gdx.graphics.getHeight()/2f - 20, (200*manager.getProgress()), 40);
         renderer.end();
         renderer.begin();
         renderer.set(ShapeRenderer.ShapeType.Line);
         renderer.setColor(Color.WHITE);
-        renderer.rect(10, 10, 200, 40);
+        renderer.rect(Gdx.graphics.getWidth()/2f - 100, Gdx.graphics.getHeight()/2f - 20, 200, 40);
         renderer.end();
+
     }
 
     @Override

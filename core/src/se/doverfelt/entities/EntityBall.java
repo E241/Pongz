@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import se.doverfelt.Start;
+import se.doverfelt.worlds.World;
 import se.doverfelt.worlds.WorldPongz;
 
 
@@ -36,14 +37,14 @@ public class EntityBall implements Collidable {
     private boolean pause = true;
 
 
-    public EntityBall(OrthographicCamera camera) {
-        img = new Sprite(new Texture("ball.png"));
+    public EntityBall(OrthographicCamera camera, World world) {
+        img = new Sprite(world.getAssetManager().<Texture>get("ball.png"));
         //img.setPosition(x-WIDTH/2, y-HEIGHT/2);
         img.setSize(WIDTH, HEIGHT);
         img.setPosition(x, y);
         bounds = new Rectangle(x, y, WIDTH, HEIGHT);
-        bom = Gdx.audio.newSound(Gdx.files.internal("bom.wav"));
-        bounce = Gdx.audio.newSound(Gdx.files.internal("bounce.wav"));
+        bom = world.getAssetManager().get("bom.wav", Sound.class);
+        bounce = world.getAssetManager().get("bounce.wav", Sound.class);
         resetTime = System.currentTimeMillis();
         this.camera = camera;
     }
@@ -105,9 +106,9 @@ public class EntityBall implements Collidable {
 
     @Override
     public void dispose() {
-        bom.dispose();
+        /*bom.dispose();
         bounce.dispose();
-        img.getTexture().dispose();
+        img.getTexture().dispose();*/
     }
     public void pause(){
         pause = true;

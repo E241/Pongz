@@ -58,8 +58,8 @@ public class CheckButton implements UIElement {
         rectangle = new Rectangle(x, y, 25, 25);
         this.world = world;
         batch = new SpriteBatch();
-        sprite = new Sprite(new Texture("button.png"));
-        icon = new Sprite(new Texture("play.png"));
+        sprite = new Sprite(world.getAssetManager().<Texture>get("button.png"));
+        icon = new Sprite(world.getAssetManager().<Texture>get("play.png"));
     }
 
     @Override

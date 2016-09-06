@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import se.doverfelt.worlds.World;
 
 
 /**
@@ -16,10 +17,10 @@ public class EntityBorder implements Collidable {
     private float x, y;
     private Rectangle bounds;
 
-    public EntityBorder(float x, float y, float width, float height) {
+    public EntityBorder(float x, float y, float width, float height, World world) {
         this.x = x;
         this.y = y;
-        img = new Sprite(new Texture("white.png"));
+        img = new Sprite(world.getAssetManager().<Texture>get("white.png"));
         img.setPosition(x, y);
         img.setSize(width, height);
         bounds = new Rectangle(x, y, width, height);

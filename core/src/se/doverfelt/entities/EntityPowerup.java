@@ -19,7 +19,7 @@ import java.util.Random;
 public class EntityPowerup implements Collidable, Ploppable {
 
     private World world;
-    private final Sprite img;
+    private Sprite img;
     private final Rectangle bounds;
     private float x, y;
     private Random r;
@@ -27,11 +27,8 @@ public class EntityPowerup implements Collidable, Ploppable {
     private Sound powerUp;
 
     public EntityPowerup() {
-        img = new Sprite(new Texture("powerup.png"));
-        img.setSize(10, 10);
         bounds = new Rectangle(1, 1, 10, 10);
         r = new Random();
-        powerUp = Gdx.audio.newSound(Gdx.files.internal("PowerUp.wav"));
     }
 
     @Override
@@ -78,5 +75,8 @@ public class EntityPowerup implements Collidable, Ploppable {
         this.y = y;
         if (!(world instanceof WorldPongz)) return;
         this.world = world;
+        img = new Sprite(world.getAssetManager().<Texture>get("powerup.png"));
+        img.setSize(10, 10);
+        powerUp = world.getAssetManager().get("PowerUp.wav", Sound.class);
     }
 }
